@@ -521,31 +521,31 @@ function fepask(year) {
   };
 }
 events.push(fepask(thisYear));
-/*							
-// aepask getEaster(year).Date.addDays(14)
-	2 e Påsk 3 i påsktiden (Misericordia Domini)	37	2 e Påsk 3 i påsktiden (Misericordia Domini)	Vit	Den gode herden	Psalt 23	Hes 34:11-16	1 Petr 2:21-25	Joh 10:11-16	Joh 21:15-25	1 Petr 5:1-5	Joh 10:1-10	Hebr 13:17-21	Söndag 14 dagar efter Påsk
+						
+// aepask 
+										
 
-  function aepask(year) {
+function aepask(year) {
     return {
-    'Date': ,
-    'Title': '',
-    'Color': '',
-    'Theme':'',
-    'Psalms': '',
-    'OldT': '',
-    'Letters': '',
-    'Gospel': '',
-    'Description' : '',
+    'Date': getEaster(year).Date.addDays(14),
+    'Title': '2 e Påsk 3 i påsktiden (Misericordia Domini)',
+    'Color': 'Vit',
+    'Theme':'Den gode herden',
+    'Psalms': 'Psalt 23',
+    'OldT': 'Hes 34:11-16',
+    'Letters': '1 Petr 2:21-25',
+    'Gospel': 'Joh 10:11-16',
+    'Description' : 'Söndag 14 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
     'Argang' : argang,
-    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
-    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+    'HHM': argang == 2 ? 'Joh 21:15-25' : argang == 3 ? 'Joh 10:1-10': null,
+    'AFT': argang == 2 ? '1 Petr 5:1-5' : argang == 3 ? 'Hebr 13:17-21': null
 
     };
   }
   events.push(aepask(thisYear));
-  
+/*	  
 // tepask getEaster(year).Date.addDays(21)
 	3 e Påsk 4 i påsktiden (Jubilate)	38	3 e Påsk 4 i påsktiden (Jubilate)	Vit	Bedrövelse vänd i glädje	Psalt 100	Jes 40:25-31	1 Petr 2:11-20	Joh 16:16-22	Joh 17:1-8	Hebr  4:1-13	Joh 14:1-12	1 Petr 1:1-7	Söndag
   function tepask(year) {
