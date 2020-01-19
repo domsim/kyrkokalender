@@ -539,10 +539,29 @@ events.push(fepask(thisYear));
 	Pingstdagen	43	Pingstdagen	Röd	Den Helige Andes utgjutande	Psalt 104:27-35	Hes 36:22-32	Apg 2:1-13	Joh 14:22-31	Joh 15:10-17	Efes 2:17-22	Joh 14:15-21	Apg 2:14-41	Söndag  49 dagar efter Påsk
 // annnandagpingst getEaster(year).Date.addDays(50)
 	Annandag pingst	44	Annandag pingst	Röd	Guds nådiga vilja om människans salighet	Psalt 110	Jes 52:7-12	Apg 10:42-48	Joh 3:16-21	Joh 6:44-51	1 Kor 12:12-31	Joh 12:44-50	1 Joh 4:7-15	Måndag 
-// michaeli firstDayAfterGivenDate(0,year,8,29)
 
-// 	Alla Helgons dag	69		Vit		Psalt 1	5 Mos 33:1-3
 */		
+function michaeli(year) {
+  return {
+    'Date': firstDayAfterGivenDate(0,year,8,29),
+    'Title': 'Den helige Mikaels dag',
+    'Color': 'Vit',
+    'Theme':'Änglarna',
+    'Psalms': 'Psalt 103:19-22',
+    'OldT': '2 Kon 6:14-17',
+    'Letters': 'Upp 12:7-12',
+    'Gospel': 'Matt 18:1-11',
+    'Description' : 'Söndag 29 september-5 oktober',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? 'Mark 10:13-16' : argang == 3 ? 'Mark 9:33-50': null,
+    'AFT': argang == 2 ? 'Hebr 2:1-10' : argang == 3 ? 'Apg 12:1-19': null
+  };
+}
+
+events.push(michaeli(thisYear));
+
 function allahelgon (year) {
   return {
     'Date': firstDayAfterGivenDate(6,year,9,31),
@@ -562,7 +581,29 @@ function allahelgon (year) {
   };
 }
 
-events.push(allahelgon(thisYear));
+events.push(allahelgon(thisYear));			
+
+function augsburska(year){
+  return {
+    'Date': firstDayAfterGivenDate(0,year,5,21),
+    'Title': 'Augsburgska Bekännelsens dag',
+    'Color': 'Röd',
+    'Theme':'Evangelium, Guds kraft till frälsning',
+    'Psalms': 'Psalt 46',
+    'OldT': '1 Sam 3:19-4:1',
+    'Letters': 'Rom 1:16-17',
+    'Gospel': 'Matt 11:25-30',
+    'Description' : 'Söndag 21-27 juni',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': null,
+    'AFT': null
+  };
+} 
+
+events.push(augsburska(thisYear));
+
 function trinitatis(year){
   return {
     'Date': getEaster(year).Date.addDays(56),
