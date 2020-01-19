@@ -520,25 +520,188 @@ function fepask(year) {
     'AFT': argang == 2 ? 'Apg 3:12-26' : argang == 3 ? 'Apg 13:26-41': null
   };
 }
-
 events.push(fepask(thisYear));
 /*							
 // aepask getEaster(year).Date.addDays(14)
 	2 e Påsk 3 i påsktiden (Misericordia Domini)	37	2 e Påsk 3 i påsktiden (Misericordia Domini)	Vit	Den gode herden	Psalt 23	Hes 34:11-16	1 Petr 2:21-25	Joh 10:11-16	Joh 21:15-25	1 Petr 5:1-5	Joh 10:1-10	Hebr 13:17-21	Söndag 14 dagar efter Påsk
+
+  function aepask(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(aepask(thisYear));
+  
 // tepask getEaster(year).Date.addDays(21)
 	3 e Påsk 4 i påsktiden (Jubilate)	38	3 e Påsk 4 i påsktiden (Jubilate)	Vit	Bedrövelse vänd i glädje	Psalt 100	Jes 40:25-31	1 Petr 2:11-20	Joh 16:16-22	Joh 17:1-8	Hebr  4:1-13	Joh 14:1-12	1 Petr 1:1-7	Söndag
+  function tepask(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(tepask(thisYear));
+
 // fjepask getEaster(year).Date.addDays(28)
 	4 e Påsk 5 i påsktiden (Cantate)	39	4 e Påsk 5 i påsktiden (Cantate)	Vit	Sanningens Ande	Psalt 98	Jes 49:1-13	Jak 1:16-21	Joh 16:5-15	Joh 17:9-17	Hebr 5:1-10	Joh 7:37-39	1 Joh 3:19-24	Söndag
+
+    function fjepask(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(fjepask(thisYear));
 // rogate getEaster(year).Date.addDays(35)
 	Bönsöndagen (Rogate)	40	Bönsöndagen (Rogate)	Vit	Bönen	Psalt 102:2-15	1 Mos 18:16-33	Jak 1:22-27	Joh 16:23-33	Joh 17:18-23	Hebr 7:18-28	Luk 11:1-13	Jak 5:13-20	Söndag
+    function rogate(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(rogate(thisYear));
 // ascensione getEaster(year).Date.addDays(39)
 	Kristi himmelsfärds dag	41	Kristi himmelsfärds dag	Vit	Himmelsfärden	Psalt 47:2-10	1 Mos 5:21-24	Apg 1:1-11	Mark 16:14-20 	Joh 17:24-26	Hebr 10:11-18	Luk 24:49-53	Efes 4:7-16	Torsdag 39 dagar efter Påsk
+    function ascensione(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(ascensione(thisYear));
 // sjepask getEaster(year).Date.addDays(42)
 	6 e Påsk. (Exaudi)	42	6 e Påsk. (Exaudi)	Vit	Hjälparen, den Helige Ande.	Psalt 19	Jes 32:9-20	1 Petr 4:7-11	Joh 15:26–16:4	Joh 15:18-27	Kol 3:1-11	Luk 12:4-12	1 Petr 3:15-22	Söndag  42 dagar efter Påsk
+    function sjepask(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(sjepask(thisYear));
 // pentecoste getEaster(year).Date.addDays(49)
 	Pingstdagen	43	Pingstdagen	Röd	Den Helige Andes utgjutande	Psalt 104:27-35	Hes 36:22-32	Apg 2:1-13	Joh 14:22-31	Joh 15:10-17	Efes 2:17-22	Joh 14:15-21	Apg 2:14-41	Söndag  49 dagar efter Påsk
+    function pentecoste(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(pentecoste(thisYear));
 // annnandagpingst getEaster(year).Date.addDays(50)
 	Annandag pingst	44	Annandag pingst	Röd	Guds nådiga vilja om människans salighet	Psalt 110	Jes 52:7-12	Apg 10:42-48	Joh 3:16-21	Joh 6:44-51	1 Kor 12:12-31	Joh 12:44-50	1 Joh 4:7-15	Måndag 
+    function annnandagpingst(year) {
+    return {
+    'Date': ,
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(annnandagpingst(thisYear));
 
 */		
 function michaeli(year) {
@@ -626,31 +789,540 @@ function trinitatis(year){
 events.push(trinitatis(thisYear));
 /*
 // prio 2:
-// trinitatis1 trinitatis(year).Date.addDays(7*1)
-// trinitatis2 trinitatis(year).Date.addDays(7*2)
-// trinitatis3 trinitatis(year).Date.addDays(7*3)
-// trinitatis4 trinitatis(year).Date.addDays(7*4)
-// trinitatis5 trinitatis(year).Date.addDays(7*5)
-// trinitatis6 trinitatis(year).Date.addDays(7*6)
-// trinitatis7 trinitatis(year).Date.addDays(7*7)
-// trinitatis8 trinitatis(year).Date.addDays(7*8)
-// trinitatis9 trinitatis(year).Date.addDays(7*9)
+// trinitatis1 
+  function trinitatis1(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*1),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis1(thisYear));
+
+// trinitatis2 
+  function trinitatis2(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*2),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis2(thisYear));
+
+// trinitatis3 
+  function trinitatis3(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*3),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis3(thisYear));
+
+// trinitatis4 
+  function trinitatis4(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*4),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis4(thisYear));
+
+// trinitatis5 
+  function trinitatis5(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*5),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis5(thisYear));
+
+// trinitatis6 
+  function trinitatis6(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis6(thisYear));
+
+// trinitatis7 
+  function trinitatis7(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*7),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis7(thisYear));
+
+//  trinitatis8
+  function trinitatis8(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*8),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis8(thisYear));
+
+// trinitatis9 
+  function trinitatis9(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*9),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 2,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis9(thisYear));
 // trinitatis10 trinitatis(year).Date.addDays(7*10)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis11 trinitatis(year).Date.addDays(7*11)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis12 trinitatis(year).Date.addDays(7*12)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis13 trinitatis(year).Date.addDays(7*13)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis14 trinitatis(year).Date.addDays(7*14)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis15 trinitatis(year).Date.addDays(7*15)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis16 trinitatis(year).Date.addDays(7*16)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*16),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis17 trinitatis(year).Date.addDays(7*17)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*17),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis18 trinitatis(year).Date.addDays(7*18)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*18),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis19 trinitatis(year).Date.addDays(7*19)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*19),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis20 trinitatis(year).Date.addDays(7*20)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*20),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis21 trinitatis(year).Date.addDays(7*21)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*21),
+    'Title': '',
+    'Color': '',
+    'Theme':''
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis22 trinitatis(year).Date.addDays(7*22)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*22),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis23 trinitatis(year).Date.addDays(7*23)
+  function (year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*23),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push((thisYear));
 // trinitatis24 trinitatis(year).Date.addDays(7*24)
+  function trinitatis24(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*24),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis24(thisYear));
+
 // trinitatis25 trinitatis(year).Date.addDays(7*25)
+  function trinitatis25(year) {
+    return {
+    'Date': trinitatis(year).Date.addDays(7*25),
+    'Title': '',
+    'Color': '',
+    'Theme':'',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': '',
+    'Gospel': '',
+    'Description' : '',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+
+    };
+  }
+  events.push(trinitatis25(thisYear));
 */
 function domsndg(year) {
   return {
@@ -926,7 +1598,7 @@ function removeDuplicates(originalArray, prop) {
 
 // skapar ett ny array med unika objekt efter unixtime-egenskap (fält time)
 
-uniqueEvents = removeDuplicates(events, 'time');
+let uniqueEvents = removeDuplicates(events, 'time');
 
 // kollar hur många objekts som har tagits bort
 console.log(events.length - uniqueEvents.length);
