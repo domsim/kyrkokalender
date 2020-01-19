@@ -501,9 +501,28 @@ function annandagpask(year) {
 
 events.push(annandagpask(thisYear));	
 
-/*
-// fepask getEaster(year).Date.addDays(7)
-	1 e Påsk 2 i påsktiden (Quasimodogeniti)	36	1 e Påsk 2 i påsktiden (Quasimodogeniti)	Vit	Genom stängda dörrar	Psalt 114	1 Mos 32:22-32	1 Joh 5:1-12	Joh 20:19-31	Joh 21:1-14	Apg 3:12-26	Luk24:36-48	Apg 13:26-41	Söndag 7 dagar efter Påsk
+ 
+function fepask(year) {
+  return {
+    'Date': getEaster(year).Date.addDays(7),
+    'Title': '1 e Påsk 2 i påsktiden (Quasimodogeniti)',
+    'Color': 'Vit',
+    'Theme':'Genom stängda dörrar',
+    'Psalms': 'Psalt 114',
+    'OldT': '1 Mos 32:22-32',
+    'Letters': '1 Joh 5:1-12',
+    'Gospel': 'Joh 20:19-31',
+    'Description' : 'Söndag 7 dagar efter Påsk',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? 'Joh 21:1-14' : argang == 3 ? 'Luk 24:36-48': null,
+    'AFT': argang == 2 ? 'Apg 3:12-26' : argang == 3 ? 'Apg 13:26-41': null
+  };
+}
+
+events.push(fepask(thisYear));
+/*							
 // aepask getEaster(year).Date.addDays(14)
 	2 e Påsk 3 i påsktiden (Misericordia Domini)	37	2 e Påsk 3 i påsktiden (Misericordia Domini)	Vit	Den gode herden	Psalt 23	Hes 34:11-16	1 Petr 2:21-25	Joh 10:11-16	Joh 21:15-25	1 Petr 5:1-5	Joh 10:1-10	Hebr 13:17-21	Söndag 14 dagar efter Påsk
 // tepask getEaster(year).Date.addDays(21)
@@ -522,10 +541,11 @@ events.push(annandagpask(thisYear));
 	Annandag pingst	44	Annandag pingst	Röd	Guds nådiga vilja om människans salighet	Psalt 110	Jes 52:7-12	Apg 10:42-48	Joh 3:16-21	Joh 6:44-51	1 Kor 12:12-31	Joh 12:44-50	1 Joh 4:7-15	Måndag 
 // michaeli firstDayAfterGivenDate(0,year,8,29)
 
-// 	Alla Helgons dag	69		Vit		Psalt 1	5 Mos 33:1-3		
+// 	Alla Helgons dag	69		Vit		Psalt 1	5 Mos 33:1-3
+*/		
 function allahelgon (year) {
   return {
-    'Date': allahelgon firstDayAfterGivenDate(6,year,9,31),
+    'Date': firstDayAfterGivenDate(6,year,9,31),
     'Title': 'Alla helgons dag',
     'Color': 'Vit',
     'Theme':'Saligprisningarna',
@@ -542,10 +562,29 @@ function allahelgon (year) {
   };
 }
 
-evetns.push(allahelgon(thisYear));
+events.push(allahelgon(thisYear));
+function trinitatis(year){
+  return {
+    'Date': getEaster(year).Date.addDays(56),
+    'Title': 'Heliga Trefaldighets dag',
+    'Color': 'Vit',
+    'Theme':'Fadern, Sonen och den Helige Ande',
+    'Psalms': 'Psalt 99',
+    'OldT': 'Jes 6:1-7',
+    'Letters': 'Rom 11:33-36',
+    'Gospel': 'Joh 3:1-15',
+    'Description' : 'Söndag 56 dagar efter Påsk',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? 'Joh 15:1-9' : argang == 3 ? 'Matt 28:16-20': null,
+    'AFT': argang == 2 ? '1 Joh 3:1-12' : argang == 3 ? 'Kol 1:12-23': null
+  };
+} 
+
+events.push(trinitatis(thisYear));
+/*
 // prio 2:
-// trinitatis getEaster(year).Date.addDays(56)
- 	Heliga Trefaldighets dag	45	Heliga Trefaldighets dag	Vit	Fadern, Sonen och den Helige Ande	Psalt 99	Jes 6:1-7	Rom 11:33-36	Joh 3:1-15	Joh 15:1-9	1 Joh 3:1-12	Matt 28:16-20	Kol 1:12-23	Söndag 56 dagar efter Påsk
 // trinitatis1 trinitatis(year).Date.addDays(7*1)
 // trinitatis2 trinitatis(year).Date.addDays(7*2)
 // trinitatis3 trinitatis(year).Date.addDays(7*3)
