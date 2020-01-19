@@ -494,8 +494,8 @@ function annandagpask(year) {
     'Link': '',
     'Prio': 1,
     'Argang' : argang,
-    'HHM': argang == 2 ? 'Joh 20:11-18' : argang == 3 ? '2 Kor 5:11-21': null,
-    'AFT': argang == 2 ? 'Matt 28:9-15' : argang == 3 ? '1 Joh 4:7-15': null
+    'HHM': argang == 2 ? 'Joh 20:11-18' : argang == 3 ? 'Matt 28:9-15': null,
+    'AFT': argang == 2 ? '2 Kor 5:11-21' : argang == 3 ? '1 Joh 4:7-15': null
   };
 } 
 
@@ -522,8 +522,27 @@ events.push(annandagpask(thisYear));
 	Annandag pingst	44	Annandag pingst	Röd	Guds nådiga vilja om människans salighet	Psalt 110	Jes 52:7-12	Apg 10:42-48	Joh 3:16-21	Joh 6:44-51	1 Kor 12:12-31	Joh 12:44-50	1 Joh 4:7-15	Måndag 
 // michaeli firstDayAfterGivenDate(0,year,8,29)
 
-// allahelgon firstDayAfterGivenDate(6,year,9,31)
+// 	Alla Helgons dag	69		Vit		Psalt 1	5 Mos 33:1-3		
+function allahelgon (year) {
+  return {
+    'Date': allahelgon firstDayAfterGivenDate(6,year,9,31),
+    'Title': 'Alla helgons dag',
+    'Color': 'Vit',
+    'Theme':'Saligprisningarna',
+    'Psalms': 'Psalt 1',
+    'OldT': '5 Mos 33:1-3',
+    'Letters': 'Upp 7:2–17',
+    'Gospel': 'Matt 5:1–12',
+    'Description' : 'Lördag 31 oktober-6 november',
+    'Link': '',
+    'Prio': 1,
+    'Argang' : argang,
+    'HHM': argang == 2 ? 'Matt 5:13-16' : argang == 3 ? 'Luk 6:20-26': null,
+    'AFT': argang == 2 ? 'Hebr 12:1-3' : argang == 3 ? 'Upp 22:6-9': null
+  };
+}
 
+evetns.push(allahelgon(thisYear));
 // prio 2:
 // trinitatis getEaster(year).Date.addDays(56)
  	Heliga Trefaldighets dag	45	Heliga Trefaldighets dag	Vit	Fadern, Sonen och den Helige Ande	Psalt 99	Jes 6:1-7	Rom 11:33-36	Joh 3:1-15	Joh 15:1-9	1 Joh 3:1-12	Matt 28:16-20	Kol 1:12-23	Söndag 56 dagar efter Påsk

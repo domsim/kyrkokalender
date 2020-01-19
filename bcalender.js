@@ -3,7 +3,7 @@
   Version: 0.1.0;
   (◠‿◠✿)
   source: https://www.cssscript.com/create-simple-event-calendar-javascript-caleandar-js/
-  modified by: Domenico Simonelli
+  modified by: domsim
 */
 var Calendar = function(model, options, date){
   // Default Values
