@@ -592,6 +592,7 @@ events.push(fepask(thisYear));
     };
   }
   events.push(fjepask(thisYear));
+
 // rogate getEaster(year).Date.addDays(35)
 	Bönsöndagen (Rogate)	40	Bönsöndagen (Rogate)	Vit	Bönen	Psalt 102:2-15	1 Mos 18:16-33	Jak 1:22-27	Joh 16:23-33	Joh 17:18-23	Hebr 7:18-28	Luk 11:1-13	Jak 5:13-20	Söndag
     function rogate(year) {
@@ -614,6 +615,7 @@ events.push(fepask(thisYear));
     };
   }
   events.push(rogate(thisYear));
+
 // ascensione getEaster(year).Date.addDays(39)
 	Kristi himmelsfärds dag	41	Kristi himmelsfärds dag	Vit	Himmelsfärden	Psalt 47:2-10	1 Mos 5:21-24	Apg 1:1-11	Mark 16:14-20 	Joh 17:24-26	Hebr 10:11-18	Luk 24:49-53	Efes 4:7-16	Torsdag 39 dagar efter Påsk
     function ascensione(year) {
@@ -680,30 +682,30 @@ events.push(fepask(thisYear));
     };
   }
   events.push(pentecoste(thisYear));
+  */
 // annnandagpingst getEaster(year).Date.addDays(50)
-	Annandag pingst	44	Annandag pingst	Röd	Guds nådiga vilja om människans salighet	Psalt 110	Jes 52:7-12	Apg 10:42-48	Joh 3:16-21	Joh 6:44-51	1 Kor 12:12-31	Joh 12:44-50	1 Joh 4:7-15	Måndag 
-    function annnandagpingst(year) {
+function annnandagpingst(year) {
     return {
-    'Date': ,
-    'Title': '',
-    'Color': '',
-    'Theme':'',
-    'Psalms': '',
-    'OldT': '',
-    'Letters': '',
-    'Gospel': '',
-    'Description' : '',
+    'Date': getEaster(year).Date.addDays(50),
+    'Title': 'Annandag pingst',
+    'Color': 'Röd',
+    'Theme':'Guds nådiga vilja om människans salighet',
+    'Psalms': 'Psalt 110',
+    'OldT': 'Jes 52:7-12',
+    'Letters': 'Apg 10:42-48',
+    'Gospel': 'Joh 3:16-21',
+    'Description' : 'Måndag ',
     'Link': '',
     'Prio': 1,
     'Argang' : argang,
-    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
-    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+    'HHM': argang == 2 ? 'Joh 6:44-51' : argang == 3 ? 'Joh 12:44-50': null,
+    'AFT': argang == 2 ? '1 Kor 12:12-31' : argang == 3 ? '1 Joh 4:7-15': null
 
     };
   }
   events.push(annnandagpingst(thisYear));
 
-*/		
+		
 function michaeli(year) {
   return {
     'Date': firstDayAfterGivenDate(0,year,8,29),
@@ -902,7 +904,7 @@ events.push(trinitatis(thisYear));
 // trinitatis6 
   function trinitatis6(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*6),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -986,10 +988,11 @@ events.push(trinitatis(thisYear));
     };
   }
   events.push(trinitatis9(thisYear));
-// trinitatis10 trinitatis(year).Date.addDays(7*10)
-  function (year) {
+
+// trinitatis10 
+  function trinitatis10(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*10),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -999,18 +1002,19 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis11 trinitatis(year).Date.addDays(7*11)
-  function (year) {
+  events.push(trinitatis10(thisYear));
+
+// trinitatis11
+  function trinitatis11(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*11),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -1020,18 +1024,19 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis12 trinitatis(year).Date.addDays(7*12)
-  function (year) {
+  events.push(trinitatis11(thisYear));
+
+// trinitatis12 
+  function trinitatis12(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*12),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -1041,18 +1046,19 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis13 trinitatis(year).Date.addDays(7*13)
-  function (year) {
+  events.push(trinitatis12(thisYear));
+
+// trinitatis13
+  function trinitatis13(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*13),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -1062,18 +1068,19 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis14 trinitatis(year).Date.addDays(7*14)
-  function (year) {
+  events.push(trinitatis13(thisYear));
+
+// trinitatis14 
+  function trinitatis14(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*14),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -1083,18 +1090,19 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis15 trinitatis(year).Date.addDays(7*15)
-  function (year) {
+  events.push(trinitatis14(thisYear));
+
+// trinitatis15 
+  function trinitatis15(year) {
     return {
-    'Date': trinitatis(year).Date.addDays(7*24),
+    'Date': trinitatis(year).Date.addDays(7*15),
     'Title': '',
     'Color': '',
     'Theme':'',
@@ -1104,16 +1112,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis16 trinitatis(year).Date.addDays(7*16)
-  function (year) {
+  events.push(trinitatis15(thisYear));
+
+// trinitatis16
+  function trinitatis16(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*16),
     'Title': '',
@@ -1125,16 +1134,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis17 trinitatis(year).Date.addDays(7*17)
-  function (year) {
+  events.push(trinitatis16(thisYear));
+
+// trinitatis17 
+  function trinitatis17(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*17),
     'Title': '',
@@ -1146,16 +1156,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis18 trinitatis(year).Date.addDays(7*18)
-  function (year) {
+  events.push(trinitatis17(thisYear));
+
+// trinitatis18 
+  function trinitatis18(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*18),
     'Title': '',
@@ -1167,16 +1178,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis19 trinitatis(year).Date.addDays(7*19)
-  function (year) {
+  events.push(trinitatis18(thisYear));
+
+// trinitatis19 
+  function trinitatis19(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*19),
     'Title': '',
@@ -1188,16 +1200,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis20 trinitatis(year).Date.addDays(7*20)
-  function (year) {
+  events.push(trinitatis19(thisYear));
+
+// trinitatis20 
+  function trinitatis20(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*20),
     'Title': '',
@@ -1209,16 +1222,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis21 trinitatis(year).Date.addDays(7*21)
-  function (year) {
+  events.push(trinitatis20(thisYear));
+
+// trinitatis21 
+  function trinitatis21(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*21),
     'Title': '',
@@ -1230,16 +1244,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
+  events.push(trinitatis21(thisYear));
+
 // trinitatis22 trinitatis(year).Date.addDays(7*22)
-  function (year) {
+  function trinitatis22(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*22),
     'Title': '',
@@ -1251,16 +1266,17 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis23 trinitatis(year).Date.addDays(7*23)
-  function (year) {
+  events.push(trinitatis22(thisYear));
+
+// trinitatis23 
+  function trinitatis23(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*23),
     'Title': '',
@@ -1272,15 +1288,16 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
 
     };
   }
-  events.push((thisYear));
-// trinitatis24 trinitatis(year).Date.addDays(7*24)
+  events.push(trinitatis23(thisYear));
+
+// trinitatis24 
   function trinitatis24(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*24),
@@ -1293,7 +1310,7 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
@@ -1302,7 +1319,7 @@ events.push(trinitatis(thisYear));
   }
   events.push(trinitatis24(thisYear));
 
-// trinitatis25 trinitatis(year).Date.addDays(7*25)
+// trinitatis25 
   function trinitatis25(year) {
     return {
     'Date': trinitatis(year).Date.addDays(7*25),
@@ -1315,7 +1332,7 @@ events.push(trinitatis(thisYear));
     'Gospel': '',
     'Description' : '',
     'Link': '',
-    'Prio': 1,
+    'Prio': 2,
     'Argang' : argang,
     'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
     'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
