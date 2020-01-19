@@ -660,29 +660,30 @@ events.push(fepask(thisYear));
     };
   }
   events.push(sjepask(thisYear));
-// pentecoste getEaster(year).Date.addDays(49)
-	Pingstdagen	43	Pingstdagen	Röd	Den Helige Andes utgjutande	Psalt 104:27-35	Hes 36:22-32	Apg 2:1-13	Joh 14:22-31	Joh 15:10-17	Efes 2:17-22	Joh 14:15-21	Apg 2:14-41	Söndag  49 dagar efter Påsk
-    function pentecoste(year) {
+
+// pentecoste 	  
+*/											
+function pentecoste(year) {
     return {
-    'Date': ,
-    'Title': '',
-    'Color': '',
-    'Theme':'',
-    'Psalms': '',
-    'OldT': '',
-    'Letters': '',
-    'Gospel': '',
-    'Description' : '',
+    'Date': getEaster(year).Date.addDays(49),
+    'Title': 'Pingstdagen',
+    'Color': 'Röd',
+    'Theme':'Den Helige Andes utgjutande',
+    'Psalms': 'Psalt 104:27-35',
+    'OldT': 'Hes 36:22-32',
+    'Letters': 'Apg 2:1-13',
+    'Gospel': 'Joh 14:22-31',
+    'Description' : 'Söndag  49 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
     'Argang' : argang,
-    'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
-    'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+    'HHM': argang == 2 ? 'Joh 15:10-17 ' : argang == 3 ? 'Joh 14:15-21': null,
+    'AFT': argang == 2 ? 'Efes 2:17-22' : argang == 3 ? 'Apg 2:14-41': null
 
     };
   }
   events.push(pentecoste(thisYear));
-  */
+
 // annnandagpingst getEaster(year).Date.addDays(50)
 function annnandagpingst(year) {
     return {
