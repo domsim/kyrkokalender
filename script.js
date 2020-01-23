@@ -1589,13 +1589,20 @@ events.push(aeepifania(thisYear));
 events.push(teepifania(thisYear));
 events.push(fjeepifania(thisYear));
 // lägger till en ny fält i varje högtidsobjekt med unixtime baserad på den bäreknade på dess Date fält
-console.log(events);
+//console.log(events);
 events = events.map(function(obj){
   if (typeof obj.Date !== "undefined" ){
     obj.time = obj.Date.getTime();
     return obj;
   }
  
+});
+
+events = events.map(function(obj){
+  if (typeof obj.Date !== "undefined" ){
+    obj.Week = getWeekNumber(obj.Date)[1];
+    return obj;
+  }
 });
 
 // funktion som ta bort objekt som har samma egenskap (property)
@@ -1621,25 +1628,86 @@ let uniqueEvents = removeDuplicates(events, 'time');
 // kollar hur många objekts som har tagits bort
 console.log(events.length - uniqueEvents.length);
 
+var months = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
+var days = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"];
+
+
 let settings = {};
 let element = document.getElementById('bibelcalender');
 caleandar(element, uniqueEvents, settings);
 // visar Påskdagen och årgång
 console.log(getEaster(thisYear).Date.toLocaleString() + " Årgang " + argang);
 console.log("Aktuell år: "+ thisYear+" Årgang: "+ argang );
-console.log(uniqueEvents.sortBy(function(o){return [o.Date, o.Prio]}));
+//console.log(uniqueEvents.sortBy(function(o){return [o.Date, o.Prio]}));
+uniqueEvents = uniqueEvents.sortBy(function(o){return [o.Date, o.Prio]});
+
+console.log(uniqueEvents.length);
+
+function showWeek(arr, week) {
+  for(i of arr) {
+    if(i.Week === week) {
+      console.log(`Vecka ${i.Week}`);
+      if (i.Argang == 1) {
+        console.log(days[new Date(i.time).getDay()]);
+        console.log(new Date(i.time).getDate());
+        console.log(months[new Date(i.time).getMonth()]);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
+      } else if (i.Argang == 2 && i.HHM !== null) {
+        console.log(days[new Date(i.time).getDay()]);
+        console.log(new Date(i.time).getDate());
+        console.log(months[new Date(i.time).getMonth()]);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` +"\n");
+      } else if ( i.HHM !== null) {
+        console.log(days[new Date(i.time).getDay()]);
+        console.log(new Date(i.time).getDate());
+        console.log(months[new Date(i.time).getMonth()]);
+        console.log("\n " + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` +"\n");
+      } else {
+        console.log(days[new Date(i.time).getDay()]);
+        console.log(new Date(i.time).getDate());
+        console.log(months[new Date(i.time).getMonth()]);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
+      }
+    }
+  }
+}
+
+showMonth = (arr, mese) =>{
+  console.log( months[mese] + " " + thisYear);
+    for(i of arr) {
+      if(new Date(i.time).getMonth() === mese) {
+      
+      if (i.Argang == 1) {
+        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()}`);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
+      } else if (i.Argang == 2 && i.HHM !== null) {
+        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()}`);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` +"\n");
+      } else if ( i.HHM !== null) {
+        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()}`);
+        console.log("\n " + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` +"\n");
+      } else {
+        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()}`);
+        console.log( "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
+      }
+    }
+  }
+};
 
 for (i of uniqueEvents) { 
-    if (i.Argang == 1) {
-
-      console.log(new Date(i.time).toLocaleDateString() + ", " + `${i.Title}, ${i.Color}, ${i.Theme}, ${i.Psalms}, ${i.OldT}, ${i.Letters}, ${i.Gospel}` +"\n");
+  if (i.Argang == 1) {
+      console.log(months[new Date(i.time).getMonth()]);
+      console.log(new Date(i.time).toLocaleDateString() + "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
     } else if (i.Argang == 2 && i.HHM !== null) {
-
-      console.log(new Date(i.time).toLocaleDateString() + ", " + `${i.Title}, ${i.Color}, ${i.Theme}, ${i.Psalms}, ${i.OldT}, ${i.Letters}, ${i.Gospel}, II: ${i.HHM}, ${i.AFT}` +"\n");
+      
+      console.log(months[new Date(i.time).getMonth()]);
+      console.log(new Date(i.time).toLocaleDateString() + "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` +"\n");
     } else if ( i.HHM !== null) {
-      console.log(new Date(i.time).toLocaleDateString() + ", " + `${i.Title}, ${i.Color}, ${i.Theme}, ${i.Psalms}, ${i.OldT}, ${i.Letters}, ${i.Gospel}, III: ${i.HHM}, ${i.AFT}` +"\n");
+      console.log(months[new Date(i.time).getMonth()]);
+      console.log(new Date(i.time).toLocaleDateString() + "\n " + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` +"\n");
     } else {
-      console.log(new Date(i.time).toLocaleDateString() + ", " + `${i.Title}, ${i.Color}, ${i.Theme}, ${i.Psalms}, ${i.OldT}, ${i.Letters}, ${i.Gospel}` +"\n");
+      console.log(months[new Date(i.time).getMonth()]);
+      console.log(new Date(i.time).toLocaleDateString() + "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` +"\n");
     }
   }
 /*console.log(events.sort(function (a, b) {
