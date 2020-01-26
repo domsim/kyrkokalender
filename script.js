@@ -110,7 +110,6 @@ function argng(year) {
 }
 let argang = argng(thisYear);
 
-
 // Skapar högtider med fast datum
 let events = [];
 
@@ -132,7 +131,6 @@ function nyarsdagen(year) {
     'AFT': argang == 2 ? 'Luk 13:6-9' : argang == 3 ? 'Hebr 13:7-16' : null
   }
 }
-
 function epifania(year) {
   return {
     'Date': new Date(thisYear, 0, 6),
@@ -151,7 +149,6 @@ function epifania(year) {
     'AFT': argang == 2 ? 'Luk 11:29-36' : argang == 3 ? '1 Tim 3:16' : null
   }
 }
-
 function pauliomvandelse(year) {
   return {
     'Date': new Date(thisYear, 0, 25),
@@ -170,7 +167,6 @@ function pauliomvandelse(year) {
     'AFT': null
   }
 }
-
 function juldagen(year) {
   return {
     'Date': new Date(thisYear, 11, 25),
@@ -189,7 +185,6 @@ function juldagen(year) {
     'AFT': argng(thisYear + 1) == 2 ? 'Matt 1:18-25' : argng(thisYear + 1) == 3 ? 'Tit 2:11-15' : null
   }
 }
-
 function annandagjul(year) {
   return {
     'Date': new Date(thisYear, 11, 26),
@@ -209,7 +204,6 @@ function annandagjul(year) {
 
   }
 }
-
 function johannes(year) {
   return {
     'Date': new Date(thisYear, 11, 27),
@@ -228,7 +222,6 @@ function johannes(year) {
     'AFT': null
   }
 }
-
 function menlosabarn(year) {
   return {
     'Date': new Date(thisYear, 11, 28),
@@ -302,7 +295,6 @@ function septuagesima(year) {
     'AFT': argang == 2 ? 'Luk 17:7-10' : argang == 3 ? 'Fil 3:7-16' : null
   };
 }
-
 function sexagesima(year) {
   return {
     'Date': septuagesima(year).Date.addDays(7),
@@ -322,7 +314,6 @@ function sexagesima(year) {
   };
 
 }
-
 function quinquagesima(year) {
   return {
     'Date': sexagesima(year).Date.addDays(7),
@@ -341,7 +332,6 @@ function quinquagesima(year) {
     'AFT': argang == 2 ? 'Mark10:32-45' : argang == 3 ? '1 Kor 1:20-25' : null
   };
 }
-
 function askonsdagen(year) {
   return {
     'Date': sexagesima(year).Date.addDays(10),
@@ -360,7 +350,6 @@ function askonsdagen(year) {
     'AFT': null
   };
 }
-
 function invocavit(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(42),
@@ -379,7 +368,6 @@ function invocavit(year) {
     'AFT': argang == 2 ? 'Luk 10:17-20' : argang == 3 ? 'Hebr 4:14-16' : null
   };
 }
-
 function reminiscere(year) {
   return {
     'Date': invocavit(year).Date.addDays(7),
@@ -398,7 +386,6 @@ function reminiscere(year) {
     'AFT': argang == 2 ? 'Mark 9:14-32' : argang == 3 ? 'Hebr 2:17,18' : null
   };
 }
-
 function oculi(year) {
   return {
     'Date': reminiscere(year).Date.addDays(7),
@@ -417,7 +404,6 @@ function oculi(year) {
     'AFT': argang == 2 ? 'Luk 4:31-37' : argang == 3 ? 'Kol 1:24-29' : null
   };
 }
-
 function mariabeb(year) {
   return {
     'Date': firstDayInMonth(0, 3, year).subtractDays(14),
@@ -436,7 +422,6 @@ function mariabeb(year) {
     'AFT': argang == 2 ? 'Luk 1:46-56' : argang == 3 ? 'Upp 21:1-8' : null
   };
 }
-
 function laetare(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(21),
@@ -455,7 +440,6 @@ function laetare(year) {
     'AFT': argang == 2 ? 'Joh 6:52-71' : argang == 3 ? '2 Kor 7:10' : null
   };
 }
-
 function judica(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(14),
@@ -474,7 +458,6 @@ function judica(year) {
     'AFT': argang == 2 ? 'Hebr 7:1-17' : argang == 3 ? 'Kol 2:1-8' : null
   };
 }
-
 function palmsndg(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(7),
@@ -493,7 +476,6 @@ function palmsndg(year) {
     'AFT': argang == 2 ? '1 Kor 11:23-29' : argang == 3 ? '1 Kor 10:14-22' : null
   };
 }
-
 function skrtorsd(year) {
   return {
     'Date': palmsndg(year).Date.addDays(4),
@@ -512,7 +494,6 @@ function skrtorsd(year) {
     'AFT': argang == 2 ? '1 Kor 11:23-29' : argang == 3 ? '1 Kor 10:14-22' : null
   };
 }
-
 function annandagpask(year) {
   return {
     'Date': getEaster(year).Date.addDays(1),
@@ -531,10 +512,6 @@ function annandagpask(year) {
     'AFT': argang == 2 ? '2 Kor 5:11-21' : argang == 3 ? '1 Joh 4:7-15' : null
   };
 }
-
-
-
-
 function fepask(year) {
   return {
     'Date': getEaster(year).Date.addDays(7),
@@ -553,7 +530,6 @@ function fepask(year) {
     'AFT': argang == 2 ? 'Apg 3:12-26' : argang == 3 ? 'Apg 13:26-41' : null
   };
 }
-
 function aepask(year) {
   return {
     'Date': getEaster(year).Date.addDays(14),
@@ -573,11 +549,8 @@ function aepask(year) {
 
   };
 }
-
 /*	  
 // tepask getEaster(year).Date.addDays(21)
- 3 e Påsk 4 i påsktiden (Jubilate)	38	3 e Påsk 4 i påsktiden (Jubilate)	Vit	Bedrövelse vänd i glädje	Psalt 100	Jes 40:25-31	1 Petr 2:11-20	Joh 16:16-22	Joh 17:1-8	Hebr  4:1-13	Joh 14:1-12	1 Petr 1:1-7	Söndag
- 
  */
 function tepask(year) {
   return {
@@ -597,10 +570,8 @@ function tepask(year) {
     'AFT': argang == 2 ? 'Hebr  4:1-13' : argang == 3 ? '1 Petr 1:1-7' : null
   };
 }
-
 /*
 // fjepask getEaster(year).Date.addDays(28)
- 4 e Påsk 5 i påsktiden (Cantate)	39	4 e Påsk 5 i påsktiden (Cantate)	Vit	Sanningens Ande	Psalt 98	Jes 49:1-13	Jak 1:16-21	Joh 16:5-15	Joh 17:9-17	Hebr 5:1-10	Joh 7:37-39	1 Joh 3:19-24	Söndag
 */
 function fjepask(year) {
   return {
@@ -623,7 +594,6 @@ function fjepask(year) {
 }
 /*
 // rogate getEaster(year).Date.addDays(35)
- Bönsöndagen (Rogate)	40	Bönsöndagen (Rogate)	Vit	Bönen	Psalt 102:2-15	1 Mos 18:16-33	Jak 1:22-27	Joh 16:23-33	Joh 17:18-23	Hebr 7:18-28	Luk 11:1-13	Jak 5:13-20	Söndag
  */
 function rogate(year) {
   return {
@@ -646,7 +616,6 @@ function rogate(year) {
 }
 /*
 /* ascensione getEaster(year).Date.addDays(39)
- Kristi himmelsfärds dag	41	Kristi himmelsfärds dag	Vit	Himmelsfärden	Psalt 47:2-10	1 Mos 5:21-24	Apg 1:1-11	Mark 16:14-20 	Joh 17:24-26	Hebr 10:11-18	Luk 24:49-53	Efes 4:7-16	Torsdag 39 dagar efter Påsk
 */
 function ascensione(year) {
   return {
@@ -668,7 +637,6 @@ function ascensione(year) {
   };
 }
 /* sjepask 
- 6 e Påsk. (Exaudi)	42	6 e Påsk. (Exaudi)	Vit	Hjälparen, den Helige Ande.	Psalt 19	Jes 32:9-20	1 Petr 4:7-11	Joh 15:26–16:4	Joh 15:18-27	Kol 3:1-11	Luk 12:4-12	1 Petr 3:15-22	Söndag  42 dagar efter Påsk
 */
 function sjepask(year) {
   return {
@@ -802,6 +770,60 @@ function trinitatis(year) {
   };
 }
 /*
+
+/*
+	1 e Trefaldighet	48	1 e Trefaldighet	Grön	Rik inför Gud	Psalt 13	5 Mos 6:4-15	1 Joh 4:16-21	Luk 16:19-31	Luk 12:13-21	Rom 1:1-15	Matt 16:24-28	1 Tim 6:6-19	Söndag*
+  
+  2 e Trefaldighet	49	2 e Trefaldighet	Grön	Den stora måltiden	Psalt 66	Ords 9:1-12	1 Joh 3:13-18	Luk 14:15-24	Luk 14:25-35	Rom 1:18-25	Luk 9:51-62	2 Petr 1:1-11	Söndag*
+  
+  3 e Trefaldighet	50	3 e Trefaldighet	Grön	Förlorad och återfunnen	Psalt 25	Jes 12	1 Petr 5:6-14	Luk 15:1-10	Luk 15:11-32	Rom 2:1-16	Matt 9:9-13	Ef 2:1-9	Söndag*
+  
+  4 e Trefaldighet	51	4 e Trefaldighet	Grön	Grandet och bjälken	Psalt 27	Jes 65:17-25	Rom 8:18-25	Luk 6:36-42	Joh 8:1-11	Rom 2:17-29	Matt 7:1-6	Rom 14	Söndag*
+  
+  5 e Trefaldighet	52	5 e Trefaldighet	Röd	 Apostlarnas kallelse	Psalt 112	Klag 3:22-33	1 Petr 3:8-15	Luk 5:1-11	Joh 1:35-51	Rom 3:1-20	Matt 16:13-20	Apg 26:1-29	Söndag* apostlarnadagen
+  
+  6 e Trefaldighet	53	6 e Trefaldighet	Grön	Rättfärdighetens fordran	Psalt 28	Rut 1:1-18	Rom 6:1-11	Matt 5:20-26	Matt 5:17-19	Rom 3:21-31	Matt 5:27-42	Jak 2	Söndag*
+  
+  Kristi förklarings dag	54	Kristi förklarings dag	Vit	Kristus förklarad	Psalt 21	2 Mos 3:1-10	2 Petr 1:16-18	Matt 17:1-8	Joh 13:31-32	2 Kor 12:1-13	Matt 17:9-13	Upp 1:9-20	Söndag* 7 e Trefaldighet
+    
+  8 e Trefaldighet	55	8 e Trefaldighet	Grön	Sanning och sken	Psalt 94	Jer 23:16-32	Rom 8:12-17	Matt 7:15-21	Matt 7:12-14	Rom 4:1-8	Matt 7:22-29	1 Joh 4:1-6	Söndag*
+  
+  9 e Trefaldighet	56	9 e Trefaldighet	Grön	Trohet	Psalt 54	Ords 16:1-9	1 Kor 10:6-13	Luk 16:1-9	Luk 12:42-48	Rom 4:9-25	Luk 16:10-17	2 Tess 3:6-18	Söndag*
+  
+  10 e Trefaldighet	57	10 e Trefaldighet	Grön	Förspillda tillfällen	Psalt 55	Jer 7:1-15	1 Kor 12:1-11	Luk 19:41-48	Joh 8:21-29	Rom 5:1-11	Matt 11:20-24	Hebr 3:12-19	Söndag*
+  
+  11 e Trefaldighet	58	11 e Trefaldighet	Grön	Sann och falsk rättfärdighet	Psalt 51:1-15	Dan 9:15-19	1 Kor 15:1-11	Luk 18:9-14	Matt 21:28-32	Rom 5:12-21	Matt 23:1-12	1 Joh 1:8-2:2 	Söndag*
+  
+  12 e Trefaldighet	59	12 e Trefaldighet	Grön	Tungans bruk	Psalt 51:16-21	Jes 29:17-24	2 Kor 3:4-18	Mark 7:31-37	Matt 12:33-37	Rom 6:12-23	Matt 15:29-39	1 Kor 2:6-16	Söndag*
+  
+  13 e Trefaldighet	60	13 e Trefaldighet	Grön	Den barmhärtige samariten	Psalt 74	Sak 7:4-14	Gal 3:15-22	Luk 10:23-37	Matt 5:43-6:4	Rom 7:1-6	Matt 11:25-30	1 Tim 1:1-17	Söndag*
+  
+  14 e Trefaldighet	61	14 e Trefaldighet	Grön	Trons tacksamhet	Psalt 34	Ords 4:10-27	Gal 5:16-24	Luk 17:11-19	Joh 5:1-18	Rom 7:7-25	Luk 4:23-30	2 Tim 2:14-26 21	Söndag*
+  
+  15 e Trefaldighet	62	15 e Trefaldighet	Grön	Den angelägnaste omsorgen	Psalt 86	1 Kon 17:1-16	Gal 6:1-10	Matt 6:24-34	Luk 10:38-42	Rom 8:1-17	Matt 6:19-23	2 Kor 9:1-15	Söndag*
+    
+  16 e Trefaldighet	64	16 e Trefaldighet	Grön	Uppståndelsen och livet	Psalt 91	Job 5:17-27	Efes 3:13-21	Luk 7:11-17	Joh 11:1-45	Rom 8:18-39	Joh 5:19-21	Fil 1:12-26	Söndag*
+  
+  17 e Trefaldighet	65	17 e Trefaldighet	Grön	En kristen människas frihet	Psalt 119:137-144	Ords 25:6-13	Efes 4:1-6	Luk 14:1-11	Mark 2:18-3:6	Rom 9:1-13	Mark 7:1-23	Gal 5:1-15	Söndag*
+ 
+  18 e Trefaldighet	67	18 e Trefaldighet	Grön	Trons lydnad	Psalt 96	2 Krön 1:7-12	1 Kor 1:1-9	Matt 22:34-46	Joh 10:22-39	Rom 9:14-33	Mark 10:17-27	1 Joh 2:7-17	Söndag*
+  
+  19 e Trefaldighet	68	19 e Trefaldighet	Grön	Människosonens makt	Psalt 48	1 Mos 28:10-22	Efes 4:17-32	Matt 9:1-8	Joh 9-1-41	Rom 10:1-13	Luk 13:10-17	1 Kor 2:1-5	Söndag*
+
+	20 e Trefaldighet	70	20 e Trefaldighet	Grön	Bröllopskläder	Psalt 145	Ords 2:1-11	Efes 5:15-21	Matt 22:1-14	Matt 13:44-46	Rom 10:14-21	Matt 21:33-46	 Hebr 10:19-31	Söndag 1 –7 november
+  
+  21 e Trefaldighet	71	21 e Trefaldighet	Grön	Den frälsande tron	Psalt 119:1-9	2 Sam 7:17-29	Efes 6:10-20	Joh 4:43-54	Matt 16:1-4	Rom 11:1-12	Matt 9:27-31	1 Joh 2:18-29 	Söndag*
+  
+  22 e Trefaldighet	72	22 e Trefaldighet	Grön	Konungens räkenskap	Psalt 130	Ords 24:13-20	Fil 1:1-11	Matt 18:23-35	Matt 18:15-22	Rom 11:13-24	Mark 4:21-25	1 Tess 5:14-28	Söndag*
+  
+  23 e Trefaldighet	73	23 e Trefaldighet	Grön	Det dubbla medborgarskapet	Psalt 85	2 Kon 23:1-3	Fil 3:17-4:3	Matt 22:15-22	Mark 12:41-44	Rom 11:25-36	Matt 17:24-27	Rom 13:1-7	Söndag*
+  
+  24 e Trefaldighet	74	24 e Trefaldighet	Grön	Jesus ger liv	Psalt 116	1 Kon 17:17-24	Kol 1:1-14	Matt 9:18-26	Joh 6:37-40	1 Kor 15:35-58	Luk 20:27-40	2 Kor 5:1-10	Söndag*
+  
+  25 e Trefaldighet	75	24 e Trefaldighet	Grön	Jesus ger liv			1 Tess 4:13-18	Matt 24:15-18					Söndag*
+
+
+
 // prio 2:
 // trinitatis1 
  function trinitatis1(year) {
@@ -1353,9 +1375,27 @@ function trinitatis(year) {
  }
  events.push(trinitatis25(thisYear));
 */
+function sfdomsndg(year) {
+  return {
+    'Date': firstDayAfterGivenDate(0,year,10,13),
+    'Title': 'Söndagen f domssöndagen',
+    'Color': 'Grön',
+    'Theme': 'Visa och fåvitska jungfrur',
+    'Psalms': 'Psalt 73',
+    'OldT': 'Jes 35:1-10',
+    'Letters': '2 Petr 3:1–13',
+    'Gospel': 'Matt 25:1-13',
+    'Description': 'Söndag 13-19 november',
+    'Link': '',
+    'Prio': 1,
+    'Argang': argang,
+    'HHM': argang == 2 ? 'Luk 13:22-30' : argang == 3 ? 'Matt 25:14-30' : null,
+    'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+  };
+}
 function domsndg(year) {
   return {
-    'Date': firstDayInMonth(0, 11, year).subtractDays(14),
+    'Date': firstDayAfterGivenDate(0,year,10,20),
     'Title': 'Domssöndagen',
     'Color': 'Violett',
     'Theme': 'Den Yttersta Domen',
@@ -1374,7 +1414,7 @@ function domsndg(year) {
 // från 1 advent ändras årgång varför 'year + 1'
 function fadvent(year) {
   return {
-    'Date': firstDayInMonth(0, 11, year).subtractDays(7),
+    'Date': firstDayAfterGivenDate(0,year,10,27),
     'Title': '1 advent',
     'Color': 'Vit (Violett)',
     'Theme': 'Se din konung kommer',
@@ -1605,6 +1645,7 @@ function makeKK(newYear) {
   events.push(augsburska(thisYear));
   events.push(trinitatis(thisYear));
   events.push(domsndg(thisYear));
+  events.push(sfdomsndg(thisYear));
   events.push(fadvent(thisYear));
   events.push(aadvent(thisYear));
   events.push(tadvent(thisYear));
@@ -1677,6 +1718,7 @@ events.push(michaeli(thisYear));
 events.push(allahelgon(thisYear));
 events.push(augsburska(thisYear));
 events.push(trinitatis(thisYear));
+events.push(sfdomsndg(thisYear));
 events.push(domsndg(thisYear));
 events.push(fadvent(thisYear));
 events.push(aadvent(thisYear));
