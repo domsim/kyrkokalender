@@ -769,85 +769,35 @@ function trinitatis(year) {
     'AFT': argang == 2 ? '1 Joh 3:1-12' : argang == 3 ? 'Kol 1:12-23' : null
   };
 }
-/*
-
-/*
-	1 e Trefaldighet	48	1 e Trefaldighet	Grön	Rik inför Gud	Psalt 13	5 Mos 6:4-15	1 Joh 4:16-21	Luk 16:19-31	Luk 12:13-21	Rom 1:1-15	Matt 16:24-28	1 Tim 6:6-19	Söndag*
-  
-  2 e Trefaldighet	49	2 e Trefaldighet	Grön	Den stora måltiden	Psalt 66	Ords 9:1-12	1 Joh 3:13-18	Luk 14:15-24	Luk 14:25-35	Rom 1:18-25	Luk 9:51-62	2 Petr 1:1-11	Söndag*
-  
-  3 e Trefaldighet	50	3 e Trefaldighet	Grön	Förlorad och återfunnen	Psalt 25	Jes 12	1 Petr 5:6-14	Luk 15:1-10	Luk 15:11-32	Rom 2:1-16	Matt 9:9-13	Ef 2:1-9	Söndag*
-  
-  4 e Trefaldighet	51	4 e Trefaldighet	Grön	Grandet och bjälken	Psalt 27	Jes 65:17-25	Rom 8:18-25	Luk 6:36-42	Joh 8:1-11	Rom 2:17-29	Matt 7:1-6	Rom 14	Söndag*
-  
-  5 e Trefaldighet	52	5 e Trefaldighet	Röd	 Apostlarnas kallelse	Psalt 112	Klag 3:22-33	1 Petr 3:8-15	Luk 5:1-11	Joh 1:35-51	Rom 3:1-20	Matt 16:13-20	Apg 26:1-29	Söndag* apostlarnadagen
-  
-  6 e Trefaldighet	53	6 e Trefaldighet	Grön	Rättfärdighetens fordran	Psalt 28	Rut 1:1-18	Rom 6:1-11	Matt 5:20-26	Matt 5:17-19	Rom 3:21-31	Matt 5:27-42	Jak 2	Söndag*
-  
-  Kristi förklarings dag	54	Kristi förklarings dag	Vit	Kristus förklarad	Psalt 21	2 Mos 3:1-10	2 Petr 1:16-18	Matt 17:1-8	Joh 13:31-32	2 Kor 12:1-13	Matt 17:9-13	Upp 1:9-20	Söndag* 7 e Trefaldighet
-    
-  8 e Trefaldighet	55	8 e Trefaldighet	Grön	Sanning och sken	Psalt 94	Jer 23:16-32	Rom 8:12-17	Matt 7:15-21	Matt 7:12-14	Rom 4:1-8	Matt 7:22-29	1 Joh 4:1-6	Söndag*
-  
-  9 e Trefaldighet	56	9 e Trefaldighet	Grön	Trohet	Psalt 54	Ords 16:1-9	1 Kor 10:6-13	Luk 16:1-9	Luk 12:42-48	Rom 4:9-25	Luk 16:10-17	2 Tess 3:6-18	Söndag*
-  
-  10 e Trefaldighet	57	10 e Trefaldighet	Grön	Förspillda tillfällen	Psalt 55	Jer 7:1-15	1 Kor 12:1-11	Luk 19:41-48	Joh 8:21-29	Rom 5:1-11	Matt 11:20-24	Hebr 3:12-19	Söndag*
-  
-  11 e Trefaldighet	58	11 e Trefaldighet	Grön	Sann och falsk rättfärdighet	Psalt 51:1-15	Dan 9:15-19	1 Kor 15:1-11	Luk 18:9-14	Matt 21:28-32	Rom 5:12-21	Matt 23:1-12	1 Joh 1:8-2:2 	Söndag*
-  
-  12 e Trefaldighet	59	12 e Trefaldighet	Grön	Tungans bruk	Psalt 51:16-21	Jes 29:17-24	2 Kor 3:4-18	Mark 7:31-37	Matt 12:33-37	Rom 6:12-23	Matt 15:29-39	1 Kor 2:6-16	Söndag*
-  
-  13 e Trefaldighet	60	13 e Trefaldighet	Grön	Den barmhärtige samariten	Psalt 74	Sak 7:4-14	Gal 3:15-22	Luk 10:23-37	Matt 5:43-6:4	Rom 7:1-6	Matt 11:25-30	1 Tim 1:1-17	Söndag*
-  
-  14 e Trefaldighet	61	14 e Trefaldighet	Grön	Trons tacksamhet	Psalt 34	Ords 4:10-27	Gal 5:16-24	Luk 17:11-19	Joh 5:1-18	Rom 7:7-25	Luk 4:23-30	2 Tim 2:14-26 21	Söndag*
-  
-  15 e Trefaldighet	62	15 e Trefaldighet	Grön	Den angelägnaste omsorgen	Psalt 86	1 Kon 17:1-16	Gal 6:1-10	Matt 6:24-34	Luk 10:38-42	Rom 8:1-17	Matt 6:19-23	2 Kor 9:1-15	Söndag*
-    
-  16 e Trefaldighet	64	16 e Trefaldighet	Grön	Uppståndelsen och livet	Psalt 91	Job 5:17-27	Efes 3:13-21	Luk 7:11-17	Joh 11:1-45	Rom 8:18-39	Joh 5:19-21	Fil 1:12-26	Söndag*
-  
-  17 e Trefaldighet	65	17 e Trefaldighet	Grön	En kristen människas frihet	Psalt 119:137-144	Ords 25:6-13	Efes 4:1-6	Luk 14:1-11	Mark 2:18-3:6	Rom 9:1-13	Mark 7:1-23	Gal 5:1-15	Söndag*
+/* 
  
-  18 e Trefaldighet	67	18 e Trefaldighet	Grön	Trons lydnad	Psalt 96	2 Krön 1:7-12	1 Kor 1:1-9	Matt 22:34-46	Joh 10:22-39	Rom 9:14-33	Mark 10:17-27	1 Joh 2:7-17	Söndag*
-  
-  19 e Trefaldighet	68	19 e Trefaldighet	Grön	Människosonens makt	Psalt 48	1 Mos 28:10-22	Efes 4:17-32	Matt 9:1-8	Joh 9-1-41	Rom 10:1-13	Luk 13:10-17	1 Kor 2:1-5	Söndag*
-
-	20 e Trefaldighet	70	20 e Trefaldighet	Grön	Bröllopskläder	Psalt 145	Ords 2:1-11	Efes 5:15-21	Matt 22:1-14	Matt 13:44-46	Rom 10:14-21	Matt 21:33-46	 Hebr 10:19-31	Söndag 1 –7 november
-  
-  21 e Trefaldighet	71	21 e Trefaldighet	Grön	Den frälsande tron	Psalt 119:1-9	2 Sam 7:17-29	Efes 6:10-20	Joh 4:43-54	Matt 16:1-4	Rom 11:1-12	Matt 9:27-31	1 Joh 2:18-29 	Söndag*
-  
-  22 e Trefaldighet	72	22 e Trefaldighet	Grön	Konungens räkenskap	Psalt 130	Ords 24:13-20	Fil 1:1-11	Matt 18:23-35	Matt 18:15-22	Rom 11:13-24	Mark 4:21-25	1 Tess 5:14-28	Söndag*
-  
-  23 e Trefaldighet	73	23 e Trefaldighet	Grön	Det dubbla medborgarskapet	Psalt 85	2 Kon 23:1-3	Fil 3:17-4:3	Matt 22:15-22	Mark 12:41-44	Rom 11:25-36	Matt 17:24-27	Rom 13:1-7	Söndag*
-  
-  24 e Trefaldighet	74	24 e Trefaldighet	Grön	Jesus ger liv	Psalt 116	1 Kon 17:17-24	Kol 1:1-14	Matt 9:18-26	Joh 6:37-40	1 Kor 15:35-58	Luk 20:27-40	2 Kor 5:1-10	Söndag*
-  
-  25 e Trefaldighet	75	24 e Trefaldighet	Grön	Jesus ger liv			1 Tess 4:13-18	Matt 24:15-18					Söndag*
-
-
-
 // prio 2:
 // trinitatis1 
- function trinitatis1(year) {
+*/
+function trinitatis1(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*1),
-   'Title': '',
-   'Color': '',
-   'Theme':'',
-   'Psalms': '',
-   'OldT': '',
-   'Letters': '',
-   'Gospel': '',
-   'Description' : '',
+   'Title': '1 e Trefaldighet',
+   'Color': 'Grön',
+   'Theme':'Rik inför Gud',
+   'Psalms': 'Psalt 13',
+   'OldT': '5 Mos 6:4-15',
+   'Letters': '1 Joh 4:16-21',
+   'Gospel': 'Luk 16:19-31',
+   'Description' : 'första söndag* efter trinitatis',
    'Link': '',
    'Prio': 2,
    'Argang' : argang,
-   'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
-   'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+   'HHM': argang == 2 ? 'Luk 12:13-21' : argang == 3 ? 'Matt 16:24-28': null,
+   'AFT': argang == 2 ? 'Rom 1:1-15' : argang == 3 ? '1 Tim 6:6-19': null
 
    };
  }
- events.push(trinitatis1(thisYear));
+ 
 
+/*
 // trinitatis2 
+2 e Trefaldighet	49	2 e Trefaldighet	Grön	Den stora måltiden	Psalt 66	Ords 9:1-12	1 Joh 3:13-18	Luk 14:15-24	Luk 14:25-35	Rom 1:18-25	Luk 9:51-62	2 Petr 1:1-11	Söndag*
  function trinitatis2(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*2),
@@ -870,6 +820,7 @@ function trinitatis(year) {
  events.push(trinitatis2(thisYear));
 
 // trinitatis3 
+ 3 e Trefaldighet	50	3 e Trefaldighet	Grön	Förlorad och återfunnen	Psalt 25	Jes 12	1 Petr 5:6-14	Luk 15:1-10	Luk 15:11-32	Rom 2:1-16	Matt 9:9-13	Ef 2:1-9	Söndag*
  function trinitatis3(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*3),
@@ -892,6 +843,7 @@ function trinitatis(year) {
  events.push(trinitatis3(thisYear));
 
 // trinitatis4 
+4 e Trefaldighet	51	4 e Trefaldighet	Grön	Grandet och bjälken	Psalt 27	Jes 65:17-25	Rom 8:18-25	Luk 6:36-42	Joh 8:1-11	Rom 2:17-29	Matt 7:1-6	Rom 14	Söndag*
  function trinitatis4(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*4),
@@ -914,6 +866,7 @@ function trinitatis(year) {
  events.push(trinitatis4(thisYear));
 
 // trinitatis5 
+  5 e Trefaldighet	52	5 e Trefaldighet	Röd	 Apostlarnas kallelse	Psalt 112	Klag 3:22-33	1 Petr 3:8-15	Luk 5:1-11	Joh 1:35-51	Rom 3:1-20	Matt 16:13-20	Apg 26:1-29	Söndag* apostlarnadagen
  function trinitatis5(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*5),
@@ -936,6 +889,7 @@ function trinitatis(year) {
  events.push(trinitatis5(thisYear));
 
 // trinitatis6 
+6 e Trefaldighet	53	6 e Trefaldighet	Grön	Rättfärdighetens fordran	Psalt 28	Rut 1:1-18	Rom 6:1-11	Matt 5:20-26	Matt 5:17-19	Rom 3:21-31	Matt 5:27-42	Jak 2	Söndag*
  function trinitatis6(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*6),
@@ -958,6 +912,7 @@ function trinitatis(year) {
  events.push(trinitatis6(thisYear));
 
 // trinitatis7 
+  Kristi förklarings dag	54	Kristi förklarings dag	Vit	Kristus förklarad	Psalt 21	2 Mos 3:1-10	2 Petr 1:16-18	Matt 17:1-8	Joh 13:31-32	2 Kor 12:1-13	Matt 17:9-13	Upp 1:9-20	Söndag* 7 e Trefaldighet
  function trinitatis7(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*7),
@@ -980,6 +935,7 @@ function trinitatis(year) {
  events.push(trinitatis7(thisYear));
 
 //  trinitatis8
+ 8 e Trefaldighet	55	8 e Trefaldighet	Grön	Sanning och sken	Psalt 94	Jer 23:16-32	Rom 8:12-17	Matt 7:15-21	Matt 7:12-14	Rom 4:1-8	Matt 7:22-29	1 Joh 4:1-6	Söndag*
  function trinitatis8(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*8),
@@ -1002,6 +958,7 @@ function trinitatis(year) {
  events.push(trinitatis8(thisYear));
 
 // trinitatis9 
+9 e Trefaldighet	56	9 e Trefaldighet	Grön	Trohet	Psalt 54	Ords 16:1-9	1 Kor 10:6-13	Luk 16:1-9	Luk 12:42-48	Rom 4:9-25	Luk 16:10-17	2 Tess 3:6-18	Söndag*
  function trinitatis9(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*9),
@@ -1024,6 +981,7 @@ function trinitatis(year) {
  events.push(trinitatis9(thisYear));
 
 // trinitatis10 
+  10 e Trefaldighet	57	10 e Trefaldighet	Grön	Förspillda tillfällen	Psalt 55	Jer 7:1-15	1 Kor 12:1-11	Luk 19:41-48	Joh 8:21-29	Rom 5:1-11	Matt 11:20-24	Hebr 3:12-19	Söndag*
  function trinitatis10(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*10),
@@ -1046,6 +1004,7 @@ function trinitatis(year) {
  events.push(trinitatis10(thisYear));
 
 // trinitatis11
+11 e Trefaldighet	58	11 e Trefaldighet	Grön	Sann och falsk rättfärdighet	Psalt 51:1-15	Dan 9:15-19	1 Kor 15:1-11	Luk 18:9-14	Matt 21:28-32	Rom 5:12-21	Matt 23:1-12	1 Joh 1:8-2:2 	Söndag*
  function trinitatis11(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*11),
@@ -1068,6 +1027,7 @@ function trinitatis(year) {
  events.push(trinitatis11(thisYear));
 
 // trinitatis12 
+  12 e Trefaldighet	59	12 e Trefaldighet	Grön	Tungans bruk	Psalt 51:16-21	Jes 29:17-24	2 Kor 3:4-18	Mark 7:31-37	Matt 12:33-37	Rom 6:12-23	Matt 15:29-39	1 Kor 2:6-16	Söndag*
  function trinitatis12(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*12),
@@ -1090,6 +1050,7 @@ function trinitatis(year) {
  events.push(trinitatis12(thisYear));
 
 // trinitatis13
+ 13 e Trefaldighet	60	13 e Trefaldighet	Grön	Den barmhärtige samariten	Psalt 74	Sak 7:4-14	Gal 3:15-22	Luk 10:23-37	Matt 5:43-6:4	Rom 7:1-6	Matt 11:25-30	1 Tim 1:1-17	Söndag*
  function trinitatis13(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*13),
@@ -1111,7 +1072,8 @@ function trinitatis(year) {
  }
  events.push(trinitatis13(thisYear));
 
-// trinitatis14 
+// trinitatis14
+  14 e Trefaldighet	61	14 e Trefaldighet	Grön	Trons tacksamhet	Psalt 34	Ords 4:10-27	Gal 5:16-24	Luk 17:11-19	Joh 5:1-18	Rom 7:7-25	Luk 4:23-30	2 Tim 2:14-26 21	Söndag*
  function trinitatis14(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*14),
@@ -1134,6 +1096,7 @@ function trinitatis(year) {
  events.push(trinitatis14(thisYear));
 
 // trinitatis15 
+  15 e Trefaldighet	62	15 e Trefaldighet	Grön	Den angelägnaste omsorgen	Psalt 86	1 Kon 17:1-16	Gal 6:1-10	Matt 6:24-34	Luk 10:38-42	Rom 8:1-17	Matt 6:19-23	2 Kor 9:1-15	Söndag*
  function trinitatis15(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*15),
@@ -1156,6 +1119,7 @@ function trinitatis(year) {
  events.push(trinitatis15(thisYear));
 
 // trinitatis16
+ 16 e Trefaldighet	64	16 e Trefaldighet	Grön	Uppståndelsen och livet	Psalt 91	Job 5:17-27	Efes 3:13-21	Luk 7:11-17	Joh 11:1-45	Rom 8:18-39	Joh 5:19-21	Fil 1:12-26	Söndag*
  function trinitatis16(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*16),
@@ -1178,6 +1142,7 @@ function trinitatis(year) {
  events.push(trinitatis16(thisYear));
 
 // trinitatis17 
+  17 e Trefaldighet	65	17 e Trefaldighet	Grön	En kristen människas frihet	Psalt 119:137-144	Ords 25:6-13	Efes 4:1-6	Luk 14:1-11	Mark 2:18-3:6	Rom 9:1-13	Mark 7:1-23	Gal 5:1-15	Söndag*
  function trinitatis17(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*17),
@@ -1200,6 +1165,7 @@ function trinitatis(year) {
  events.push(trinitatis17(thisYear));
 
 // trinitatis18 
+18 e Trefaldighet	67	18 e Trefaldighet	Grön	Trons lydnad	Psalt 96	2 Krön 1:7-12	1 Kor 1:1-9	Matt 22:34-46	Joh 10:22-39	Rom 9:14-33	Mark 10:17-27	1 Joh 2:7-17	Söndag*
  function trinitatis18(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*18),
@@ -1222,6 +1188,7 @@ function trinitatis(year) {
  events.push(trinitatis18(thisYear));
 
 // trinitatis19 
+  19 e Trefaldighet	68	19 e Trefaldighet	Grön	Människosonens makt	Psalt 48	1 Mos 28:10-22	Efes 4:17-32	Matt 9:1-8	Joh 9-1-41	Rom 10:1-13	Luk 13:10-17	1 Kor 2:1-5	Söndag*
  function trinitatis19(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*19),
@@ -1244,6 +1211,7 @@ function trinitatis(year) {
  events.push(trinitatis19(thisYear));
 
 // trinitatis20 
+	20 e Trefaldighet	70	20 e Trefaldighet	Grön	Bröllopskläder	Psalt 145	Ords 2:1-11	Efes 5:15-21	Matt 22:1-14	Matt 13:44-46	Rom 10:14-21	Matt 21:33-46	 Hebr 10:19-31	Söndag 1 –7 november
  function trinitatis20(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*20),
@@ -1266,6 +1234,8 @@ function trinitatis(year) {
  events.push(trinitatis20(thisYear));
 
 // trinitatis21 
+21 e Trefaldighet	71	21 e Trefaldighet	Grön	Den frälsande tron	Psalt 119:1-9	2 Sam 7:17-29	Efes 6:10-20	Joh 4:43-54	Matt 16:1-4	Rom 11:1-12	Matt 9:27-31	1 Joh 2:18-29 	Söndag*
+
  function trinitatis21(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*21),
@@ -1288,6 +1258,9 @@ function trinitatis(year) {
  events.push(trinitatis21(thisYear));
 
 // trinitatis22 trinitatis(year).Date.addDays(7*22)
+ 
+  22 e Trefaldighet	72	22 e Trefaldighet	Grön	Konungens räkenskap	Psalt 130	Ords 24:13-20	Fil 1:1-11	Matt 18:23-35	Matt 18:15-22	Rom 11:13-24	Mark 4:21-25	1 Tess 5:14-28	Söndag*
+
  function trinitatis22(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*22),
@@ -1310,6 +1283,9 @@ function trinitatis(year) {
  events.push(trinitatis22(thisYear));
 
 // trinitatis23 
+ 
+  23 e Trefaldighet	73	23 e Trefaldighet	Grön	Det dubbla medborgarskapet	Psalt 85	2 Kon 23:1-3	Fil 3:17-4:3	Matt 22:15-22	Mark 12:41-44	Rom 11:25-36	Matt 17:24-27	Rom 13:1-7	Söndag*
+    
  function trinitatis23(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*23),
@@ -1332,6 +1308,8 @@ function trinitatis(year) {
  events.push(trinitatis23(thisYear));
 
 // trinitatis24 
+24 e Trefaldighet	74	24 e Trefaldighet	Grön	Jesus ger liv	Psalt 116	1 Kon 17:17-24	Kol 1:1-14	Matt 9:18-26	Joh 6:37-40	1 Kor 15:35-58	Luk 20:27-40	2 Kor 5:1-10	Söndag*
+  
  function trinitatis24(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*24),
@@ -1352,19 +1330,20 @@ function trinitatis(year) {
    };
  }
  events.push(trinitatis24(thisYear));
-
+*/
 // trinitatis25 
+ //25 e Trefaldighet	75	24 e Trefaldighet	Grön										
  function trinitatis25(year) {
    return {
    'Date': trinitatis(year).Date.addDays(7*25),
-   'Title': '',
-   'Color': '',
-   'Theme':'',
+   'Title': '25 e Trefaldighet',
+   'Color': 'Grön',
+   'Theme':'Jesus ger liv',
    'Psalms': '',
    'OldT': '',
-   'Letters': '',
-   'Gospel': '',
-   'Description' : '',
+   'Letters': '1 Tess 4:13-18',
+   'Gospel': 'Matt 24:15-18',
+   'Description' : 'Söndag*',
    'Link': '',
    'Prio': 2,
    'Argang' : argang,
@@ -1373,8 +1352,8 @@ function trinitatis(year) {
 
    };
  }
- events.push(trinitatis25(thisYear));
-*/
+ 
+
 function sfdomsndg(year) {
   return {
     'Date': firstDayAfterGivenDate(0,year,10,13),
@@ -1644,6 +1623,8 @@ function makeKK(newYear) {
   events.push(allahelgon(thisYear));
   events.push(augsburska(thisYear));
   events.push(trinitatis(thisYear));
+  events.push(trinitatis1(thisYear));
+  events.push(trinitatis25(thisYear));
   events.push(domsndg(thisYear));
   events.push(sfdomsndg(thisYear));
   events.push(fadvent(thisYear));
@@ -1718,6 +1699,8 @@ events.push(michaeli(thisYear));
 events.push(allahelgon(thisYear));
 events.push(augsburska(thisYear));
 events.push(trinitatis(thisYear));
+events.push(trinitatis1(thisYear));
+events.push(trinitatis25(thisYear));
 events.push(sfdomsndg(thisYear));
 events.push(domsndg(thisYear));
 events.push(fadvent(thisYear));
