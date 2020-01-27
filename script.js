@@ -1609,6 +1609,47 @@ function fjeepifania(year) {
 
 }
 
+function mariakyrkogang(year) {
+  let fs = firstDayAfterGivenDate(0, year, 1, 2);
+  if (fs.getDate() > 1 && fs.getDate() < 9){
+
+    return {
+      'Date': fs,
+      'Title': 'Jungfru Marie Kyrkogångs dag eller Kyndelsmässodagen',
+      'Color': 'Vit',
+      'Theme': 'Jesus frambäres i templet',
+      'Psalms': 'Psalt 84',
+      'OldT': 'Mal 3:1-4',
+      'Letters': '',
+      'Gospel': 'Luk 2:22-32',
+      'Description': 'Söndag 2-8 februari eller söndag före Fastlagssöndag och då tidigast 26 januar',
+      'Link': '',
+      'Prio': 1,
+      'Argang': argang,
+      'HHM': argang == 2 ? 'Joh 1:15-18' : argang == 3 ? 'Matt 13:31-33' : null,
+      'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+    };
+  } else {
+    return {
+      'Date': quinquagesima(year).subtractDays(7),
+      'Title': 'Jungfru Marie Kyrkogångs dag eller Kyndelsmässodagen',
+      'Color': 'Vit',
+      'Theme': 'Jesus frambäres i templet',
+      'Psalms': 'Psalt 84',
+      'OldT': 'Mal 3:1-4',
+      'Letters': '',
+      'Gospel': 'Luk 2:22-32',
+      'Description': 'Söndag 2-8 februari eller söndag före Fastlagssöndag och då tidigast 26 januar',
+      'Link': '',
+      'Prio': 1,
+      'Argang': argang,
+      'HHM': argang == 2 ? 'Joh 1:15-18' : argang == 3 ? 'Matt 13:31-33' : null,
+      'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+    };
+  }
+
+}
+
 function femepifania(year) {
   return {
     'Date': fjeepifania(year).Date.addDays(7),
@@ -1621,7 +1662,7 @@ function femepifania(year) {
     'Gospel': 'Matt 13:24-30',
     'Description': 'Söndag*',
     'Link': '',
-    'Prio': 2,
+    'Prio': 3,
     'Argang': argang,
     'HHM': argang == 2 ? '' : argang == 3 ? '' : null,
     'AFT': argang == 2 ? '1 Kor 1:9-18' : argang == 3 ? 'Ef 4:14-16' : null
@@ -1634,6 +1675,12 @@ function makeKK(newYear) {
   thisYear = parseInt(newYear);
   events.push(nyarsdagen(thisYear));
   events.push(epifania(thisYear));
+  events.push(feepifania(thisYear));
+  events.push(aeepifania(thisYear));
+  events.push(teepifania(thisYear));
+  events.push(fjeepifania(thisYear));
+  events.push(mariakyrkogang(thisYear));
+  events.push(femepifania(thisYear));
   events.push(pauliomvandelse(thisYear));
   events.push(juldagen(thisYear));
   events.push(annandagjul(thisYear));
@@ -1703,11 +1750,7 @@ function makeKK(newYear) {
   if (typeof ioannesbaptista(thisYear) == "undefined") {} else {
     events.push(ioannesbaptista(thisYear));
   }
-  events.push(feepifania(thisYear));
-  events.push(aeepifania(thisYear));
-  events.push(teepifania(thisYear));
-  events.push(fjeepifania(thisYear));
-  events.push(femepifania(thisYear));
+
   // lägg till time egensapen till alla högtiderna
   events = events.map(function (obj) {
     if (typeof obj.Date !== "undefined") {
@@ -1734,6 +1777,12 @@ function makeKK(newYear) {
 }
 events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
+events.push(feepifania(thisYear));
+events.push(aeepifania(thisYear));
+events.push(teepifania(thisYear));
+events.push(fjeepifania(thisYear));
+events.push(mariakyrkogang(thisYear));
+events.push(femepifania(thisYear));
 events.push(pauliomvandelse(thisYear));
 events.push(juldagen(thisYear));
 events.push(annandagjul(thisYear));
@@ -1803,25 +1852,29 @@ if (typeof sndgenyar(thisYear) == "undefined") {} else {
 if (typeof ioannesbaptista(thisYear) == "undefined") {} else {
   events.push(ioannesbaptista(thisYear));
 }
-events.push(feepifania(thisYear));
-events.push(aeepifania(thisYear));
-events.push(teepifania(thisYear));
-events.push(fjeepifania(thisYear));
-events.push(femepifania(thisYear));
+
 // lägger till en ny fält i varje högtidsobjekt med unixtime baserad på den bäreknade på dess Date fält
 console.log(events);
+
+events = events.map(function (obj) {
+  if (typeof obj.Date !== "undefined") {
+    obj.Week = getWeekNumber(obj.Date)[1];
+    return obj;
+  }
+});
+
+events = events.sortBy(function (o) {
+  return [o.Date, o.Prio]
+});
+
+
+
 events = events.map(function (obj) {
   if (typeof obj.Date !== "undefined") {
     obj.time = obj.Date.getTime();
     return obj;
   }
 
-});
-events = events.map(function (obj) {
-  if (typeof obj.Date !== "undefined") {
-    obj.Week = getWeekNumber(obj.Date)[1];
-    return obj;
-  }
 });
 // funktion som ta bort objekt som har samma egenskap (property)
 
