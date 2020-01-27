@@ -100,6 +100,22 @@ function getWeekNumber(d) {
   // Return array of year and week number
   return [d.getUTCFullYear(), weekNo];
 }
+
+function removeDuplicates(originalArray, prop) {
+  var newArray = [];
+  var lookupObject = {};
+
+  for (var i in originalArray) {
+    lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
+
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
+  return newArray;
+}
+
+
 let choosenYear = prompt('Vill du byta år?', new Date().getFullYear());
 let thisYear = new Date().getFullYear() !== choosenYear ? choosenYear : new Date().getFullYear();
 // fix year as number!
@@ -1677,18 +1693,27 @@ function makeKK(newYear) {
   events.push(epifania(thisYear));
   events.push(feepifania(thisYear));
   events.push(aeepifania(thisYear));
-  events.push(teepifania(thisYear));
-  events.push(fjeepifania(thisYear));
   events.push(mariakyrkogang(thisYear));
-  events.push(femepifania(thisYear));
+  events.push(teepifania(thisYear));
+  if (mariakyrkogang(thisYear).Date.getTime() !== fjeepifania(thisYear).Date.getTime()){
+  events.push(fjeepifania(thisYear));
+  }
+  if (mariakyrkogang(thisYear).Date.getTime() !== femepifania(thisYear).Date.getTime()){
+    events.push(femepifania(thisYear));
+  }
   events.push(pauliomvandelse(thisYear));
-  events.push(juldagen(thisYear));
-  events.push(annandagjul(thisYear));
-  events.push(johannes(thisYear));
-  events.push(menlosabarn(thisYear));
   events.push(getEaster(thisYear));
-  events.push(septuagesima(thisYear));
+  if (mariakyrkogang(thisYear).Date.getTime() !== septuagesima(thisYear).Date.getTime()){
+      events.push(septuagesima(thisYear));
+  }
+  if (mariakyrkogang(thisYear).Date.getTime() !== sexagesima(thisYear).Date.getTime()){
   events.push(sexagesima(thisYear));
+  }
+  
+  
+ 
+  events.push(getEaster(thisYear));
+
   events.push(quinquagesima(thisYear));
   events.push(askonsdagen(thisYear));
   events.push(invocavit(thisYear));
@@ -1744,6 +1769,10 @@ function makeKK(newYear) {
   events.push(aadvent(thisYear));
   events.push(tadvent(thisYear));
   events.push(fjadvent(thisYear));
+  events.push(juldagen(thisYear));
+  events.push(annandagjul(thisYear));
+  events.push(johannes(thisYear));
+  events.push(menlosabarn(thisYear));
   if (typeof sndgenyar(thisYear) == "undefined") {} else {
     events.push(sndgenyar(thisYear));
   }
@@ -1779,18 +1808,22 @@ events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
 events.push(feepifania(thisYear));
 events.push(aeepifania(thisYear));
-events.push(teepifania(thisYear));
-events.push(fjeepifania(thisYear));
 events.push(mariakyrkogang(thisYear));
-events.push(femepifania(thisYear));
+events.push(teepifania(thisYear));
+if (mariakyrkogang(thisYear).Date.getTime() !== fjeepifania(thisYear).Date.getTime()){
+  events.push(fjeepifania(thisYear));
+  }
+if (mariakyrkogang(thisYear).Date.getTime() !== femepifania(thisYear).Date.getTime()){
+  events.push(femepifania(thisYear));
+}
 events.push(pauliomvandelse(thisYear));
-events.push(juldagen(thisYear));
-events.push(annandagjul(thisYear));
-events.push(johannes(thisYear));
-events.push(menlosabarn(thisYear));
 events.push(getEaster(thisYear));
-events.push(septuagesima(thisYear));
+if (mariakyrkogang(thisYear).Date.getTime() !== septuagesima(thisYear).Date.getTime()){
+    events.push(septuagesima(thisYear));
+}
+if (mariakyrkogang(thisYear).Date.getTime() !== sexagesima(thisYear).Date.getTime()){
 events.push(sexagesima(thisYear));
+}
 events.push(quinquagesima(thisYear));
 events.push(askonsdagen(thisYear));
 events.push(invocavit(thisYear));
@@ -1846,6 +1879,10 @@ events.push(fadvent(thisYear));
 events.push(aadvent(thisYear));
 events.push(tadvent(thisYear));
 events.push(fjadvent(thisYear));
+events.push(juldagen(thisYear));
+events.push(annandagjul(thisYear));
+events.push(johannes(thisYear));
+events.push(menlosabarn(thisYear));
 if (typeof sndgenyar(thisYear) == "undefined") {} else {
   events.push(sndgenyar(thisYear));
 }
@@ -1863,12 +1900,6 @@ events = events.map(function (obj) {
   }
 });
 
-events = events.sortBy(function (o) {
-  return [o.Date, o.Prio]
-});
-
-
-
 events = events.map(function (obj) {
   if (typeof obj.Date !== "undefined") {
     obj.time = obj.Date.getTime();
@@ -1876,25 +1907,18 @@ events = events.map(function (obj) {
   }
 
 });
+sortedEvents = events.sortBy(function (o) {
+  return [ o.Date]
+});
+
+
 // funktion som ta bort objekt som har samma egenskap (property)
 
-function removeDuplicates(originalArray, prop) {
-  var newArray = [];
-  var lookupObject = {};
 
-  for (var i in originalArray) {
-    lookupObject[originalArray[i][prop]] = originalArray[i];
-  }
-
-  for (i in lookupObject) {
-    newArray.push(lookupObject[i]);
-  }
-  return newArray;
-}
 
 // skapar ett ny array med unika objekt efter unixtime-egenskap (fält time)
 
-let uniqueEvents = removeDuplicates(events, 'time');
+let uniqueEvents = removeDuplicates(sortedEvents, 'time');
 
 // kollar hur många objekts som har tagits bort
 console.log(events.length - uniqueEvents.length);
