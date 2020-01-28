@@ -435,8 +435,12 @@ function oculi(year) {
 }
 
 function mariabeb(year) {
+  let mb = firstDayAfterGivenDate(0, year, 2, 22);
+  if (mb.getTime() === getEaster(year).Date.subtractDays(7).getTime()){
+    mb = mb.subtractDays(7); 
+  }
   return {
-    'Date': firstDayInMonth(0, 3, year).subtractDays(14),
+    'Date': mb,
     'Title': 'Jungfru Marie bebådelsedag',
     'Color': 'Vit',
     'Theme': 'Bebådelsen',
@@ -547,9 +551,6 @@ function annandagpask(year) {
     'AFT': argang == 2 ? '2 Kor 5:11-21' : argang == 3 ? '1 Joh 4:7-15' : null
   };
 }
-
-
-
 
 function fepask(year) {
   return {
@@ -1502,6 +1503,30 @@ function fjadvent(year) {
     'AFT': argng(year + 1) == 2 ? 'Upp 3:14-22' : argng(year + 1) == 3 ? '1 Petr 1:18-12' : null
   };
 }
+
+function sondagejul(year) {
+  let sej = firstDayAfterGivenDate(0,year,11,27);
+  if (sej.getDate() > 26 || sej.getDate() <= 31 ) {
+    return {
+      'Date': sej,
+      'Title': 'Söndagen e jul',
+      'Color': 'Vit',
+      'Theme': 'Simeon och Hanna',
+      'Psalms': 'Psalt 71:17-24',
+      'OldT': 'Jes 73:7-16',
+      'Letters': 'Gal 4:1-7',
+      'Gospel': 'Luk 2:33-40',
+      'Description': '	Söndag 27 - 31 december',
+      'Link': '',
+      'Prio': 1,
+      'Argang': argng(year+1),
+      'HHM': argng(year+1) == 2 ? 'Luk 12:32' : argng(year+1) == 3 ? 'Matt 2:19-23' : null,
+      'AFT': argng(year+1) == 2 ? '1 Joh 5:19-21' : argng(year+1) == 3 ? '1 Petr 2:1-10' : null
+    };
+  }
+  
+}
+
 function ioannesbaptista(year) {
 
   let fs = firstDayAfterGivenDate(6, year, 5, 20);
@@ -1710,20 +1735,29 @@ function makeKK(newYear) {
   events.push(sexagesima(thisYear));
   }
   
-  
  
   events.push(getEaster(thisYear));
 
   events.push(quinquagesima(thisYear));
   events.push(askonsdagen(thisYear));
-  events.push(invocavit(thisYear));
   events.push(mariabeb(thisYear));
-  events.push(laetare(thisYear));
-  events.push(judica(thisYear));
+  if(mariabeb(thisYear).Date.getTime() !== invocavit(thisYear).Date.getTime()){
+    events.push(invocavit(thisYear));
+  }
+  if(mariabeb(thisYear).Date.getTime() !== laetare(thisYear).Date.getTime()){
+    events.push(laetare(thisYear));
+  }
+  if(mariabeb(thisYear).Date.getTime() !== judica(thisYear).Date.getTime()){
+    events.push(judica(thisYear));
+  }
   events.push(palmsndg(thisYear));
   events.push(skrtorsd(thisYear));
-  events.push(reminiscere(thisYear));
-  events.push(oculi(thisYear));
+  if(mariabeb(thisYear).Date.getTime() !== reminiscere(thisYear).Date.getTime()){
+    events.push(reminiscere(thisYear));
+  }
+  if(mariabeb(thisYear).Date.getTime() !== oculi(thisYear).Date.getTime()){
+    events.push(oculi(thisYear));
+  }
   events.push(annandagpask(thisYear));
   events.push(fepask(thisYear));
   events.push(aepask(thisYear));
@@ -1738,12 +1772,24 @@ function makeKK(newYear) {
   events.push(allahelgon(thisYear));
   events.push(augsburska(thisYear));
   events.push(trinitatis(thisYear));
+  if (augsburska(thisYear).Date.getTime() !== trinitatis1(thisYear).Date.getTime()){
   events.push(trinitatis1(thisYear));
-  events.push(trinitatis2(thisYear));
-  events.push(trinitatis3(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis2(thisYear).Date.getTime()){
+    events.push(trinitatis2(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis3(thisYear).Date.getTime()){
+    events.push(trinitatis3(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis4(thisYear).Date.getTime()){
   events.push(trinitatis4(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis5(thisYear).Date.getTime()){
   events.push(trinitatis5(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis6(thisYear).Date.getTime()){
   events.push(trinitatis6(thisYear));
+  }
   events.push(trinitatis7(thisYear));
   events.push(trinitatis8(thisYear));
   events.push(trinitatis9(thisYear));
@@ -1772,6 +1818,7 @@ function makeKK(newYear) {
   events.push(juldagen(thisYear));
   events.push(annandagjul(thisYear));
   events.push(johannes(thisYear));
+  events.push(sondagejul(thisYear));
   events.push(menlosabarn(thisYear));
   if (typeof sndgenyar(thisYear) == "undefined") {} else {
     events.push(sndgenyar(thisYear));
@@ -1826,14 +1873,24 @@ events.push(sexagesima(thisYear));
 }
 events.push(quinquagesima(thisYear));
 events.push(askonsdagen(thisYear));
-events.push(invocavit(thisYear));
 events.push(mariabeb(thisYear));
-events.push(laetare(thisYear));
-events.push(judica(thisYear));
+if(mariabeb(thisYear).Date.getTime() !== invocavit(thisYear).Date.getTime()){
+  events.push(invocavit(thisYear));
+}
+if(mariabeb(thisYear).Date.getTime() !== laetare(thisYear).Date.getTime()){
+  events.push(laetare(thisYear));
+}
+if(mariabeb(thisYear).Date.getTime() !== judica(thisYear).Date.getTime()){
+  events.push(judica(thisYear));
+}
 events.push(palmsndg(thisYear));
 events.push(skrtorsd(thisYear));
-events.push(reminiscere(thisYear));
-events.push(oculi(thisYear));
+if(mariabeb(thisYear).Date.getTime() !== reminiscere(thisYear).Date.getTime()){
+  events.push(reminiscere(thisYear));
+}
+if(mariabeb(thisYear).Date.getTime() !== oculi(thisYear).Date.getTime()){
+  events.push(oculi(thisYear));
+}
 events.push(annandagpask(thisYear));
 events.push(fepask(thisYear));
 events.push(aepask(thisYear));
@@ -1848,12 +1905,24 @@ events.push(michaeli(thisYear));
 events.push(allahelgon(thisYear));
 events.push(augsburska(thisYear));
 events.push(trinitatis(thisYear));
-events.push(trinitatis1(thisYear));
-events.push(trinitatis2(thisYear));
-events.push(trinitatis3(thisYear));
-events.push(trinitatis4(thisYear));
-events.push(trinitatis5(thisYear));
-events.push(trinitatis6(thisYear));
+if (augsburska(thisYear).Date.getTime() !== trinitatis1(thisYear).Date.getTime()){
+  events.push(trinitatis1(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis2(thisYear).Date.getTime()){
+    events.push(trinitatis2(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis3(thisYear).Date.getTime()){
+    events.push(trinitatis3(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis4(thisYear).Date.getTime()){
+  events.push(trinitatis4(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis5(thisYear).Date.getTime()){
+  events.push(trinitatis5(thisYear));
+  }
+  if (augsburska(thisYear).Date.getTime() !== trinitatis6(thisYear).Date.getTime()){
+  events.push(trinitatis6(thisYear));
+  }
 events.push(trinitatis7(thisYear));
 events.push(trinitatis8(thisYear));
 events.push(trinitatis9(thisYear));
@@ -1881,6 +1950,7 @@ events.push(tadvent(thisYear));
 events.push(fjadvent(thisYear));
 events.push(juldagen(thisYear));
 events.push(annandagjul(thisYear));
+events.push(sondagejul(thisYear));
 events.push(johannes(thisYear));
 events.push(menlosabarn(thisYear));
 if (typeof sndgenyar(thisYear) == "undefined") {} else {
