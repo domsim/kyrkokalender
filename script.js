@@ -1691,7 +1691,7 @@ function mariakyrkogang(year) {
 
 }
 
-function femepifania(year) {
+function femeepifania(year) {
   return {
     'Date': fjeepifania(year).Date.addDays(7),
     'Title': '5 e Epifania',
@@ -1710,6 +1710,27 @@ function femepifania(year) {
   };
 
 }
+ 
+function sjeepifania(year) {
+  return {
+    'Date': femeepifania(year).Date.addDays(7),
+    'Title': '6 e Epifania',
+    'Color': 'Grön',
+    'Theme': '',
+    'Psalms': '',
+    'OldT': '',
+    'Letters': 'Fil 1:3-11',
+    'Gospel': 'Joh 5:17',
+    'Description': 'Söndag* 11 - 17 februari',
+    'Link': '',
+    'Prio': 3,
+    'Argang': argang,
+    'HHM': argang == 2 ? '' : argang == 3 ? '' : null,
+    'AFT': argang == 2 ? ' ' : argang == 3 ? '' : null
+  };
+}
+
+
 // lägger till de beräknade högtiderna i events vid angivet år
 
 function makeKK(newYear) {
@@ -1721,42 +1742,44 @@ function makeKK(newYear) {
   events.push(mariakyrkogang(thisYear));
   events.push(teepifania(thisYear));
   if (mariakyrkogang(thisYear).Date.getTime() !== fjeepifania(thisYear).Date.getTime()){
-  events.push(fjeepifania(thisYear));
+      events.push(fjeepifania(thisYear));
   }
-  if (mariakyrkogang(thisYear).Date.getTime() !== femepifania(thisYear).Date.getTime()){
-    events.push(femepifania(thisYear));
+  if (mariakyrkogang(thisYear).Date.getTime() !== femeepifania(thisYear).Date.getTime()){
+      events.push(femeepifania(thisYear));
   }
   events.push(pauliomvandelse(thisYear));
-  events.push(getEaster(thisYear));
+  
   if (mariakyrkogang(thisYear).Date.getTime() !== septuagesima(thisYear).Date.getTime()){
       events.push(septuagesima(thisYear));
   }
   if (mariakyrkogang(thisYear).Date.getTime() !== sexagesima(thisYear).Date.getTime()){
-  events.push(sexagesima(thisYear));
+      events.push(sexagesima(thisYear));
   }
-  
- 
+  if (mariakyrkogang(thisYear).Date.getTime() !== quinquagesima(thisYear).Date.getTime()){
+      events.push(quinquagesima(thisYear));
+  }
+  if (septuagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && sexagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && quinquagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime()){
+    events.push(sjeepifania(thisYear));
+  }
   events.push(getEaster(thisYear));
-
-  events.push(quinquagesima(thisYear));
   events.push(askonsdagen(thisYear));
   events.push(mariabeb(thisYear));
   if(mariabeb(thisYear).Date.getTime() !== invocavit(thisYear).Date.getTime()){
-    events.push(invocavit(thisYear));
+      events.push(invocavit(thisYear));
   }
   if(mariabeb(thisYear).Date.getTime() !== laetare(thisYear).Date.getTime()){
-    events.push(laetare(thisYear));
+      events.push(laetare(thisYear));
   }
   if(mariabeb(thisYear).Date.getTime() !== judica(thisYear).Date.getTime()){
-    events.push(judica(thisYear));
+      events.push(judica(thisYear));
   }
   events.push(palmsndg(thisYear));
   events.push(skrtorsd(thisYear));
   if(mariabeb(thisYear).Date.getTime() !== reminiscere(thisYear).Date.getTime()){
-    events.push(reminiscere(thisYear));
+      events.push(reminiscere(thisYear));
   }
   if(mariabeb(thisYear).Date.getTime() !== oculi(thisYear).Date.getTime()){
-    events.push(oculi(thisYear));
+      events.push(oculi(thisYear));
   }
   events.push(annandagpask(thisYear));
   events.push(fepask(thisYear));
@@ -1773,22 +1796,22 @@ function makeKK(newYear) {
   events.push(augsburska(thisYear));
   events.push(trinitatis(thisYear));
   if (augsburska(thisYear).Date.getTime() !== trinitatis1(thisYear).Date.getTime()){
-  events.push(trinitatis1(thisYear));
+      events.push(trinitatis1(thisYear));
   }
   if (augsburska(thisYear).Date.getTime() !== trinitatis2(thisYear).Date.getTime()){
-    events.push(trinitatis2(thisYear));
+      events.push(trinitatis2(thisYear));
   }
   if (augsburska(thisYear).Date.getTime() !== trinitatis3(thisYear).Date.getTime()){
-    events.push(trinitatis3(thisYear));
+      events.push(trinitatis3(thisYear));
   }
   if (augsburska(thisYear).Date.getTime() !== trinitatis4(thisYear).Date.getTime()){
-  events.push(trinitatis4(thisYear));
+      events.push(trinitatis4(thisYear));
   }
   if (augsburska(thisYear).Date.getTime() !== trinitatis5(thisYear).Date.getTime()){
-  events.push(trinitatis5(thisYear));
+      events.push(trinitatis5(thisYear));
   }
   if (augsburska(thisYear).Date.getTime() !== trinitatis6(thisYear).Date.getTime()){
-  events.push(trinitatis6(thisYear));
+      events.push(trinitatis6(thisYear));
   }
   events.push(trinitatis7(thisYear));
   events.push(trinitatis8(thisYear));
@@ -1860,19 +1883,24 @@ events.push(teepifania(thisYear));
 if (mariakyrkogang(thisYear).Date.getTime() !== fjeepifania(thisYear).Date.getTime()){
   events.push(fjeepifania(thisYear));
   }
-if (mariakyrkogang(thisYear).Date.getTime() !== femepifania(thisYear).Date.getTime()){
-  events.push(femepifania(thisYear));
+if (mariakyrkogang(thisYear).Date.getTime() !== femeepifania(thisYear).Date.getTime()){
+  events.push(femeepifania(thisYear));
 }
 events.push(pauliomvandelse(thisYear));
-events.push(getEaster(thisYear));
 if (mariakyrkogang(thisYear).Date.getTime() !== septuagesima(thisYear).Date.getTime()){
-    events.push(septuagesima(thisYear));
+  events.push(septuagesima(thisYear));
 }
 if (mariakyrkogang(thisYear).Date.getTime() !== sexagesima(thisYear).Date.getTime()){
-events.push(sexagesima(thisYear));
+  events.push(sexagesima(thisYear));
 }
-events.push(quinquagesima(thisYear));
+if (mariakyrkogang(thisYear).Date.getTime() !== quinquagesima(thisYear).Date.getTime()){
+  events.push(quinquagesima(thisYear));
+}
+if (septuagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && sexagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && quinquagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime()){
+  events.push(sjeepifania(thisYear));
+}
 events.push(askonsdagen(thisYear));
+events.push(getEaster(thisYear));
 events.push(mariabeb(thisYear));
 if(mariabeb(thisYear).Date.getTime() !== invocavit(thisYear).Date.getTime()){
   events.push(invocavit(thisYear));
