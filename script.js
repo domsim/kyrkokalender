@@ -129,7 +129,7 @@ let argang = argng(thisYear);
 
 // Skapar högtider med fast datum
 let events = [];
-
+//rätt
 function nyarsdagen(year) {
   return {
     'Date': new Date(thisYear, 0, 1),
@@ -144,11 +144,11 @@ function nyarsdagen(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 14:13-14' : argang == 3 ? 'Rom 4:9-14' : null,
-    'AFT': argang == 2 ? 'Luk 13:6-9' : argang == 3 ? 'Hebr 13:7-16' : null
+    'HHM': argang == 2 ? 'Joh 14:13-14' : argang == 3 ? 'Luk 13:6-9' : null,
+    'AFT': argang == 2 ? 'Rom 4:9-14' : argang == 3 ? 'Hebr 13:7-16' : null
   }
 }
-
+//rätt
 function epifania(year) {
   return {
     'Date': new Date(thisYear, 0, 6),
@@ -163,8 +163,8 @@ function epifania(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 8:12' : argang == 3 ? '2 Kor 4:3-6' : null,
-    'AFT': argang == 2 ? 'Luk 11:29-36' : argang == 3 ? '1 Tim 3:16' : null
+    'HHM': argang == 2 ? 'Joh 8:12' : argang == 3 ? 'Luk 11:29-36' : null,
+    'AFT': argang == 2 ? '2 Kor 4:3-6' : argang == 3 ? '1 Tim 3:16' : null
   }
 }
 
@@ -314,11 +314,11 @@ function septuagesima(year) {
     'Link': '',
     'Prio': 2,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 19:27-30' : argang == 3 ? '1 Kor 3' : null,
-    'AFT': argang == 2 ? 'Luk 17:7-10' : argang == 3 ? 'Fil 3:7-16' : null
+    'HHM': argang == 2 ? 'Matt 19:27-30' : argang == 3 ? 'Luk 17:7-10' : null,
+    'AFT': argang == 2 ? '1 Kor 3' : argang == 3 ? 'Fil 3:7-16' : null
   };
 }
-
+//rätt
 function sexagesima(year) {
   return {
     'Date': septuagesima(year).Date.addDays(7),
@@ -333,12 +333,12 @@ function sexagesima(year) {
     'Link': '',
     'Prio': 2,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 12:34-43' : argang == 3 ? 'Apg 17:10-15' : null,
-    'AFT': argang == 2 ? 'Matt 9:36-10:16' : argang == 3 ? '2 Tim 3:10-4:8' : null
+    'HHM': argang == 2 ? 'Joh 12:34-43' : argang == 3 ? 'Matt 9:36-10:16' : null,
+    'AFT': argang == 2 ? 'Apg 17:10-15' : argang == 3 ? '2 Tim 3:10-4:8' : null
   };
 
 }
-
+//rätt
 function quinquagesima(year) {
   return {
     'Date': sexagesima(year).Date.addDays(7),
@@ -353,8 +353,8 @@ function quinquagesima(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 12:20-33' : argang == 3 ? '1 Tim 2:4-7' : null,
-    'AFT': argang == 2 ? 'Mark10:32-45' : argang == 3 ? '1 Kor 1:20-25' : null
+    'HHM': argang == 2 ? 'Joh 12:20-33' : argang == 3 ? 'Mark10:32-45' : null,
+    'AFT': argang == 2 ? '1 Tim 2:4-7' : argang == 3 ? '1 Kor 1:20-25' : null
   };
 }
 
@@ -376,7 +376,7 @@ function askonsdagen(year) {
     'AFT': null
   };
 }
-
+//rätt
 function invocavit(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(42),
@@ -391,11 +391,11 @@ function invocavit(year) {
     'Link': '',
     'Prio': 2,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 16:21-23' : argang == 3 ? 'Jak 1:12-15' : null,
-    'AFT': argang == 2 ? 'Luk 10:17-20' : argang == 3 ? 'Hebr 4:14-16' : null
+    'HHM': argang == 2 ? 'Matt 16:21-23' : argang == 3 ? 'Luk 10:17-20' : null,
+    'AFT': argang == 2 ? 'Jak 1:12-15' : argang == 3 ? 'Hebr 4:14-16' : null
   };
 }
-
+//rätt
 function reminiscere(year) {
   return {
     'Date': invocavit(year).Date.addDays(7),
@@ -410,11 +410,11 @@ function reminiscere(year) {
     'Link': '',
     'Prio': 2,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Luk 7:36-50' : argang == 3 ? '1 Petr 4:1-6' : null,
-    'AFT': argang == 2 ? 'Mark 9:14-32' : argang == 3 ? 'Hebr 2:17,18' : null
+    'HHM': argang == 2 ? 'Luk 7:36-50' : argang == 3 ? 'Mark 9:14-32' : null,
+    'AFT': argang == 2 ? '1 Petr 4:1-6' : argang == 3 ? 'Hebr 2:17,18' : null
   };
 }
-
+//rätt
 function oculi(year) {
   return {
     'Date': reminiscere(year).Date.addDays(7),
@@ -429,11 +429,11 @@ function oculi(year) {
     'Link': '',
     'Prio': 2,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 7:19-36' : argang == 3 ? 'Jak 11-11' : null,
-    'AFT': argang == 2 ? 'Luk 4:31-37' : argang == 3 ? 'Kol 1:24-29' : null
+    'HHM': argang == 2 ? 'Joh 7:19-36' : argang == 3 ? 'Luk 4:31-37' : null,
+    'AFT': argang == 2 ? 'Jak 11-11' : argang == 3 ? 'Kol 1:24-29' : null
   };
 }
-
+//rätt
 function mariabeb(year) {
   let mb = firstDayAfterGivenDate(0, year, 2, 22);
   if (mb.getTime() === getEaster(year).Date.subtractDays(7).getTime()){
@@ -452,8 +452,8 @@ function mariabeb(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argang,
-    'HHM': argang == 2 ? 'Luk 1: 39-45' : argang == 3 ? 'Upp 12:1-6' : null,
-    'AFT': argang == 2 ? 'Luk 1:46-56' : argang == 3 ? 'Upp 21:1-8' : null
+    'HHM': argang == 2 ? 'Luk 1: 39-45' : argang == 3 ? 'Luk 1:46-56' : null,
+    'AFT': argang == 2 ? 'Upp 12:1-6' : argang == 3 ? 'Upp 21:1-8' : null
   };
 }
 
@@ -1445,7 +1445,7 @@ function fadvent(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argng(year + 1),
-    'HHM': argng(year + 1) == 2 ? 'Joh 18:36-37' : argng(year + 1) == 3 ? 'Lik 4:16-22' : null,
+    'HHM': argng(year + 1) == 2 ? 'Joh 18:36-37' : argng(year + 1) == 3 ? 'Luk 4:16-22' : null,
     'AFT': argng(year + 1) == 2 ? 'Ef 1:1-14' : argng(year + 1) == 3 ? 'Hebr 8:7-13' : null
   };
 }
@@ -1873,6 +1873,7 @@ function makeKK(newYear) {
   newCal.setAttribute('id', 'bibelcalender');
   document.body.appendChild(newCal);
   caleandar(newCal, uniqueEvents, settings);
+  for (i=0; i< 12;++i){showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)}
 }
 events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
@@ -2028,12 +2029,12 @@ caleandar(element, uniqueEvents, settings);
 // visar Påskdagen och årgång
 console.log(getEaster(thisYear).Date.toLocaleString() + " Årgang " + argang);
 console.log("Aktuell år: " + thisYear + " Årgang: " + argang);
-console.log(uniqueEvents.sortBy(function (o) {
+/*console.log(uniqueEvents.sortBy(function (o) {
   return [o.Week, o.Prio, o.Date]
 }));
 
 console.log(new Date(thisYear, 0, 1).getFullYear());
-
+*/
 showWeek = (arr, week, anno) => {
   for (i of arr) {
     if (i.Week === week && new Date(i.time).getFullYear() === anno) {
@@ -2107,7 +2108,9 @@ showMonth = (arr, mese) => {
     }
   }
 };
+for (i=0; i< 12;++i){showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)}
 
+/*
 for (i of uniqueEvents) {
   if (i.Argang == 1) {
     console.log(months[new Date(i.time).getMonth()]);
@@ -2124,6 +2127,7 @@ for (i of uniqueEvents) {
     console.log(new Date(i.time).toLocaleDateString() + "\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "\n");
   }
 }
+*/
 /*console.log(events.sort(function (a, b) {
   return a.Title.localeCompare(b.Title);
 }));
