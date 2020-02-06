@@ -29,6 +29,19 @@
   }
 })();
 
+OT = ["1 Mosebok", "2 Mosebok", "3 Mosebok", "4 Mosebok", "5 Mosebok", "Josua", "Domarboken", "Rut", "1 Samuelsboken", "2 Samuelsboken", "1 Kungaboken", "2 Kungaboken", "1 Krönikeboken", "2 Krönikeboken", "Esra", "Nehemja", "Ester", "Job", "Psaltaren", "Ordspråksboken", "Predikaren", "Höga Visan", "Jesaja", "Jeremia", "Klagovisorna", "Hesekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadja", "Jona", "Mika", "Nahum", "Habackuk", "Sefanja", "Haggai", "Sakaria", "Malaki"];
+
+ NT =  ["Matteus", "Markus","Lukas","Johannes","Apostlagärningarna","Romarbrevet","1 Korinthierbrevet","2 orinthierbrevet","Galaterbrevet","Efesierbrevet","Filipperbrevet","Kolosserbrevet","1 Thessalonikerbrevet","2 hessalonikerbrevet","1 Timotheosbrevet","2 Timotheosbrevet","Titusbrevet","Filemonbrevet","Hebreerbrevet","Jakobsbrevet","1 Petrusbrevet","2 Petrusbrevet","1 Johannesbrevet","2 Johannesbrevet","3 Johannesbrevet","Judasbrevet","Uppenbarelseboken"];
+
+var replaceTags = [["1 Mos","1 Mosebok"],[ "2 Mos","2 Mosebok"], ["3 Mos","3 Mosebok"], ["4 Mos","4 Mosebok"], ["5 Mos","5 Mosebok"], ["Jos","Josua"], ["Dom","Domarboken"], ["Rut"], ["1 Samuelsboken"], ["2 Samuelsboken"], ["1 Kungaboken"], ["2 Kungaboken"], ["1 Krönikeboken"], ["2 Krönikeboken"], ["Esra"], ["Nehemja"], ["Ester"], ["Job"], ["Psaltaren"], ["Ordspråksboken"], ["Predikaren"], ["Höga Visan"], ["Jesaja"], ["Jeremia"], ["Klagovisorna"],[ "Hesekiel"], ["Daniel"], ["Hosea"], ["Joel"], ["Amos"], ["Obadja"], ["Jona"], ["Mika"], ["Nahum"], ["Habackuk"], ["Sefanja"], ["Haggai"], ["Sakaria"], ["Malaki"]];
+/*
+var tn = '<i>Apg 1:5</i><b>Psalt 132</b> Ords 2';
+ for (var i =0; i < replaceTags.length; i++) {
+    console.log(replaceTags[i][0]);
+ tn = tn.replace(new RegExp(replaceTags[i][0], 'g'),replaceTags[i][1]);
+} 
+*/
+
 // addDays & subtractDays new mehods to Date
 Date.prototype.addDays = function (days) {
   this.setDate(this.getDate() + parseInt(days));
@@ -46,13 +59,33 @@ Date.prototype.subtractDays = function (days) {
  */
 function firstDayInMonth(day, m, y) {
   // day is in range 0 Sunday to 6 Saturday
-  var y = y ||
-    new Date(Date.now()).getFullYear();
-  var m = m ||
-    new Date(Date.now()).getMonth();
+  y = y*1 ||
+    new Date().getFullYear();
+  m = m*1 ||
+    new Date().getMonth();
   return new Date(y, m, 1 +
     (day - new Date(y, m, 1).getDay() + 7) % 7);
 }
+/*
+ * Third sunday in January 2020
+ * nthDayInMonth(3,0,0,2020);
+ * Sun Jan 05 2020 00:00:00 GMT+0100 (centraleuropeisk normaltid)
+ * 
+ * alla sundays in a year (52 weeks)
+ * for (let i = 1; i <53; ++i) { console.log(nthDayInMonth(i,0,0,2020).toLocaleDateString()); }
+ */
+function nthDayInMonth(n, day, m, y) {
+  // day is in range 0 Sunday to 6 Saturday
+  y = y-1 ||
+    new Date().getFullYear();
+  m = m+12 ||
+    new Date().getMonth();
+  var d = new Date(y, m, 1 +
+    (day - new Date(y, m, 1).getDay() + 7) % 7);
+  return new Date(d.getFullYear(),
+    d.getMonth(), d.getDate() + (n - 1) * 7);
+}
+
 /*
  * First sunday after 6 January 2020
  * firstDayAfterGivenDate(0,2020,0,6);
@@ -60,28 +93,10 @@ function firstDayInMonth(day, m, y) {
  */
 function firstDayAfterGivenDate(day, y, m, d) {
   // day is in range 0 Sunday to 6 Saturday
-  var y = y ||
-    new Date(Date.now()).getFullYear();
-  var m = m ||
-    new Date(Date.now()).getMonth();
-  return new Date(y, m, d +
-    (day - new Date(y, m, d).getDay() + 7) % 7);
+    return new Date(y*1, m*1, d +(day - new Date(y, m, d).getDay() + 7) % 7);
 }
-/*
- * Third sunday in January 2020
- * nthDayInMonth(3,0,0,2020);
- * Sun Jan 05 2020 00:00:00 GMT+0100 (centraleuropeisk normaltid)
- */
-function nthDayInMonth(n, day, m, y) {
-  // day is in range 0 Sunday to 6 Saturday
-  var y = y ||
-    new Date(Date.now()).getFullYear();
-  var m = m ||
-    new Date(Date.now()).getMonth();
-  var d = firstDayInMonth(day, m, y);
-  return new Date(d.getFullYear(),
-    d.getMonth(), d.getDate() + (n - 1) * 7);
-}
+
+
 /*
  * Get week nr of given date
  * getWeekNumber(new Date(2020,4,5));
@@ -146,7 +161,7 @@ function nyarsdagen(year) {
     'Argang': argang,
     'HHM': argang == 2 ? 'Joh 14:13-14' : argang == 3 ? 'Luk 13:6-9' : null,
     'AFT': argang == 2 ? 'Rom 4:9-14' : argang == 3 ? 'Hebr 13:7-16' : null
-  }
+  };
 }
 //rätt
 function epifania(year) {
@@ -165,7 +180,7 @@ function epifania(year) {
     'Argang': argang,
     'HHM': argang == 2 ? 'Joh 8:12' : argang == 3 ? 'Luk 11:29-36' : null,
     'AFT': argang == 2 ? '2 Kor 4:3-6' : argang == 3 ? '1 Tim 3:16' : null
-  }
+  };
 }
 
 function pauliomvandelse(year) {
@@ -203,7 +218,7 @@ function juldagen(year) {
     'Argang': argng(thisYear + 1),
     'HHM': argng(thisYear + 1) == 2 ? 'Joh 1:1-14' : argng(thisYear + 1) == 3 ? 'Hebr 1' : null,
     'AFT': argng(thisYear + 1) == 2 ? 'Matt 1:18-25' : argng(thisYear + 1) == 3 ? 'Tit 2:11-15' : null
-  }
+  };
 }
 
 function annandagjul(year) {
@@ -223,7 +238,7 @@ function annandagjul(year) {
     'HHM': argng(thisYear + 1) == 2 ? 'Matt 10:32-39' : argng(thisYear + 1) == 3 ? '1 Petr 4:12-19' : null,
     'AFT': argng(thisYear + 1) == 2 ? 'Matt 2:13-18' : argng(thisYear + 1) == 3 ? 'Upp 14:1-5' : null
 
-  }
+  };
 }
 
 function johannes(year) {
@@ -261,7 +276,7 @@ function menlosabarn(year) {
     'Argang': argng(thisYear),
     'HHM': null,
     'AFT': null
-  }
+  };
 }
 // beräkna Påsk vid angivet år
 function getEaster(year) {
@@ -302,7 +317,7 @@ function getEaster(year) {
 
 function septuagesima(year) {
   return {
-    'Date': getEaster(year).Date.subtractDays(63),
+    'Date': getEaster(thisYear).Date.subtractDays(63),
     'Title': 'Septuagesima',
     'Color': 'Violett',
     'Theme': 'Guds oförskyllda nåd.',
@@ -1552,7 +1567,7 @@ function ioannesbaptista(year) {
 }
 function sndgenyar(year) {
   let nyar = new Date(year, 0, 1);
-  let fs = firstDayAfterGivenDate(0, year, 0, 2);
+  let fs = firstDayAfterGivenDate(0, year-1, 12, 2);
   if (fs.getDate() > 1 && fs.getDate() < 6) {
 
     return {
@@ -1575,7 +1590,7 @@ function sndgenyar(year) {
 }
 function feepifania(year) {
   return {
-    'Date': firstDayAfterGivenDate(0, year, 0, 7),
+    'Date': firstDayAfterGivenDate(0, year-1, 12, 7),
     'Title': '1 e Epifania',
     'Color': 'Vit',
     'Theme': 'Kristus lär i templet',
@@ -1706,7 +1721,7 @@ function femeepifania(year) {
     'Prio': 3,
     'Argang': argang,
     'HHM': argang == 2 ? '' : argang == 3 ? '' : null,
-    'AFT': argang == 2 ? '1 Kor 1:9-18' : argang == 3 ? 'Ef 4:14-16' : null
+    'AFT': argang == 2 ? '' : argang == 3 ? '' : null
   };
 
 }
@@ -1867,11 +1882,12 @@ function makeKK(newYear) {
   });
 
   uniqueEvents = removeDuplicates(events, 'time');
+  let container = document.getElementById('container');
   let oldCal = document.getElementById('bibelcalender');
   oldCal.remove();
   let newCal = document.createElement('div');
   newCal.setAttribute('id', 'bibelcalender');
-  document.body.appendChild(newCal);
+  container.appendChild(newCal);
   caleandar(newCal, uniqueEvents, settings);
   for (i=0; i< 12;++i){showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)}
 }
@@ -2007,7 +2023,7 @@ events = events.map(function (obj) {
 
 });
 sortedEvents = events.sortBy(function (o) {
-  return [ o.Date]
+  return [o.Date];
 });
 
 
@@ -2068,24 +2084,30 @@ showMonthYear = (arr, mese, anno) => {
   this.mese = mese;
   this.anno = parseInt(anno);
   console.log(months[this.mese] + " " + this.anno);
+  let lk = "";
   for (let i of arr) {
     if (new Date(i.time).getMonth() === this.mese && new Date(i.time).getFullYear() === this.anno ) {
 
       if (i.Argang == 1) {
         console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
         console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "\n");
+        lk += `${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
+        lk += "<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "<br>";
       } else if (i.Argang == 2 && i.HHM !== null) {
-        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
-        console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` + "\n");
       } else if (i.HHM !== null) {
         console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
-        console.log("\n " + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` + "\n");
+        console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` + "\n");
+        lk+=`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
+        lk+="<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` + "<br>";
       } else {
         console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
         console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "\n");
+        lk+=`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
+        lk+="<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "<br>";
       }
     }
   }
+  return lk;
 };
 showMonth = (arr, mese) => {
   console.log(months[mese] + " " + thisYear);
@@ -2108,7 +2130,40 @@ showMonth = (arr, mese) => {
     }
   }
 };
-for (i=0; i< 12;++i){showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)}
+for (i=0; i< 12;++i){
+  showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)
+}
+
+    
+let nyar = document.getElementById('nyar');
+let btn = document.getElementById('btn')
+nyar.addEventListener('change', function(){
+  if (nyar.value.indexOf('-') !== -1){
+    let start = 1* nyar.value.split('-')[0];
+    console.log('start: ' + start);
+    let end = 1 * nyar.value.split('-')[1]; 
+    console.log('end: ' + end);
+    let n = end - start;
+    console.log('antal år: ' + n);
+    for( let a = 0; a <= n; ++a) {
+      console.log(parseInt(start + a));
+      makeKK(start+a);
+    }
+  } else if (nyar.value.indexOf(',') !== -1){
+      let aren = nyar.value.split(',');
+      for (let b = 0; b < aren.length; ++b){
+        console.log(1*aren[b]);
+        makeKK(1*aren[b]);
+      }
+  }
+  else {
+      makeKK(nyar.value);
+      for (i=0; i< 12;++i){
+           $('p#test').append(showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,nyar.value));
+      }
+     
+  }
+});
 
 /*
 for (i of uniqueEvents) {

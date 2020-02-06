@@ -3,13 +3,13 @@
   Version: 0.1.0;
   (◠‿◠✿)
   source: https://www.cssscript.com/create-simple-event-calendar-javascript-caleandar-js/
-  modified by: domsim
+  modified by: Domenico Simonelli
 */
 var Calendar = function(model, options, date){
   // Default Values
   this.Options = {
     Color: '',
-    LinkColor: '',
+    LinkColor: 'red',
     NavShow: true,
     NavVertical: false,
     NavLocation: '',
@@ -17,7 +17,7 @@ var Calendar = function(model, options, date){
     DateTimeFormat: 'mmm, yyyy',
     DatetimeLocation: '',
     EventClick: '',
-    EventTargetWholeDay: false,
+    EventTargetWholeDay: true,
     DisabledDays: [],
     ModelChange: model
   };
@@ -27,7 +27,7 @@ var Calendar = function(model, options, date){
   }
 
   model?this.Model=model:this.Model={};
-  this.Today = new Date(thisYear, 0, 1);
+  this.Today = new Date(thisYear, new Date().getMonth(), new Date().getDate());
 
   this.Selected = this.Today
   this.Today.Month = this.Today.getMonth();
@@ -157,7 +157,7 @@ function createCalendar(calendar, element, adjuster){
   function AddLabels(){
     var labels = document.createElement('ul');
     labels.className = 'cld-labels';
-    var labelsList = ["S&ouml;n", "M&aring;n", "Tis", "Ons", "Tor", "Fre", "L&ouml;r"];
+    var labelsList = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "L&ouml;r"];
     for(var i = 0; i < labelsList.length; i++){
       var label = document.createElement('li');
       label.className += "cld-label";
@@ -260,14 +260,16 @@ function createCalendar(calendar, element, adjuster){
             title.innerHTML += '<a href="' + calendar.Model[n].Link + '">' + calendar.Model[n].Title + '</a>';
           }
           title.innerHTML += "<br><strong>Tema</strong>: " + calendar.Model[n].Theme + " (" + calendar.Model[n].Color + ")";
-          ps.innerHTML += calendar.Model[n].Psalms;
-          gt.innerHTML += calendar.Model[n].OldT;
+          var psalt = calendar.Model[n].Psalms;
+          var oldT =  calendar.Model[n].OldT;
+          ps.innerHTML += psalt.replace(new RegExp('Psalt ', 'g'), 'Psalms ');
+          gt.innerHTML += oldT.replace(new RegExp('Mos ', 'g'), 'Mosebok ');
           ep.innerHTML += calendar.Model[n].Letters;
           ev.innerHTML += calendar.Model[n].Gospel;
           if (calendar.Model[n].Argang == 2) {
-            argang.innerHTML += "<strong>II </strong> " + calendar.Model[n].HHM + ", " + calendar.Model[n].AFT;
+            argang.innerHTML += "<strong>II </strong> " + calendar.Model[n].HHM + "<br>" + calendar.Model[n].AFT;
           } else if (calendar.Model[n].Argang == 3 ){
-            argang.innerHTML += "<strong>III </strong>" + calendar.Model[n].HHM + ", " + calendar.Model[n].AFT;
+            argang.innerHTML += "<strong>III </strong>" + calendar.Model[n].HHM + "<br>" + calendar.Model[n].AFT;
           }
           number.appendChild(title);
           number.appendChild(tema);
@@ -325,6 +327,8 @@ function createCalendar(calendar, element, adjuster){
   }
   AddLabels();
   AddDays();
+  BGLinks.version = "SFB";
+  BGLinks.linkVerses();
 }
 
 function caleandar(el, data, settings){
