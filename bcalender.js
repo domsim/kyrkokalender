@@ -257,19 +257,92 @@ function createCalendar(calendar, element, adjuster){
             }
             title.appendChild(a);
           }else{
-            title.innerHTML += '<a href="' + calendar.Model[n].Link + '">' + calendar.Model[n].Title + '</a>';
+            title.innerHTML += '<a target="_blank" href="' + calendar.Model[n].Link + '">' + calendar.Model[n].Title + '</a>';
           }
-          title.innerHTML += "<br><strong>Tema</strong>: " + calendar.Model[n].Theme + " (" + calendar.Model[n].Color + ")";
+          title.innerHTML += "<br><strong>Tema</strong>: " + calendar.Model[n].Theme ;
+          if( calendar.Model[n].Color !== ""){
+          title.innerHTML+= " (" + calendar.Model[n].Color + ")";
+          }
           var psalt = calendar.Model[n].Psalms;
           var oldT =  calendar.Model[n].OldT;
-          ps.innerHTML += psalt.replace(new RegExp('Psalt ', 'g'), 'Psalms ');
-          gt.innerHTML += oldT.replace(new RegExp('Mos ', 'g'), 'Mosebok ');
-          ep.innerHTML += calendar.Model[n].Letters;
-          ev.innerHTML += calendar.Model[n].Gospel;
-          if (calendar.Model[n].Argang == 2) {
-            argang.innerHTML += "<strong>II </strong> " + calendar.Model[n].HHM + "<br>" + calendar.Model[n].AFT;
-          } else if (calendar.Model[n].Argang == 3 ){
-            argang.innerHTML += "<strong>III </strong>" + calendar.Model[n].HHM + "<br>" + calendar.Model[n].AFT;
+          for (let i =0; i < replaceBooks.length; i++) {
+            oldT = oldT.replace(new RegExp(replaceBooks[i][0], 'g'), replaceBooks[i][1]);
+          }
+          var oldTf = "";
+          for (let i =0; i < replaceBooks.length; i++) {
+            oldTf = oldT.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
+          }
+          oldT = "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+            oldT
+            ) + "' >" + oldTf +"</a>";
+          var epistel = calendar.Model[n].Letters;
+         
+          for (let i =0; i < replaceBooks.length; i++) {
+            epistel = epistel.replace(new RegExp(replaceBooks[i][0], 'g'), replaceBooks[i][1]);
+          }
+          var epistelf = "";
+          for (let i =0; i < replaceBooks.length; i++) {
+            epistelf = epistel.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
+          }
+          epistel = "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+            epistel
+            ) + "' >" + epistelf +"</a>";
+          
+          var evangelium = calendar.Model[n].Gospel;
+          
+          for (let i =0; i < replaceBooks.length; i++) {
+            evangelium = evangelium.replace(new RegExp(replaceBooks[i][0], 'g'), replaceBooks[i][1]);
+          }
+          var evangeliumf = "";
+          for (let i =0; i < replaceBooks.length; i++) {
+            evangeliumf = evangelium.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
+          }
+          evangelium = "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+            evangelium
+            ) + "' >" + evangeliumf +"</a>";
+            
+          var hhm = calendar.Model[n].HHM;
+          if (null === hhm) {
+            hhm= "";
+          }else{
+            for (let i =0; i < replaceBooks.length; i++) {
+              hhm = hhm.replace(new RegExp(replaceBooks[i][0], 'g'), replaceBooks[i][1]);
+            }
+            var hhmf = "";
+            for (let i =0; i < replaceBooks.length; i++) {
+              hhmf = hhm.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
+            }
+            hhm = "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+              hhm
+              ) + "' >" + hhmf +"</a>";
+            }
+          var afts = calendar.Model[n].AFT;
+          if (null === afts) {
+              afts="";
+          } else {
+            for (let i =0; i < replaceBooks.length; i++) {
+              afts = afts.replace(new RegExp(replaceBooks[i][0], 'g'), replaceBooks[i][1]);
+            }
+            var aftf = "";
+            for (let i =0; i < replaceBooks.length; i++) {
+              aftf = afts.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
+            }
+            afts = "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+              afts
+              ) + "' >" + aftf +"</a>";
+          } 
+          ps.innerHTML += "<a class='bibleref' target='_blank' href='" + bgbase + encodeURIComponent(
+            psalt.replace(new RegExp('Psalt ', 'g'), 'Psa ')
+            ) + "' >" + psalt + "</a>";
+          gt.innerHTML += oldT;//oldT.replace(new RegExp('Mos ', 'g'), 'Mosebok ');
+          ep.innerHTML += epistel;
+          ev.innerHTML += evangelium;
+          if ( hhm !== "") {
+            if (calendar.Model[n].Argang == 2 ) {
+              argang.innerHTML += "<strong>II </strong> " + hhm + "<br>" + afts;
+            } else if (calendar.Model[n].Argang == 3 ){
+              argang.innerHTML += "<strong>III </strong>" + hhm + "<br>" + afts;
+            }
           }
           number.appendChild(title);
           number.appendChild(tema);
