@@ -29,6 +29,10 @@
   }
 })();
 
+function isBlank(str) {
+  return (!str || /^\s*$/.test(str));
+}
+
 OT = [["1 Mosebok"],[ "2 Mosebok"],[ "3 Mosebok"],[ "4 Mosebok"],[ "5 Mosebok"],[ "Josua"],[ "Domarboken"],[ "Rut"],[ "1 Samuelsboken"],[ "2 Samuelsboken"],[ "1 Kungaboken"],[ "2 Kungaboken"],[ "1 Krönikeboken"],[ "2 Krönikeboken"],[ "Esra"],[ "Nehemja"],[ "Ester"],[ "Job"],[ "Psaltaren"],[ "Ordspråksboken"],[ "Predikaren"],[ "Höga Visan"],[ "Jesaja"],[ "Jeremia"],[ "Klagovisorna"],[ "Hesekiel"],[ "Daniel"],[ "Hosea"],[ "Joel"],[ "Amos"],[ "Obadja"],[ "Jona"],[ "Mika"],[ "Nahum"],[ "Habackuk"],[ "Sefanja"],[ "Haggai"],[ "Sakaria"],[ "Malaki"]];
 
  NT = [["Matteus"],[ "Markus"],["Lukas"],["Johannes"],["Apostlagärningarna"],["Romarbrevet"],["1 Korinthierbrevet"],["2 Korinthierbrevet"],["Galaterbrevet"],["Efesierbrevet"],["Filipperbrevet"],["Kolosserbrevet"],["1 Thessalonikerbrevet"],["2 Thessalonikerbrevet"],["1 Timotheosbrevet"],["2 Timotheosbrevet"],["Titusbrevet"],["Filemonbrevet"],["Hebreerbrevet"],["Jakobsbrevet"],["1 Petrusbrevet"],["2 Petrusbrevet"],["1 Johannesbrevet"],["2 Johannesbrevet"],["3 Johannesbrevet"],["Judasbrevet"],["Uppenbarelseboken"]];
@@ -105,9 +109,9 @@ function firstDayAfterGivenDate(day, y, m, d) {
 function getWeekNumber(d) {
   // Copy date so don't modify original
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  // Set to nearest Thursday: current date + 4 - current day number
+  // Set to nearest Monday: current date + 1 - current day number
   // Make Sunday's day number 7
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  d.setUTCDate(d.getUTCDate() + 1 - (d.getUTCDay() || 7));
   // Get first day of year
   var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
   // Calculate full weeks to nearest Thursday
@@ -147,7 +151,7 @@ let events = [];
 //rätt
 function nyarsdagen(year) {
   return {
-    'Date': new Date(thisYear, 0, 1),
+    'Date': new Date(year, 0, 1),
     'Title': 'Nyårsdagen',
     'Color': 'Vit',
     'Theme': 'Kristi omskärelse – Namnet Jesus',
@@ -158,15 +162,15 @@ function nyarsdagen(year) {
     'Description': '1 januari',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 14:13-14' : argang == 3 ? 'Luk 13:6-9' : null,
-    'AFT': argang == 2 ? 'Rom 4:9-14' : argang == 3 ? 'Hebr 13:7-16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 14:13-14' : argng(year) == 3 ? 'Luk 13:6-9' : null,
+    'AFT': argng(year) == 2 ? 'Rom 4:9-14' : argng(year) == 3 ? 'Hebr 13:7-16' : null
   };
 }
 //rätt
 function epifania(year) {
   return {
-    'Date': new Date(thisYear, 0, 6),
+    'Date': new Date(year, 0, 6),
     'Title': 'Epifania',
     'Color': 'Vit',
     'Theme': 'Kristi uppenbarelse',
@@ -177,15 +181,15 @@ function epifania(year) {
     'Description': '6 januari',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 8:12' : argang == 3 ? 'Luk 11:29-36' : null,
-    'AFT': argang == 2 ? '2 Kor 4:3-6' : argang == 3 ? '1 Tim 3:16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 8:12' : argng(year) == 3 ? 'Luk 11:29-36' : null,
+    'AFT': argng(year) == 2 ? '2 Kor 4:3-6' : argng(year) == 3 ? '1 Tim 3:16' : null
   };
 }
 
 function pauliomvandelse(year) {
   return {
-    'Date': new Date(thisYear, 0, 25),
+    'Date': new Date(year, 0, 25),
     'Title': 'Pauli omvändelse',
     'Color': '',
     'Theme': 'Pauli omvändelse',
@@ -196,7 +200,7 @@ function pauliomvandelse(year) {
     'Description': '25 januari',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
+    'Argang': argng(year),
     'HHM': null,
     'AFT': null
   }
@@ -204,7 +208,7 @@ function pauliomvandelse(year) {
 
 function juldagen(year) {
   return {
-    'Date': new Date(thisYear, 11, 25),
+    'Date': new Date(year, 11, 25),
     'Title': 'Juldagen',
     'Color': 'Vit',
     'Theme': 'Kristi födelse',
@@ -215,15 +219,15 @@ function juldagen(year) {
     'Description': '25 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(thisYear + 1),
-    'HHM': argng(thisYear + 1) == 2 ? 'Joh 1:1-14' : argng(thisYear + 1) == 3 ? 'Hebr 1' : null,
-    'AFT': argng(thisYear + 1) == 2 ? 'Matt 1:18-25' : argng(thisYear + 1) == 3 ? 'Tit 2:11-15' : null
+    'Argang': argng(year + 1),
+    'HHM': argng(year + 1) == 2 ? 'Joh 1:1-14' : argng(year + 1) == 3 ? 'Hebr 1' : null,
+    'AFT': argng(year + 1) == 2 ? 'Matt 1:18-25' : argng(year + 1) == 3 ? 'Tit 2:11-15' : null
   };
 }
 
 function annandagjul(year) {
   return {
-    'Date': new Date(thisYear, 11, 26),
+    'Date': new Date(year, 11, 26),
     'Title': 'Annandag Jul',
     'Color': 'Röd',
     'Theme': 'Trons martyrium',
@@ -234,16 +238,16 @@ function annandagjul(year) {
     'Description': '26 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(thisYear + 1),
-    'HHM': argng(thisYear + 1) == 2 ? 'Matt 10:32-39' : argng(thisYear + 1) == 3 ? '1 Petr 4:12-19' : null,
-    'AFT': argng(thisYear + 1) == 2 ? 'Matt 2:13-18' : argng(thisYear + 1) == 3 ? 'Upp 14:1-5' : null
+    'Argang': argng(year + 1),
+    'HHM': argng(year + 1) == 2 ? 'Matt 10:32-39' : argng(year + 1) == 3 ? '1 Petr 4:12-19' : null,
+    'AFT': argng(year + 1) == 2 ? 'Matt 2:13-18' : argng(year + 1) == 3 ? 'Upp 14:1-5' : null
 
   };
 }
 
 function johannes(year) {
   return {
-    'Date': new Date(thisYear, 11, 27),
+    'Date': new Date(year, 11, 27),
     'Title': 'Johannes',
     'Color': '',
     'Theme': 'Sankt Johannes dag',
@@ -254,7 +258,7 @@ function johannes(year) {
     'Description': '27 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(thisYear),
+    'Argang': argng(year),
     'HHM': null,
     'AFT': null
   }
@@ -262,7 +266,7 @@ function johannes(year) {
 
 function menlosabarn(year) {
   return {
-    'Date': new Date(thisYear, 11, 28),
+    'Date': new Date(year, 11, 28),
     'Title': 'Värnlösa barns dag',
     'Color': '',
     'Theme': 'Menlösa barns dag',
@@ -273,7 +277,7 @@ function menlosabarn(year) {
     'Description': '28 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(thisYear),
+    'Argang': argng(year),
     'HHM': null,
     'AFT': null
   };
@@ -307,9 +311,9 @@ function getEaster(year) {
     'Description': 'Söndag efter första fullmåne efter vårdagjämningen (22 mar - 25 april)',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 20:1-10' : argang == 3 ? 'Matt 28:1-8' : null,
-    'AFT': argang == 2 ? '1 Kor 15:12-21' : argang == 3 ? 'Ef 1:15-23' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 20:1-10' : argng(year) == 3 ? 'Matt 28:1-8' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 15:12-21' : argng(year) == 3 ? 'Ef 1:15-23' : null
   };
 }
 
@@ -317,7 +321,7 @@ function getEaster(year) {
 
 function septuagesima(year) {
   return {
-    'Date': getEaster(thisYear).Date.subtractDays(63),
+    'Date': getEaster(year).Date.subtractDays(63),
     'Title': 'Septuagesima',
     'Color': 'Violett',
     'Theme': 'Guds oförskyllda nåd.',
@@ -328,9 +332,9 @@ function septuagesima(year) {
     'Description': 'Söndag* 63 dagar före påsk',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 19:27-30' : argang == 3 ? 'Luk 17:7-10' : null,
-    'AFT': argang == 2 ? '1 Kor 3' : argang == 3 ? 'Fil 3:7-16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 19:27-30' : argng(year) == 3 ? 'Luk 17:7-10' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 3' : argng(year) == 3 ? 'Fil 3:7-16' : null
   };
 }
 //rätt
@@ -347,9 +351,9 @@ function sexagesima(year) {
     'Description': 'Söndag* 56 dagar före påsk',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 12:34-43' : argang == 3 ? 'Matt 9:36-10:16' : null,
-    'AFT': argang == 2 ? 'Apg 17:10-15' : argang == 3 ? '2 Tim 3:10-4:8' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 12:34-43' : argng(year) == 3 ? 'Matt 9:36-10:16' : null,
+    'AFT': argng(year) == 2 ? 'Apg 17:10-15' : argng(year) == 3 ? '2 Tim 3:10-4:8' : null
   };
 
 }
@@ -367,9 +371,9 @@ function quinquagesima(year) {
     'Description': 'Söndag 49 dagar före påsk - Quinquagesima',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 12:20-33' : argang == 3 ? 'Mark10:32-45' : null,
-    'AFT': argang == 2 ? '1 Tim 2:4-7' : argang == 3 ? '1 Kor 1:20-25' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 12:20-33' : argng(year) == 3 ? 'Mark10:32-45' : null,
+    'AFT': argng(year) == 2 ? '1 Tim 2:4-7' : argng(year) == 3 ? '1 Kor 1:20-25' : null
   };
 }
 
@@ -386,7 +390,7 @@ function askonsdagen(year) {
     'Description': 'Onsdag efter Fastlagssöndag',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
+    'Argang': argng(year),
     'HHM': null,
     'AFT': null
   };
@@ -405,9 +409,9 @@ function invocavit(year) {
     'Description': 'Söndag* 42 dagar före påsk',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 16:21-23' : argang == 3 ? 'Luk 10:17-20' : null,
-    'AFT': argang == 2 ? 'Jak 1:12-15' : argang == 3 ? 'Hebr 4:14-16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 16:21-23' : argng(year) == 3 ? 'Luk 10:17-20' : null,
+    'AFT': argng(year) == 2 ? 'Jak 1:12-15' : argng(year) == 3 ? 'Hebr 4:14-16' : null
   };
 }
 //rätt
@@ -424,9 +428,9 @@ function reminiscere(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Luk 7:36-50' : argang == 3 ? 'Mark 9:14-32' : null,
-    'AFT': argang == 2 ? '1 Petr 4:1-6' : argang == 3 ? 'Hebr 2:17,18' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Luk 7:36-50' : argng(year) == 3 ? 'Mark 9:14-32' : null,
+    'AFT': argng(year) == 2 ? '1 Petr 4:1-6' : argng(year) == 3 ? 'Hebr 2:17,18' : null
   };
 }
 //rätt
@@ -443,9 +447,9 @@ function oculi(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 7:19-36' : argang == 3 ? 'Luk 4:31-37' : null,
-    'AFT': argang == 2 ? 'Jak 11-11' : argang == 3 ? 'Kol 1:24-29' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 7:19-36' : argng(year) == 3 ? 'Luk 4:31-37' : null,
+    'AFT': argng(year) == 2 ? 'Jak 11-11' : argng(year) == 3 ? 'Kol 1:24-29' : null
   };
 }
 //rätt
@@ -466,9 +470,9 @@ function mariabeb(year) {
     'Description': 'Söndag 22-28 mars eller söndag före Palmsöndag och då tidigast 8 mars',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Luk 1: 39-45' : argang == 3 ? 'Luk 1:46-56' : null,
-    'AFT': argang == 2 ? 'Upp 12:1-6' : argang == 3 ? 'Upp 21:1-8' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Luk 1: 39-45' : argng(year) == 3 ? 'Luk 1:46-56' : null,
+    'AFT': argng(year) == 2 ? 'Upp 12:1-6' : argng(year) == 3 ? 'Upp 21:1-8' : null
   };
 }
 
@@ -485,9 +489,9 @@ function laetare(year) {
     'Description': 'Söndag* 21 dagar före påsk',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 6:22-36' : argang == 3 ? 'Upp 5 ' : null,
-    'AFT': argang == 2 ? 'Joh 6:52-71' : argang == 3 ? '2 Kor 7:10' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 6:22-36' : argng(year) == 3 ? 'Upp 5 ' : null,
+    'AFT': argng(year) == 2 ? 'Joh 6:52-71' : argng(year) == 3 ? '2 Kor 7:10' : null
   };
 }
 
@@ -504,9 +508,9 @@ function judica(year) {
     'Description': 'Söndag* 14 dagar före påsk',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 11. 46-57' : argang == 3 ? 'Joh 8:30-45' : null,
-    'AFT': argang == 2 ? 'Hebr 7:1-17' : argang == 3 ? 'Kol 2:1-8' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 11. 46-57' : argng(year) == 3 ? 'Joh 8:30-45' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 7:1-17' : argng(year) == 3 ? 'Kol 2:1-8' : null
   };
 }
 
@@ -523,9 +527,9 @@ function palmsndg(year) {
     'Description': 'Söndag en vecka före Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 26:17-30' : argang == 3 ? 'Luk 22:7-23' : null,
-    'AFT': argang == 2 ? '1 Kor 11:23-29' : argang == 3 ? '1 Kor 10:14-22' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 26:17-30' : argng(year) == 3 ? 'Luk 22:7-23' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 11:23-29' : argng(year) == 3 ? '1 Kor 10:14-22' : null
   };
 }
 
@@ -542,9 +546,9 @@ function skrtorsd(year) {
     'Description': 'Torsdag före Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 26:17-30' : argang == 3 ? 'Luk 22:7-23' : null,
-    'AFT': argang == 2 ? '1 Kor 11:23-29' : argang == 3 ? '1 Kor 10:14-22' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 26:17-30' : argng(year) == 3 ? 'Luk 22:7-23' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 11:23-29' : argng(year) == 3 ? '1 Kor 10:14-22' : null
   };
 }
 
@@ -561,9 +565,9 @@ function annandagpask(year) {
     'Description': 'Måndag efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 20:11-18' : argang == 3 ? 'Matt 28:9-15' : null,
-    'AFT': argang == 2 ? '2 Kor 5:11-21' : argang == 3 ? '1 Joh 4:7-15' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 20:11-18' : argng(year) == 3 ? 'Matt 28:9-15' : null,
+    'AFT': argng(year) == 2 ? '2 Kor 5:11-21' : argng(year) == 3 ? '1 Joh 4:7-15' : null
   };
 }
 
@@ -580,9 +584,9 @@ function fepask(year) {
     'Description': 'Söndag 7 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 21:1-14' : argang == 3 ? 'Luk 24:36-48' : null,
-    'AFT': argang == 2 ? 'Apg 3:12-26' : argang == 3 ? 'Apg 13:26-41' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 21:1-14' : argng(year) == 3 ? 'Luk 24:36-48' : null,
+    'AFT': argng(year) == 2 ? 'Apg 3:12-26' : argng(year) == 3 ? 'Apg 13:26-41' : null
   };
 }
 
@@ -599,9 +603,9 @@ function aepask(year) {
     'Description': 'Söndag 14 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 21:15-25' : argang == 3 ? 'Joh 10:1-10' : null,
-    'AFT': argang == 2 ? '1 Petr 5:1-5' : argang == 3 ? 'Hebr 13:17-21' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 21:15-25' : argng(year) == 3 ? 'Joh 10:1-10' : null,
+    'AFT': argng(year) == 2 ? '1 Petr 5:1-5' : argng(year) == 3 ? 'Hebr 13:17-21' : null
 
   };
 }
@@ -624,9 +628,9 @@ function tepask(year) {
     'Description': 'Söndag 21 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 17:1-8' : argang == 3 ? 'Joh 14:1-12' : null,
-    'AFT': argang == 2 ? 'Hebr  4:1-13' : argang == 3 ? '1 Petr 1:1-7' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 17:1-8' : argng(year) == 3 ? 'Joh 14:1-12' : null,
+    'AFT': argng(year) == 2 ? 'Hebr  4:1-13' : argng(year) == 3 ? '1 Petr 1:1-7' : null
   };
 }
 
@@ -647,9 +651,9 @@ function fjepask(year) {
     'Description': 'Söndag 28 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 17:9-17' : argang == 3 ? 'Joh 7:37-39' : null,
-    'AFT': argang == 2 ? 'Hebr 5:1-10' : argang == 3 ? '1 Joh 3:19-24' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 17:9-17' : argng(year) == 3 ? 'Joh 7:37-39' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 5:1-10' : argng(year) == 3 ? '1 Joh 3:19-24' : null
 
   };
 }
@@ -670,9 +674,9 @@ function rogate(year) {
     'Description': 'söndag 35 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 17:18-23' : argang == 3 ? 'Luk 11:1-13' : null,
-    'AFT': argang == 2 ? 'Hebr 7:18-28' : argang == 3 ? 'Jak 5:13-20' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 17:18-23' : argng(year) == 3 ? 'Luk 11:1-13' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 7:18-28' : argng(year) == 3 ? 'Jak 5:13-20' : null
 
   };
 }
@@ -693,9 +697,9 @@ function ascensione(year) {
     'Description': 'Torsdag 39 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 17:24-26' : argang == 3 ? 'Luk 24:49-53' : null,
-    'AFT': argang == 2 ? 'Hebr 10:11-18' : argang == 3 ? 'Efes 4:7-16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 17:24-26' : argng(year) == 3 ? 'Luk 24:49-53' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 10:11-18' : argng(year) == 3 ? 'Efes 4:7-16' : null
 
   };
 }
@@ -715,9 +719,9 @@ function sjepask(year) {
     'Description': 'Söndag  42 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 15:18-27' : argang == 3 ? 'Luk 12:4-12' : null,
-    'AFT': argang == 2 ? 'Kol 3:1-11' : argang == 3 ? '1 Petr 3:15-22' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 15:18-27' : argng(year) == 3 ? 'Luk 12:4-12' : null,
+    'AFT': argng(year) == 2 ? 'Kol 3:1-11' : argng(year) == 3 ? '1 Petr 3:15-22' : null
 
   };
 }
@@ -735,9 +739,9 @@ function pentecoste(year) {
     'Description': 'Söndag  49 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 15:10-17 ' : argang == 3 ? 'Joh 14:15-21' : null,
-    'AFT': argang == 2 ? 'Efes 2:17-22' : argang == 3 ? 'Apg 2:14-41' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 15:10-17 ' : argng(year) == 3 ? 'Joh 14:15-21' : null,
+    'AFT': argng(year) == 2 ? 'Efes 2:17-22' : argng(year) == 3 ? 'Apg 2:14-41' : null
 
   };
 }
@@ -755,9 +759,9 @@ function annnandagpingst(year) {
     'Description': 'Måndag ',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 6:44-51' : argang == 3 ? 'Joh 12:44-50' : null,
-    'AFT': argang == 2 ? '1 Kor 12:12-31' : argang == 3 ? '1 Joh 4:7-15' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 6:44-51' : argng(year) == 3 ? 'Joh 12:44-50' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 12:12-31' : argng(year) == 3 ? '1 Joh 4:7-15' : null
 
   };
 }
@@ -774,9 +778,9 @@ function michaeli(year) {
     'Description': 'Söndag 29 september-5 oktober',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Mark 10:13-16' : argang == 3 ? 'Mark 9:33-50' : null,
-    'AFT': argang == 2 ? 'Hebr 2:1-10' : argang == 3 ? 'Apg 12:1-19' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Mark 10:13-16' : argng(year) == 3 ? 'Mark 9:33-50' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 2:1-10' : argng(year) == 3 ? 'Apg 12:1-19' : null
   };
 }
 function allahelgon(year) {
@@ -792,9 +796,9 @@ function allahelgon(year) {
     'Description': 'Lördag 31 oktober-6 november',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 5:13-16' : argang == 3 ? 'Luk 6:20-26' : null,
-    'AFT': argang == 2 ? 'Hebr 12:1-3' : argang == 3 ? 'Upp 22:6-9' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 5:13-16' : argng(year) == 3 ? 'Luk 6:20-26' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 12:1-3' : argng(year) == 3 ? 'Upp 22:6-9' : null
   };
 }
 function augsburska(year) {
@@ -810,7 +814,7 @@ function augsburska(year) {
     'Description': 'Söndag 21-27 juni',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
+    'Argang': argng(year),
     'HHM': null,
     'AFT': null
   };
@@ -828,9 +832,9 @@ function trinitatis(year) {
     'Description': 'Söndag 56 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 15:1-9' : argang == 3 ? 'Matt 28:16-20' : null,
-    'AFT': argang == 2 ? '1 Joh 3:1-12' : argang == 3 ? 'Kol 1:12-23' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 15:1-9' : argng(year) == 3 ? 'Matt 28:16-20' : null,
+    'AFT': argng(year) == 2 ? '1 Joh 3:1-12' : argng(year) == 3 ? 'Kol 1:12-23' : null
   };
 }
 /* 
@@ -851,9 +855,9 @@ function trinitatis1(year) {
   'Description' : 'första söndag* efter trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Luk 12:13-21' : argang == 3 ? 'Matt 16:24-28': null,
-  'AFT': argang == 2 ? 'Rom 1:1-15' : argang == 3 ? '1 Tim 6:6-19': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Luk 12:13-21' : argng(year) == 3 ? 'Matt 16:24-28': null,
+  'AFT': argng(year) == 2 ? 'Rom 1:1-15' : argng(year) == 3 ? '1 Tim 6:6-19': null
 
   };
 }
@@ -873,9 +877,9 @@ function trinitatis2(year) {
   'Description' : '2:a Söndag* efter Trefaldighet',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Luk 14:25-35' : argang == 3 ? 'Luk 9:51-62': null,
-  'AFT': argang == 2 ? 'Rom 1:18-25' : argang == 3 ? '2 Petr 1:1-11': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Luk 14:25-35' : argng(year) == 3 ? 'Luk 9:51-62': null,
+  'AFT': argng(year) == 2 ? 'Rom 1:18-25' : argng(year) == 3 ? '2 Petr 1:1-11': null
 
   };
 }
@@ -896,9 +900,9 @@ function trinitatis3(year) {
   'Description' : '3:e Söndag* efter Trefaldighet',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Luk 15:11-32' : argang == 3 ? 'Matt 9:9-13': null,
-  'AFT': argang == 2 ? 'Rom 2:1-16' : argang == 3 ? 'Ef 2:1-9': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Luk 15:11-32' : argng(year) == 3 ? 'Matt 9:9-13': null,
+  'AFT': argng(year) == 2 ? 'Rom 2:1-16' : argng(year) == 3 ? 'Ef 2:1-9': null
 
   };
 }
@@ -919,9 +923,9 @@ function trinitatis4(year) {
   'Description' : '4:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 8:1-11' : argang == 3 ? 'Matt 7:1-6': null,
-  'AFT': argang == 2 ? 'Rom 2:17-29' : argang == 3 ? 'Rom 14': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 8:1-11' : argng(year) == 3 ? 'Matt 7:1-6': null,
+  'AFT': argng(year) == 2 ? 'Rom 2:17-29' : argng(year) == 3 ? 'Rom 14': null
 
   };
 }
@@ -942,9 +946,9 @@ function trinitatis5(year) {
   'Description' : '5:e Söndag* efter Trinitatis eller apostlarnadagen',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 1:35-51' : argang == 3 ? 'Matt 16:13-20': null,
-  'AFT': argang == 2 ? 'Rom 3:1-20' : argang == 3 ? 'Apg 26:1-29': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 1:35-51' : argng(year) == 3 ? 'Matt 16:13-20': null,
+  'AFT': argng(year) == 2 ? 'Rom 3:1-20' : argng(year) == 3 ? 'Apg 26:1-29': null
 
   };
 }
@@ -965,9 +969,9 @@ function trinitatis6(year) {
   'Description' : '6:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 5:17-19' : argang == 3 ? 'Matt 5:27-42': null,
-  'AFT': argang == 2 ? 'Rom 3:21-31' : argang == 3 ? 'Jak 2': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 5:17-19' : argng(year) == 3 ? 'Matt 5:27-42': null,
+  'AFT': argng(year) == 2 ? 'Rom 3:21-31' : argng(year) == 3 ? 'Jak 2': null
 
   };
 }
@@ -988,9 +992,9 @@ function trinitatis6(year) {
   'Description' : '7:e Söndag* efter Trefaldighet',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 13:31-32' : argang == 3 ? 'Matt 17:9-13': null,
-  'AFT': argang == 2 ? '2 Kor 12:1-13' : argang == 3 ? 'Upp 1:9-20': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 13:31-32' : argng(year) == 3 ? 'Matt 17:9-13': null,
+  'AFT': argng(year) == 2 ? '2 Kor 12:1-13' : argng(year) == 3 ? 'Upp 1:9-20': null
 
   };
 }
@@ -1011,9 +1015,9 @@ function trinitatis8(year) {
   'Description' : '8:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 7:12-14' : argang == 3 ? 'Matt 7:22-29': null,
-  'AFT': argang == 2 ? 'Rom 4:1-8' : argang == 3 ? '1 Joh 4:1-6': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 7:12-14' : argng(year) == 3 ? 'Matt 7:22-29': null,
+  'AFT': argng(year) == 2 ? 'Rom 4:1-8' : argng(year) == 3 ? '1 Joh 4:1-6': null
 
   };
 }
@@ -1034,9 +1038,9 @@ function trinitatis9(year) {
   'Description' : '9:e Söndag* efter Trefaldighet',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Luk 12:42-48' : argang == 3 ? 'Luk 16:10-17': null,
-  'AFT': argang == 2 ? 'Rom 4:9-25' : argang == 3 ? '2 Tess 3:6-18': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Luk 12:42-48' : argng(year) == 3 ? 'Luk 16:10-17': null,
+  'AFT': argng(year) == 2 ? 'Rom 4:9-25' : argng(year) == 3 ? '2 Tess 3:6-18': null
 
   };
 }
@@ -1057,9 +1061,9 @@ function trinitatis10(year) {
   'Description' : '10:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 8:21-29' : argang == 3 ? 'Matt 11:20-24': null,
-  'AFT': argang == 2 ? 'Rom 5:1-11' : argang == 3 ? 'Hebr 3:12-19': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 8:21-29' : argng(year) == 3 ? 'Matt 11:20-24': null,
+  'AFT': argng(year) == 2 ? 'Rom 5:1-11' : argng(year) == 3 ? 'Hebr 3:12-19': null
 
   };
 }
@@ -1080,9 +1084,9 @@ function trinitatis11(year) {
   'Description' : '11:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 21:28-32' : argang == 3 ? 'Matt 23:1-12': null,
-  'AFT': argang == 2 ? 'Rom 5:12-21' : argang == 3 ? '1 Joh 1:8-2:2': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 21:28-32' : argng(year) == 3 ? 'Matt 23:1-12': null,
+  'AFT': argng(year) == 2 ? 'Rom 5:12-21' : argng(year) == 3 ? '1 Joh 1:8-2:2': null
 
   };
 }
@@ -1103,9 +1107,9 @@ function trinitatis12(year) {
   'Description' : '12:3 Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 12:33-37' : argang == 3 ? 'Matt 15:29-39': null,
-  'AFT': argang == 2 ? 'Rom 6:12-23' : argang == 3 ? '1 Kor 2:6-16': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 12:33-37' : argng(year) == 3 ? 'Matt 15:29-39': null,
+  'AFT': argng(year) == 2 ? 'Rom 6:12-23' : argng(year) == 3 ? '1 Kor 2:6-16': null
 
   };
 }
@@ -1125,9 +1129,9 @@ function trinitatis13(year) {
   'Description' : '13:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 5:43-6:4' : argang == 3 ? 'Matt 11:25-30': null,
-  'AFT': argang == 2 ? 'Rom 7:1-6' : argang == 3 ? '1 Tim 1:1-17': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 5:43-6:4' : argng(year) == 3 ? 'Matt 11:25-30': null,
+  'AFT': argng(year) == 2 ? 'Rom 7:1-6' : argng(year) == 3 ? '1 Tim 1:1-17': null
 
   };
 }
@@ -1148,9 +1152,9 @@ function trinitatis14(year) {
   'Description' : '14:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 5:1-18' : argang == 3 ? 'Luk 4:23-30': null,
-  'AFT': argang == 2 ? 'Rom 7:7-25' : argang == 3 ? '2 Tim 2:14-26': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 5:1-18' : argng(year) == 3 ? 'Luk 4:23-30': null,
+  'AFT': argng(year) == 2 ? 'Rom 7:7-25' : argng(year) == 3 ? '2 Tim 2:14-26': null
 
   };
 }
@@ -1171,9 +1175,9 @@ function trinitatis15(year) {
   'Description' : '15:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Luk 10:38-42' : argang == 3 ? 'Matt 6:19-23': null,
-  'AFT': argang == 2 ? 'Rom 8:1-17' : argang == 3 ? '2 Kor 9:1-15': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Luk 10:38-42' : argng(year) == 3 ? 'Matt 6:19-23': null,
+  'AFT': argng(year) == 2 ? 'Rom 8:1-17' : argng(year) == 3 ? '2 Kor 9:1-15': null
 
   };
 }
@@ -1193,9 +1197,9 @@ function trinitatis16(year) {
   'Description' : '16:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 11:1-45' : argang == 3 ? 'Joh 5:19-21': null,
-  'AFT': argang == 2 ? 'Rom 8:18-39' : argang == 3 ? 'Fil 1:12-26': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 11:1-45' : argng(year) == 3 ? 'Joh 5:19-21': null,
+  'AFT': argng(year) == 2 ? 'Rom 8:18-39' : argng(year) == 3 ? 'Fil 1:12-26': null
 
   };
 }
@@ -1216,9 +1220,9 @@ function trinitatis17(year) {
   'Description' : '17:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Mark 2:18-3:6' : argang == 3 ? 'Mark 7:1-23': null,
-  'AFT': argang == 2 ? 'Rom 9:1-13' : argang == 3 ? 'Gal 5:1-15': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Mark 2:18-3:6' : argng(year) == 3 ? 'Mark 7:1-23': null,
+  'AFT': argng(year) == 2 ? 'Rom 9:1-13' : argng(year) == 3 ? 'Gal 5:1-15': null
 
   };
 }
@@ -1239,9 +1243,9 @@ function trinitatis18(year) {
   'Description' : '18:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 10:22-39' : argang == 3 ? 'Mark 10:17-27': null,
-  'AFT': argang == 2 ? 'Rom 9:14-33' : argang == 3 ? '1 Joh 2:7-17': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 10:22-39' : argng(year) == 3 ? 'Mark 10:17-27': null,
+  'AFT': argng(year) == 2 ? 'Rom 9:14-33' : argng(year) == 3 ? '1 Joh 2:7-17': null
 
   };
 }
@@ -1262,9 +1266,9 @@ function trinitatis19(year) {
   'Description' : '19:e Söndag* efter Trefaldighet',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 9-1-41' : argang == 3 ? 'Luk 13:10-17': null,
-  'AFT': argang == 2 ? 'Rom 10:1-13' : argang == 3 ? '1 Kor 2:1-5': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 9-1-41' : argng(year) == 3 ? 'Luk 13:10-17': null,
+  'AFT': argng(year) == 2 ? 'Rom 10:1-13' : argng(year) == 3 ? '1 Kor 2:1-5': null
 
   };
 }
@@ -1285,9 +1289,9 @@ function trinitatis20(year) {
   'Description' : '20:e Söndag* efter Trefaldighet (1 –7 november)?',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 13:44-46' : argang == 3 ? 'Matt 21:33-46': null,
-  'AFT': argang == 2 ? 'Rom 10:14-21' : argang == 3 ? 'Hebr 10:19-31': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 13:44-46' : argng(year) == 3 ? 'Matt 21:33-46': null,
+  'AFT': argng(year) == 2 ? 'Rom 10:14-21' : argng(year) == 3 ? 'Hebr 10:19-31': null
 
   };
 }
@@ -1308,9 +1312,9 @@ function trinitatis21(year) {
   'Description' : '21:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 16:1-4' : argang == 3 ? 'Matt 9:27-31': null,
-  'AFT': argang == 2 ? 'Rom 11:1-12' : argang == 3 ? '1 Joh 2:18-29': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 16:1-4' : argng(year) == 3 ? 'Matt 9:27-31': null,
+  'AFT': argng(year) == 2 ? 'Rom 11:1-12' : argng(year) == 3 ? '1 Joh 2:18-29': null
 
   };
 }
@@ -1331,9 +1335,9 @@ function trinitatis22(year) {
   'Description' : '22:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Matt 18:15-22' : argang == 3 ? 'Mark 4:21-25': null,
-  'AFT': argang == 2 ? 'Rom 11:13-24' : argang == 3 ? '1 Tess 5:14-28': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Matt 18:15-22' : argng(year) == 3 ? 'Mark 4:21-25': null,
+  'AFT': argng(year) == 2 ? 'Rom 11:13-24' : argng(year) == 3 ? '1 Tess 5:14-28': null
 
   };
 }
@@ -1354,9 +1358,9 @@ function trinitatis23(year) {
   'Description' : '23:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Mark 12:41-44' : argang == 3 ? 'Matt 17:24-27': null,
-  'AFT': argang == 2 ? 'Rom 11:25-36' : argang == 3 ? 'Rom 13:1-7': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Mark 12:41-44' : argng(year) == 3 ? 'Matt 17:24-27': null,
+  'AFT': argng(year) == 2 ? 'Rom 11:25-36' : argng(year) == 3 ? 'Rom 13:1-7': null
 
   };
 }
@@ -1377,9 +1381,9 @@ function trinitatis24(year) {
   'Description' : '24:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? 'Joh 6:37-40' : argang == 3 ? 'Luk 20:27-40': null,
-  'AFT': argang == 2 ? '1 Kor 15:35-58' : argang == 3 ? '2 Kor 5:1-10': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? 'Joh 6:37-40' : argng(year) == 3 ? 'Luk 20:27-40': null,
+  'AFT': argng(year) == 2 ? '1 Kor 15:35-58' : argng(year) == 3 ? '2 Kor 5:1-10': null
 
   };
 }
@@ -1399,9 +1403,9 @@ function trinitatis25(year) {
   'Description' : '25:e Söndag* efter Trinitatis',
   'Link': '',
   'Prio': 2,
-  'Argang' : argang,
-  'HHM': argang == 2 ? ' ' : argang == 3 ? '': null,
-  'AFT': argang == 2 ? ' ' : argang == 3 ? '': null
+  'Argang' : argng(year),
+  'HHM': argng(year) == 2 ? ' ' : argng(year) == 3 ? '': null,
+  'AFT': argng(year) == 2 ? ' ' : argng(year) == 3 ? '': null
 
   };
 }
@@ -1422,9 +1426,9 @@ function sfdomsndg(year) {
     'Description': 'Söndag 13-19 november',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Luk 13:22-30' : argang == 3 ? 'Matt 25:14-30' : null,
-    'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Luk 13:22-30' : argng(year) == 3 ? 'Matt 25:14-30' : null,
+    'AFT': argng(year) == 2 ? 'Upp 21:9-22:5' : argng(year) == 3 ? 'Upp 22:10-21' : null
   };
 }
 function domsndg(year) {
@@ -1440,9 +1444,9 @@ function domsndg(year) {
     'Description': 'Söndag 20-26 November',
     'Link': '',
     'Prio': 1,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 5:22-29' : argang == 3 ? 'Matt 1:18-25' : null,
-    'AFT': argang == 2 ? '1 Kor 15:22-34' : argang == 3 ? 'Tit 2:11-15' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 5:22-29' : argng(year) == 3 ? 'Matt 1:18-25' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 15:22-34' : argng(year) == 3 ? 'Tit 2:11-15' : null
   };
 }
 // från 1 advent ändras årgång varför 'year + 1'
@@ -1559,9 +1563,9 @@ function ioannesbaptista(year) {
       'Description': 'Lördag 20-26 juni',
       'Link': '',
       'Prio': 1,
-      'Argang': argang,
-      'HHM': argang == 2 ? 'Luk 1:5-25' : argang == 3 ? 'Mark 6:14-29' : null,
-      'AFT': argang == 2 ? 'Apg 19:1-7' : argang == 3 ? 'Apg 13 16-25' : null
+      'Argang': argng(year),
+      'HHM': argng(year) == 2 ? 'Luk 1:5-25' : argng(year) == 3 ? 'Mark 6:14-29' : null,
+      'AFT': argng(year) == 2 ? 'Apg 19:1-7' : argng(year) == 3 ? 'Apg 13 16-25' : null
     };
   }
 }
@@ -1582,9 +1586,9 @@ function sndgenyar(year) {
       'Description': 'Söndag 2 januari - 5 januari',
       'Link': '',
       'Prio': 2,
-      'Argang': argang,
-      'HHM': argang == 2 ? 'Joh 1:29-34' : argang == 3 ? 'Matt 3:11-12' : null,
-      'AFT': argang == 2 ? 'Kol 2:9-15' : argang == 3 ? 'Ef 5:25-27' : null
+      'Argang': argng(year),
+      'HHM': argng(year) == 2 ? 'Joh 1:29-34' : argng(year) == 3 ? 'Matt 3:11-12' : null,
+      'AFT': argng(year) == 2 ? 'Kol 2:9-15' : argng(year) == 3 ? 'Ef 5:25-27' : null
     };
   }
 }
@@ -1601,9 +1605,9 @@ function feepifania(year) {
     'Description': 'Söndag* 7 januari - 13 januari',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 7:14-18' : argang == 3 ? 'Matt 12:46-50' : null,
-    'AFT': argang == 2 ? 'Hebr 3:1-11' : argang == 3 ? 'Hebr 2:11-16' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 7:14-18' : argng(year) == 3 ? 'Matt 12:46-50' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 3:1-11' : argng(year) == 3 ? 'Hebr 2:11-16' : null
   };
 
 }
@@ -1620,9 +1624,9 @@ function aeepifania(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 4:5-26' : argang == 3 ? 'Luk 19:1-10' : null,
-    'AFT': argang == 2 ? 'Efes 2:11-16' : argang == 3 ? '1 Kor 1:26-31' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 4:5-26' : argng(year) == 3 ? 'Luk 19:1-10' : null,
+    'AFT': argng(year) == 2 ? 'Efes 2:11-16' : argng(year) == 3 ? '1 Kor 1:26-31' : null
   };
 
 }
@@ -1639,9 +1643,9 @@ function teepifania(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Joh 4:27-42' : argang == 3 ? 'Matt 8:14-17' : null,
-    'AFT': argang == 2 ? 'Hebr 11:1-22' : argang == 3 ? '2 Tim 1:1-14' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Joh 4:27-42' : argng(year) == 3 ? 'Matt 8:14-17' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 11:1-22' : argng(year) == 3 ? '2 Tim 1:1-14' : null
   };
 
 }
@@ -1658,9 +1662,9 @@ function fjeepifania(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 2,
-    'Argang': argang,
-    'HHM': argang == 2 ? 'Matt 21:18-22' : argang == 3 ? 'Matt 14:22-36' : null,
-    'AFT': argang == 2 ? 'Hebr 11:23-40' : argang == 3 ? '2 Tim 1:3-14' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? 'Matt 21:18-22' : argng(year) == 3 ? 'Matt 14:22-36' : null,
+    'AFT': argng(year) == 2 ? 'Hebr 11:23-40' : argng(year) == 3 ? '2 Tim 1:3-14' : null
   };
 
 }
@@ -1681,9 +1685,9 @@ function mariakyrkogang(year) {
       'Description': 'Söndag 2-8 februari eller söndag före Fastlagssöndag och då tidigast 26 januar',
       'Link': '',
       'Prio': 1,
-      'Argang': argang,
-      'HHM': argang == 2 ? 'Joh 1:15-18' : argang == 3 ? 'Matt 13:31-33' : null,
-      'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+      'Argang': argng(year),
+      'HHM': argng(year) == 2 ? 'Joh 1:15-18' : argng(year) == 3 ? 'Matt 13:31-33' : null,
+      'AFT': argng(year) == 2 ? 'Upp 21:9-22:5' : argng(year) == 3 ? 'Upp 22:10-21' : null
     };
   } else {
     return {
@@ -1698,9 +1702,9 @@ function mariakyrkogang(year) {
       'Description': 'Söndag 2-8 februari eller söndag före Fastlagssöndag och då tidigast 26 januar',
       'Link': '',
       'Prio': 1,
-      'Argang': argang,
-      'HHM': argang == 2 ? 'Joh 1:15-18' : argang == 3 ? 'Matt 13:31-33' : null,
-      'AFT': argang == 2 ? 'Upp 21:9-22:5' : argang == 3 ? 'Upp 22:10-21' : null
+      'Argang': argng(year),
+      'HHM': argng(year) == 2 ? 'Joh 1:15-18' : argng(year) == 3 ? 'Matt 13:31-33' : null,
+      'AFT': argng(year) == 2 ? 'Upp 21:9-22:5' : argng(year) == 3 ? 'Upp 22:10-21' : null
     };
   }
 
@@ -1719,9 +1723,9 @@ function femeepifania(year) {
     'Description': 'Söndag*',
     'Link': '',
     'Prio': 3,
-    'Argang': argang,
-    'HHM': argang == 2 ? '' : argang == 3 ? '' : null,
-    'AFT': argang == 2 ? '' : argang == 3 ? '' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? '' : argng(year) == 3 ? '' : null,
+    'AFT': argng(year) == 2 ? '' : argng(year) == 3 ? '' : null
   };
 
 }
@@ -1739,9 +1743,9 @@ function sjeepifania(year) {
     'Description': 'Söndag* 11 - 17 februari',
     'Link': '',
     'Prio': 3,
-    'Argang': argang,
-    'HHM': argang == 2 ? '' : argang == 3 ? '' : null,
-    'AFT': argang == 2 ? ' ' : argang == 3 ? '' : null
+    'Argang': argng(year),
+    'HHM': argng(year) == 2 ? '' : argng(year) == 3 ? '' : null,
+    'AFT': argng(year) == 2 ? ' ' : argng(year) == 3 ? '' : null
   };
 }
 
@@ -2043,8 +2047,8 @@ let settings = {};
 let element = document.getElementById('bibelcalender');
 caleandar(element, uniqueEvents, settings);
 // visar Påskdagen och årgång
-console.log(getEaster(thisYear).Date.toLocaleString() + " Årgang " + argang);
-console.log("Aktuell år: " + thisYear + " Årgang: " + argang);
+console.log(getEaster(thisYear).Date.toLocaleString() + " Årgang " + argng(thisYear));
+console.log("Aktuell år: " + thisYear + " Årgang: " + argng(thisYear));
 /*console.log(uniqueEvents.sortBy(function (o) {
   return [o.Week, o.Prio, o.Date]
 }));
@@ -2085,28 +2089,32 @@ showMonthYear = (arr, mese, anno) => {
   this.anno = parseInt(anno);
   console.log(months[this.mese] + " " + this.anno);
   let lk = "";
+  lk += `<b>${months[this.mese]} ${this.anno}</b><br>`;
   for (let i of arr) {
+    var Gt = typeof i.OldT == 'undefined' ? "" : "<b>Gt</b> " + i.OldT ;
+    var Ep = typeof i.Letters == 'undefined' ? "" : "<b>Ep</b> " + i.Letters ;
+    var Ev = typeof i.Gospel === 'undefined' ? "" : "<b>Ev</b> " + i.Gospel ;
     if (new Date(i.time).getMonth() === this.mese && new Date(i.time).getFullYear() === this.anno ) {
+      lk += `<b>v </b>${i.Week}<br>`;
 
       if (i.Argang == 1) {
-        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
-        console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "\n");
-        lk += `${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
-        lk += "<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "<br>";
+
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel}` + "<br>";
       } else if (i.Argang == 2 && i.HHM !== null) {
-      } else if (i.HHM !== null) {
-        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
-        console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n II: ${i.HHM}, ${i.AFT}` + "\n");
-        lk+=`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
-        lk+="<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}\n III: ${i.HHM}, ${i.AFT}` + "<br>";
+        
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel} <b>II</b> ${i.HHM}, ${i.AFT}` + "<br>";
+
+      } else if (i.Argang == 3 && i.HHM !== null) {
+
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel} <b>III</b> ${i.HHM}, ${i.AFT}` + "<br>";
+
       } else {
-        console.log(`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`);
-        console.log("\n" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "\n");
-        lk+=`${days[new Date(i.time).getDay()]}  ${new Date(i.time).getDate()} ${months[new Date(i.time).getMonth()]} ${new Date(i.time).getFullYear()}`;
-        lk+="<br>" + `${i.Title}\n ${i.Color}\n ${i.Theme}\n ${i.Psalms}\n ${i.OldT}\n ${i.Letters}\t ${i.Gospel}` + "<br>";
+        
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${i.Psalms}\n ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel}` + "<br>";
       }
     }
   }
+ 
   return lk;
 };
 showMonth = (arr, mese) => {
