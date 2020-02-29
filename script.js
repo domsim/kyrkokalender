@@ -2337,37 +2337,64 @@ for (i=0; i< 12;++i){
 
     
 let nyar = document.getElementById('nyar');
+nyar.value = new Date().getFullYear();
+let nyweek = document.getElementById('week');
+let nymanad = document.getElementById('nymanad');
 let btn = document.getElementById('btn')
-nyar.addEventListener('change', function(){
-  if (nyar.value.indexOf('-') !== -1){
-    let start = 1* nyar.value.split('-')[0];
+btn.addEventListener('click', function () {
+  if (nyar.value.indexOf('-') !== -1) {
+    let start = 1 * nyar.value.split('-')[0];
     console.log('start: ' + start);
-    let end = 1 * nyar.value.split('-')[1]; 
+    let end = 1 * nyar.value.split('-')[1];
     console.log('end: ' + end);
     let n = end - start;
     console.log('antal år: ' + n);
-    for( let a = 0; a <= n; ++a) {
+    for (let a = 0; a <= n; ++a) {
       console.log(parseInt(start + a));
-      makeKK(start+a);
+      makeKK(start + a);
     }
-  } else if (nyar.value.indexOf(',') !== -1){
-      let aren = nyar.value.split(',');
-      for (let b = 0; b < aren.length; ++b){
-        console.log(1*aren[b]);
-        makeKK(1*aren[b]);
+  } else if (nyar.value.indexOf(',') !== -1) {
+    let aren = nyar.value.split(',');
+    for (let b = 0; b < aren.length; ++b) {
+      console.log(1 * aren[b]);
+      makeKK(1 * aren[b]);
+    }
+  } else {
+    /* makeKK(nyar.value);
+    $('p#test').html('');
+    if (typeof nymanad != 'undefined' && nymanad.vaue != '12'){
+      $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), 1*nymanad.value, nyar.value));
+    }else if (nymanad.value === '12'){   
+        $('p#test').append(showYear(uniqueEvents.sortBy(o => [o.time]), 0, nyar.value));
+      
+    } */
+    makeKK(nyar.value);
+
+    $('p#test').html('');
+    if (nymanad.value == '12') {
+      for (i = 0; i < 12; ++i) {
+        $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), i, nyar.value));
       }
+
+    }
+    //else if (nyweek.value !== '2020-W01') {
+    //  $('p#test').append(showWeek(uniqueEvents.filter(o=>o.Week === Math.abs(nyweek.value.split('-')[1].replace("W","").//replace("0",""))),nyweek.value.split('-')[1].replace("W","").replace("0",""),nyweek.value.split('-')[0]));
+    //} 
+    else {
+      $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), nymanad.value, nyar.value));
+    }
   }
-  else {
-      makeKK(nyar.value);
-      $('p#test').html('');
-      for (i=0; i< 12;++i){
-           $('p#test').append(showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,nyar.value));
-      }
-      BGLinks.version = "SFB";
-      BGLinks.linkVerses();
-  }
+  BGLinks.version = "SFB";
+  BGLinks.linkVerses();
+
 });
 
+$('#togglecal').on('click', function () {
+  $('#bibelcalender').toggle();
+});
+$('#BibleGateway').on('click', function () {
+  $('#biblegateway').toggle();
+});
 /*
 for (i of uniqueEvents) {
   if (i.Argang == 1) {
