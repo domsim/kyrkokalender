@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>repl.it</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  </head>
-  <body>
-<div id="byt">
-      <label for="nyar">Ange år</label>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+	</script>
+</head>
+
+<body>
+	<div id="byt">
+		<label for="nyar">Ange år</label>
       <input id="nyar" type="text" name="nyar">
     </div>
-    <div id="container">
-      <div id="bibelcalender">
-      </div> 
-    </div>
-
-    <div id="biblegateway">
+       <div id="biblegateway">
           <form action="https://www.biblegateway.com/quicksearch/" target="_blank">
-          <table border="1" cellspacing="0" cellpadding="2" style="border-color: #600;">
+          <table border="1" cellspacing="0" cellpadding="2" style="border-color: #600; margin: 0 auto;">
           <tr><th style="background-color: #600; color:#fff; text-align: center; padding: 0 10px;">Sök på ett ord eller vers i Bibeln</th></tr>
           <tr><td style="background-color: #fff; text-align: center; padding: 0 10px;">
           <div style="margin-bottom: 0;">
@@ -34,8 +32,14 @@
           </form>
 
     </div>
-    <di>
-    <p id="test"></p>
+    <div id="container">
+      <div id="bibelcalender">
+      </div> 
+    </div>
+
+ 
+    <diV>
+    <p id="test" style="text-align:center"></p>
     </div>
     <script src="bglinks.js" type="text/javascript"></script>
     <script src="bcalender.js"></script>

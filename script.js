@@ -33,9 +33,9 @@ function isBlank(str) {
   return (!str || /^\s*$/.test(str));
 }
 
-OT = [["1 Mosebok"],[ "2 Mosebok"],[ "3 Mosebok"],[ "4 Mosebok"],[ "5 Mosebok"],[ "Josua"],[ "Domarboken"],[ "Rut"],[ "1 Samuelsboken"],[ "2 Samuelsboken"],[ "1 Kungaboken"],[ "2 Kungaboken"],[ "1 Krönikeboken"],[ "2 Krönikeboken"],[ "Esra"],[ "Nehemja"],[ "Ester"],[ "Job"],[ "Psaltaren"],[ "Ordspråksboken"],[ "Predikaren"],[ "Höga Visan"],[ "Jesaja"],[ "Jeremia"],[ "Klagovisorna"],[ "Hesekiel"],[ "Daniel"],[ "Hosea"],[ "Joel"],[ "Amos"],[ "Obadja"],[ "Jona"],[ "Mika"],[ "Nahum"],[ "Habackuk"],[ "Sefanja"],[ "Haggai"],[ "Sakaria"],[ "Malaki"]];
+var OT = [["1 Mosebok"],[ "2 Mosebok"],[ "3 Mosebok"],[ "4 Mosebok"],[ "5 Mosebok"],[ "Josua"],[ "Domarboken"],[ "Rut"],[ "1 Samuelsboken"],[ "2 Samuelsboken"],[ "1 Kungaboken"],[ "2 Kungaboken"],[ "1 Krönikeboken"],[ "2 Krönikeboken"],[ "Esra"],[ "Nehemja"],[ "Ester"],[ "Job"],[ "Psaltaren"],[ "Ordspråksboken"],[ "Predikaren"],[ "Höga Visan"],[ "Jesaja"],[ "Jeremia"],[ "Klagovisorna"],[ "Hesekiel"],[ "Daniel"],[ "Hosea"],[ "Joel"],[ "Amos"],[ "Obadja"],[ "Jona"],[ "Mika"],[ "Nahum"],[ "Habackuk"],[ "Sefanja"],[ "Haggai"],[ "Sakaria"],[ "Malaki"]];
 
- NT = [["Matteus"],[ "Markus"],["Lukas"],["Johannes"],["Apostlagärningarna"],["Romarbrevet"],["1 Korinthierbrevet"],["2 Korinthierbrevet"],["Galaterbrevet"],["Efesierbrevet"],["Filipperbrevet"],["Kolosserbrevet"],["1 Thessalonikerbrevet"],["2 Thessalonikerbrevet"],["1 Timotheosbrevet"],["2 Timotheosbrevet"],["Titusbrevet"],["Filemonbrevet"],["Hebreerbrevet"],["Jakobsbrevet"],["1 Petrusbrevet"],["2 Petrusbrevet"],["1 Johannesbrevet"],["2 Johannesbrevet"],["3 Johannesbrevet"],["Judasbrevet"],["Uppenbarelseboken"]];
+var NT = [["Matteus"],[ "Markus"],["Lukas"],["Johannes"],["Apostlagärningarna"],["Romarbrevet"],["1 Korinthierbrevet"],["2 Korinthierbrevet"],["Galaterbrevet"],["Efesierbrevet"],["Filipperbrevet"],["Kolosserbrevet"],["1 Thessalonikerbrevet"],["2 Thessalonikerbrevet"],["1 Timotheosbrevet"],["2 Timotheosbrevet"],["Titusbrevet"],["Filemonbrevet"],["Hebreerbrevet"],["Jakobsbrevet"],["1 Petrusbrevet"],["2 Petrusbrevet"],["1 Johannesbrevet"],["2 Johannesbrevet"],["3 Johannesbrevet"],["Judasbrevet"],["Uppenbarelseboken"]];
 
 var replaceBooks = [["1 Mos","1 Mosebok"],[ "2 Mos","2 Mosebok"], ["3 Mos","3 Mosebok"], ["4 Mos","4 Mosebok"], ["5 Mos","5 Mosebok"], ["Jos","Josua"], ["Dom","Domarboken"], ["Rut","Rut"], ["1 Sam","1 Samuelsboken"], ["2 Sam","2 Samuelsboken"], ["1 kon","1 Kungaboken"], ["2 kon","2 Kungaboken"], ["1 Kron","1 Krönikeboken"], ["2 Kron","2 Krönikeboken"], ["Esra","Esra"], ["Neh","Nehemja"], ["Est","Ester"], ["Job","Job"], ["Psalt","Psaltaren"],["Psa","Psaltaren"], ["Ords","Ordspråksboken"], ["Ord","Ordspråksboken"], ["Pred","Predikaren"], ["HV","Höga Visan"], ["Jes","Jesaja"], ["Jer","Jeremia"], ["klag","Klagovisorna"], ["kla","Klagovisorna"],["Hes", "Hesekiel"], ["Dan","Daniel"], ["Hos","Hosea"], ["Joel","Joel"], ["Amos","Amos"], ["Obad","Obadja"], ["Jona","Jona"], ["Mika","Mika"], ["Nah","Nahum"], ["Hab","Habackuk"], ["Sef","Sefanja"], ["Hag","Haggai"], ["Sak","Sakaria"], ["Mal","Malaki"],["Matt","Matteus"],["Mark","Markus"],["Luk","Lukas"],["Joh","Johannes"],["Apg","Apostlagärningarna"],["Rom","Romarbrevet"],["1 Kor","1 Korinthierbrevet"],["2 Kor","2 Korinthierbrevet"],["Gal","Galaterbrevet"],["Efes","Efesierbrevet"],["Fil","Filipperbrevet"],["Kol","Kolosserbrevet"],["1 Tess","1 Thessalonikerbrevet"],["2 Tess","2 Thessalonikerbrevet"],["1 Tim","1 Timotheosbrevet"],["2 Tim","2 Timotheosbrevet"],["Tit","Titusbrevet"],["Filem","Filemonbrevet"],["Hebr","Hebreerbrevet"],["Jak","Jakobsbrevet"],["1 Petr","1 Petrusbrevet"],["2 Petr","2 Petrusbrevet"],["1 Joh","1 Johannesbrevet"],["2 Joh","2 Johannesbrevet"],["3 Joh","3 Johannesbrevet"],["Jud","Judasbrevet"],["Upp","Uppenbarelseboken"]];
 /*
@@ -45,7 +45,176 @@ var tn = '<i>Apg 1:5</i><b>Psalt 132</b> Ords 2';
  tn = tn.replace(new RegExp(replaceTags[i][0], 'g'),replaceTags[i][1]);
 } 
 */
+
+var replaceBooks = [
+  ["1 Mos", "1 Mosebok"],
+  ["2 Mos", "2 Mosebok"],
+  ["3 Mos", "3 Mosebok"],
+  ["4 Mos", "4 Mosebok"],
+  ["5 Mos", "5 Mosebok"],
+  ["Jos", "Josua"],
+  ["Dom", "Domarboken"],
+  ["Rut", "Rut"],
+  ["1 Sam", "1 Samuelsboken"],
+  ["2 Sam", "2 Samuelsboken"],
+  ["1 kon", "1 Kungaboken"],
+  ["2 kon", "2 Kungaboken"],
+  ["1 Kron", "1 Krönikeboken"],
+  ["2 Kron", "2 Krönikeboken"],
+  ["Esra", "Esra"],
+  ["Neh", "Nehemja"],
+  ["Est", "Ester"],
+  ["Job", "Job"],
+  ["Psalt", "Psaltaren"],
+  ["Psa", "Psaltaren"],
+  ["Ords", "Ordspråksboken"],
+  ["Ord", "Ordspråksboken"],
+  ["Pred", "Predikaren"],
+  ["HV", "Höga Visan"],
+  ["Jes", "Jesaja"],
+  ["Jer", "Jeremia"],
+  ["klag", "Klagovisorna"],
+  ["kla", "Klagovisorna"],
+  ["Hes", "Hesekiel"],
+  ["Dan", "Daniel"],
+  ["Hos", "Hosea"],
+  ["Joel", "Joel"],
+  ["Amos", "Amos"],
+  ["Obad", "Obadja"],
+  ["Jona", "Jona"],
+  ["Mika", "Mika"],
+  ["Nah", "Nahum"],
+  ["Hab", "Habackuk"],
+  ["Sef", "Sefanja"],
+  ["Hag", "Haggai"],
+  ["Sak", "Sakaria"],
+  ["Mal", "Malaki"],
+  ["Matt", "Matteus"],
+  ["Mark", "Markus"],
+  ["Luk", "Lukas"],
+  ["Joh", "Johannes"],
+  ["Apg", "Apostlagärningarna"],
+  ["Rom", "Romarbrevet"],
+  ["1 Kor", "1 Korinthierbrevet"],
+  ["2 Kor", "2 Korinthierbrevet"],
+  ["Gal", "Galaterbrevet"],
+  ["Efes", "Efesierbrevet"],
+  ["Fil", "Filipperbrevet"],
+  ["Kol", "Kolosserbrevet"],
+  ["1 Tess", "1 Thessalonikerbrevet"],
+  ["2 Tess", "2 Thessalonikerbrevet"],
+  ["1 Tim", "1 Timotheosbrevet"],
+  ["2 Tim", "2 Timotheosbrevet"],
+  ["Tit", "Titusbrevet"],
+  ["Filem", "Filemonbrevet"],
+  ["Hebr", "Hebreerbrevet"],
+  ["Jak", "Jakobsbrevet"],
+  ["1 Petr", "1 Petrusbrevet"],
+  ["2 Petr", "2 Petrusbrevet"],
+  ["1 Joh", "1 Johannesbrevet"],
+  ["2 Joh", "2 Johannesbrevet"],
+  ["3 Joh", "3 Johannesbrevet"],
+  ["Jud", "Judasbrevet"],
+  ["Upp", "Uppenbarelseboken"]
+];
+var replaceBooks2yv = [
+  ["1 Mos", "GEN"],
+  ["2 Mos", "EXO"],
+  ["3 Mos", "LEV"],
+  ["4 Mos", "NUM"],
+  ["5 Mos", "DEU"],
+  ["Jos", "JOS"],
+  ["Dom", "JDG"],
+  ["Rut", "RUT"],
+  ["1 Sam", "1SA"],
+  ["2 Sam", "2SA"],
+  ["1 kon", "1KI"],
+  ["2 kon", "2KI"],
+  ["1 Kron", "1CH"],
+  ["2 Kron", "2CH"],
+  ["Esra", "EZR"],
+  ["Neh", "NEH"],
+  ["Est", "EST"],
+  ["Job", "JOB"],
+  ["Psalt", "PSA"],
+  ["Psa", "PSA"],
+  ["Ords", "PRO"],
+  ["Ord", "PRO"],
+  ["Pred", "ECC"],
+  ["HV", "SNG"],
+  ["Jes", "ISA"],
+  ["Jer", "JER"],
+  ["klag", "LAM"],
+  ["kla", "LAM"],
+  ["Hes", "EZK"],
+  ["Dan", "DAN"],
+  ["Hos", "HOS"],
+  ["Joel", "JOL"],
+  ["Amos", "AMO"],
+  ["Obad", "OBA"],
+  ["Jona", "JON"],
+  ["Mika", "MIC"],
+  ["Nah", "NAM"],
+  ["Hab", "HAB"],
+  ["Sef", "ZEP"],
+  ["Hag", "HAG"],
+  ["Sak", "ZEC"],
+  ["Mal", "MAL"],
+  ["Matt", "MAT"],
+  ["Mark", "MRK"],
+  ["Luk", "LUK"],
+  ["Joh", "JHN"],
+  ["Apg", "ACT"],
+  ["Rom", "ROM"],
+  ["1 Kor", "1CO"],
+  ["2 Kor", "2CO"],
+  ["Gal", "GAL"],
+  ["Efes", "EPH"],
+  ["Fil", "PHP"],
+  ["Kol", "COL"],
+  ["1 Tess", "1TH"],
+  ["2 Tess", "2TH"],
+  ["1 Tim", "1TI"],
+  ["2 Tim", "2TI"],
+  ["Tit", "TIT"],
+  ["Filem", "PHM"],
+  ["Hebr", "HEB"],
+  ["Jak", "JAS"],
+  ["1 Petr", "1PE"],
+  ["2 Petr", "2PE"],
+  ["1 Joh", "1JN"],
+  ["2 Joh", "2JN"],
+  ["3 Joh", "3JN"],
+  ["Jud", "JUD"],
+  ["Upp", "REV"]
+];
+
+
+
 let bgbase = "https://www.biblegateway.com/passage/?version=SFB&src=tools&search=";
+let yvbase = "https://www.bible.com/sv/bible/160/";
+let ybasever = ".SFB98";
+
+//create hyperlinks to youversion
+function mkyv(str) {
+  v = str;
+  for (let i = 0; i < replaceBooks2yv.length; i++) {
+    v = v.replace(new RegExp(replaceBooks2yv[i][0], 'g'), replaceBooks2yv[i][1]);
+  }
+
+  var strf = "";
+  for (let i = 0; i < replaceBooks.length; i++) {
+    strf = v.replace(new RegExp(replaceBooks2yv[i][1], 'g'), replaceBooks2yv[i][0]);
+  }
+  v = v.replace(new RegExp(' ', 'g'), '.');
+  v = v.replace(new RegExp(':', 'g'), '.');
+  v = "<a target='_blank' href='" + yvbase + v + ybasever + "' >" + str + "</a>";
+
+
+  return v;
+
+
+}
 // addDays & subtractDays new mehods to Date
 Date.prototype.addDays = function (days) {
   this.setDate(this.getDate() + parseInt(days));
@@ -56,6 +225,30 @@ Date.prototype.subtractDays = function (days) {
   this.setDate(this.getDate() - parseInt(days));
   return this;
 };
+
+Date.prototype.getWeek = function() {
+ // week starts on sunday
+ // var onejan = new Date(this.getFullYear(), 0, 1);
+ // return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+ // week starts on monday!
+ var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+ var dayNum = d.getUTCDay() || 7;
+ d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+ var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+ return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+};
+
+/*
+* Next sunday starting from February 26th 2020
+* new Date(2020,1,26).getNextDay(0)
+* Sun Mar 01 2020 00:00:00 GMT+0100 (centraleuropeisk normaltid)
+*/
+Date.prototype.getNextDay = function(day) {
+  return new Date(this.getFullYear(), this.getMonth(), this.getDate() + (day - new Date(this.getFullYear(), this.getMonth(), this.getDate()).getDay() + 7) % 7);
+};
+
+
+
 /*
  * First sunday in January 2020
  * firstDayInMonth(0,0,2020);
@@ -1880,7 +2073,7 @@ function makeKK(newYear) {
   });
   events = events.map(function (obj) {
     if (typeof obj.Date !== "undefined") {
-      obj.Week = getWeekNumber(obj.Date)[1];
+      obj.Week = obj.Date.getWeek();
       return obj;
     }
   });
@@ -2014,7 +2207,7 @@ console.log(events);
 
 events = events.map(function (obj) {
   if (typeof obj.Date !== "undefined") {
-    obj.Week = getWeekNumber(obj.Date)[1];
+    obj.Week = obj.Date.getWeek();
     return obj;
   }
 });
@@ -2085,36 +2278,36 @@ showWeek = (arr, week, anno) => {
 }
 
 showMonthYear = (arr, mese, anno) => {
-  this.mese = mese;
+  this.mese = parseInt(mese);
   this.anno = parseInt(anno);
   console.log(months[this.mese] + " " + this.anno);
   let lk = "";
-  lk += `<b>${months[this.mese]} ${this.anno}</b><br>`;
+  lk += `<hr><H3>${months[this.mese]} ${this.anno}</H3>`;
   for (let i of arr) {
-    var Gt = typeof i.OldT == 'undefined' ? "" : "<b>Gt</b> " + i.OldT ;
-    var Ep = typeof i.Letters == 'undefined' ? "" : "<b>Ep</b> " + i.Letters ;
-    var Ev = typeof i.Gospel === 'undefined' ? "" : "<b>Ev</b> " + i.Gospel ;
-    if (new Date(i.time).getMonth() === this.mese && new Date(i.time).getFullYear() === this.anno ) {
+    var Gt = typeof i.OldT == 'undefined' ? "" : "<b>Gt</b> " + i.OldT;
+    var Ep = typeof i.Letters == 'undefined' ? "" : "<b>Ep</b> " + i.Letters;
+    var Ev = typeof i.Gospel === 'undefined' ? "" : "<b>Ev</b> " + i.Gospel;
+    if (new Date(i.time).getMonth() === this.mese && new Date(i.time).getFullYear() === this.anno) {
       lk += `<b>v </b>${i.Week}<br>`;
 
       if (i.Argang == 1) {
 
-        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel}` + "<br>";
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${mkyv(i.Psalms)} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + mkyv(i.OldT)} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + mkyv(i.Letters)} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + mkyv(i.Gospel)}` + "<br>";
       } else if (i.Argang == 2 && i.HHM !== null) {
-        
-        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel} <b>II</b> ${i.HHM}, ${i.AFT}` + "<br>";
+
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color} <i>${i.Theme}</i> ${mkyv(i.Psalms)} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + mkyv(i.OldT)} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + mkyv(i.Letters)} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + mkyv(i.Gospel)} <b>II</b> ${mkyv(i.HHM)}, ${mkyv(i.AFT)}` + "<br>";
 
       } else if (i.Argang == 3 && i.HHM !== null) {
 
-        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${i.Psalms} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel} <b>III</b> ${i.HHM}, ${i.AFT}` + "<br>";
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${mkyv(i.Psalms)} ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + mkyv(i.OldT)} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + mkyv(i.Letters)} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + mkyv(i.Gospel)} <b>III</b> ${mkyv(i.HHM)}, ${mkyv(i.AFT)}` + "<br>";
 
       } else {
-        
-        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${i.Psalms}\n ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + i.OldT} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + i.Letters} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + i.Gospel}` + "<br>";
+
+        lk += `${new Date(i.time).getDate()} ${days[new Date(i.time).getDay()]} <b>${i.Title} </b> ${i.Color}  <i>${i.Theme}</i> ${mkyv(i.Psalms)}\n ${isBlank(i.OldT) ? "" : "<b>Gt</b> " + mkyv(i.OldT)} ${isBlank(i.Letters) ? "" : "<b>Ep</b> " + mkyv(i.Letters)} ${isBlank(i.Gospel) ? "" : "<b>Ev</b> " + mkyv(i.Gospel)}` + "<br>";
       }
     }
   }
- 
+
   return lk;
 };
 showMonth = (arr, mese) => {
