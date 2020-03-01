@@ -328,8 +328,8 @@ function removeDuplicates(originalArray, prop) {
 }
 
 
-let choosenYear = prompt('Vill du byta år?', new Date().getFullYear());
-let thisYear = new Date().getFullYear() !== choosenYear ? choosenYear : new Date().getFullYear();
+//let choosenYear = prompt('Vill du byta år?', new Date().getFullYear());
+let thisYear = new Date().getFullYear();// !== choosenYear ? choosenYear : new Date().getFullYear();
 // fix year as number!
 thisYear = parseInt(thisYear);
 
@@ -1928,7 +1928,7 @@ function sjeepifania(year) {
     'Date': femeepifania(year).Date.addDays(7),
     'Title': '6 e Epifania',
     'Color': 'Grön',
-    'Theme': '',
+    'Theme': 'Guds fortgående verk',
     'Psalms': '',
     'OldT': '',
     'Letters': 'Fil 1:3-11',
@@ -2086,7 +2086,11 @@ function makeKK(newYear) {
   newCal.setAttribute('id', 'bibelcalender');
   container.appendChild(newCal);
   caleandar(newCal, uniqueEvents, settings);
-  for (i=0; i< 12;++i){showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)}
+  for (let i = 0; i < 12; ++i) {
+
+    $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), i, thisYear));
+
+  }
 }
 events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
@@ -2335,13 +2339,13 @@ for (i=0; i< 12;++i){
   showMonthYear(uniqueEvents.sortBy(o=>[o.time]),i,thisYear)
 }
 
-    
 let nyar = document.getElementById('nyar');
 nyar.value = new Date().getFullYear();
 let nyweek = document.getElementById('week');
 let nymanad = document.getElementById('nymanad');
 let btn = document.getElementById('btn')
 btn.addEventListener('click', function () {
+  $('p#test').html('');
   if (nyar.value.indexOf('-') !== -1) {
     let start = 1 * nyar.value.split('-')[0];
     console.log('start: ' + start);
@@ -2350,8 +2354,18 @@ btn.addEventListener('click', function () {
     let n = end - start;
     console.log('antal år: ' + n);
     for (let a = 0; a <= n; ++a) {
-      console.log(parseInt(start + a));
-      makeKK(start + a);
+        console.log(parseInt(start + a));
+        makeKK(start + a);
+
+        if (nymanad.value == '12') {
+          for (i = 0; i < 12; ++i) {
+            $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), i, start + a));
+          }
+
+      }  else {
+        $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), nymanad.value, start + a));
+      }
+
     }
   } else if (nyar.value.indexOf(',') !== -1) {
     let aren = nyar.value.split(',');
@@ -2360,14 +2374,7 @@ btn.addEventListener('click', function () {
       makeKK(1 * aren[b]);
     }
   } else {
-    /* makeKK(nyar.value);
-    $('p#test').html('');
-    if (typeof nymanad != 'undefined' && nymanad.vaue != '12'){
-      $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), 1*nymanad.value, nyar.value));
-    }else if (nymanad.value === '12'){   
-        $('p#test').append(showYear(uniqueEvents.sortBy(o => [o.time]), 0, nyar.value));
-      
-    } */
+    
     makeKK(nyar.value);
 
     $('p#test').html('');
@@ -2376,11 +2383,7 @@ btn.addEventListener('click', function () {
         $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), i, nyar.value));
       }
 
-    }
-    //else if (nyweek.value !== '2020-W01') {
-    //  $('p#test').append(showWeek(uniqueEvents.filter(o=>o.Week === Math.abs(nyweek.value.split('-')[1].replace("W","").//replace("0",""))),nyweek.value.split('-')[1].replace("W","").replace("0",""),nyweek.value.split('-')[0]));
-    //} 
-    else {
+    } else {
       $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), nymanad.value, nyar.value));
     }
   }
