@@ -6,37 +6,66 @@
 	<meta name="viewport" content="width=device-width">
 	<title>repl.it</title>
 	<link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
 	</script>
 </head>
 
 <body>
-	<div id="byt" style="margin: auto; width: 30%">
-		<label for="nyar">Ange år</label>
-      <input id="nyar" type="text" name="nyar">
+	  <div id="byt" class="container">
+     <div class="form-inline form-row align-items-center">
+      <div class="col-auto">  
+        <label class="sr-only" for="nyar">Ange år</label>
+        <input id="nyar" type="text" name="nyar" class="form-control">
+      </div>
+    
+      <div class"col-auto"> 
+          <label class="sr-only" for="nyar">och månad</label>
+          <select style="margin:2px" name="nymanad" id="nymanad" class="form-control"> 
+            <option value="12">Hela Året</option>
+            <option value="0">Januari</option>
+            <option value="1">Februari</option>
+            <option value="2">Mars</option>
+            <option value="3">April</option>
+            <option value="4">Maj</option>
+            <option value="5">Juni</option>
+            <option value="6">Juli</option>
+            <option value="7">Augusti</option>
+            <option value="8">September</option>
+            <option value="9">Oktober</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+          </select>
+      </div>
+      <div class"col-auto"> 
+          <label class="sr-only" for="ver">Bibel</label>
+          <select style="margin:2px" name="ver" id="ver" class="form-control"> 
+            <option value="se">SFB98</option>
+            <option value="no">N11BM</option>
+            <option value="it">NR06</option>
+            <option value="el">TR1894</option>
+            <option value="he">WLC</option>
+
+          </select>
+      </div>
+
+      <div class="col-auto">
+          <button id="btn" class=" btn btn-success form-control"> skapa bibelkalender</button>
+      </div>
       
-      <label for="nyar">och månad</label>
-      <select style="margin:2px" name="nymanad" id="nymanad"> 
-          <option value="12">Hela Året</option>
-          <option value="0">Januari</option>
-          <option value="1">Februari</option>
-          <option value="2">Mars</option>
-          <option value="3">April</option>
-          <option value="4">Maj</option>
-          <option value="5">Juni</option>
-          <option value="6">Juli</option>
-          <option value="7">Augusti</option>
-          <option value="8">September</option>
-          <option value="9">Oktober</option>
-          <option value="10">November</option>
-          <option value="11">December</option>
-      </select>
-     <br>
-      <button id="btn">Skapa bibelkalender</button>
-      <button id="togglecal">visa/dölj kalender</button>
-      <button id="BibleGateway">sök med BibleGateway</button>
+      <div class="col-auto">  
+          <input type="button" id="togglecal" class=" btn btn-primary" value="visa/dölj kalender" >
+      </div>
+
+      <div class="col-auto">
+          <input type="button" id="BibleGateway" class=" btn btn-danger" value="sök med BibleGateway">
+        </div>
+
+      
+      </div>
+     </div>
     </div>
-       <div id="biblegateway" style="display:none">
+    <div id="biblegateway" style="display:none">
           <form action="https://www.biblegateway.com/quicksearch/" target="_blank">
           <table border="1" cellspacing="0" cellpadding="2" style="border-color: #600; margin: 0 auto;">
           <tr><th style="background-color: #600; color:#fff; text-align: center; padding: 0 10px;">Sök på ett ord eller vers i Bibeln</th></tr>
@@ -53,15 +82,20 @@
           </form>
 
     </div>
-    <div id="container">
+    
+    <div id="container" class="container-fluid">
       <div id="bibelcalender">
       </div> 
     </div>
 
  
-    <diV>
-    <p id="test" style="text-align:center"></p>
+    <div>
+      <p id="test" style="text-align:center"></p>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="bglinks.js" type="text/javascript"></script>
     <script src="bcalender.js"></script>
     <script src="script.js"></script>

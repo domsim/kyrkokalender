@@ -188,13 +188,22 @@ var replaceBooks2yv = [
   ["Jud", "JUD"],
   ["Upp", "REV"]
 ];
-
-
+let lang = "se";
+let ver = document.getElementById('ver');
 
 let bgbase = "https://www.biblegateway.com/passage/?version=SFB&src=tools&search=";
-let yvbase = "https://www.bible.com/sv/bible/160/";
-let ybasever = ".SFB98";
-
+let yvbase = "https://www.bible.com/sv/bible/160/" ;
+let yvbasever = ".SFB98";
+let yvbano = "https://www.bible.com/no/bible/29/";
+let yvbanover = ".N11BM";
+let yvbait = "https://www.bible.com/sv/bible/122/";
+let yvbaitver = ".NR06";
+ver.addEventListener("change", function(){
+  lang = this.value;
+  console.log(lang);
+  let yvbase = lang === "se" ? "https://www.bible.com/sv/bible/160/" : "https://www.bible.com/no/bible/29/";
+  let yvbasever = lang === "se"?".SFB98":".N11BM";
+});
 //create hyperlinks to youversion
 function mkyv(str) {
   v = str;
@@ -208,8 +217,35 @@ function mkyv(str) {
   }
   v = v.replace(new RegExp(' ', 'g'), '.');
   v = v.replace(new RegExp(':', 'g'), '.');
-  v = "<a target='_blank' href='" + yvbase + v + ybasever + "' >" + str + "</a>";
-
+  switch(lang){
+    case "no":
+      yvbase = "https://www.bible.com/no/bible/29/";
+      yvbasever = ".N11BM";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+     break;
+    case "it":
+      yvbase = "https://www.bible.com/sv/bible/122/";
+      yvbasever = ".NR06";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+    case "se":
+      yvbase = "https://www.bible.com/sv/bible/160/";
+      yvbasever = ".SFB98";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+    case "el":
+      yvbase = "https://www.bible.com/sv/bible/183/";
+      yvbasever = ".TR1894";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+    case "he":
+      yvbase = "https://www.bible.com/bible/904/";
+      yvbasever = ".WLC";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+   
+  }
+  
 
   return v;
 
@@ -668,7 +704,6 @@ function mariabeb(year) {
     'AFT': argng(year) == 2 ? 'Upp 12:1-6' : argng(year) == 3 ? 'Upp 21:1-8' : null
   };
 }
-
 function laetare(year) {
   return {
     'Date': getEaster(year).Date.subtractDays(21),
@@ -2343,9 +2378,12 @@ let nyar = document.getElementById('nyar');
 nyar.value = new Date().getFullYear();
 let nyweek = document.getElementById('week');
 let nymanad = document.getElementById('nymanad');
-let btn = document.getElementById('btn')
+let btn = document.getElementById('btn');
+
 btn.addEventListener('click', function () {
+  
   $('p#test').html('');
+  $('#bibelcalender').hide();
   if (nyar.value.indexOf('-') !== -1) {
     let start = 1 * nyar.value.split('-')[0];
     console.log('start: ' + start);
@@ -2395,6 +2433,10 @@ btn.addEventListener('click', function () {
 $('#togglecal').on('click', function () {
   $('#bibelcalender').toggle();
 });
+$('#btn').on('click', function () {
+  $('#bibelcalender').hide();
+});
+
 $('#BibleGateway').on('click', function () {
   $('#biblegateway').toggle();
 });
