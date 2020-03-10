@@ -233,6 +233,11 @@ function mkyv(str) {
       yvbasever = ".SFB98";
       v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
       break;
+    case "se15":
+      yvbase = "https://www.bible.com/sv/bible/1223/";
+      yvbasever = ".SFB15";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
     case "el":
       yvbase = "https://www.bible.com/sv/bible/183/";
       yvbasever = ".TR1894";
@@ -241,6 +246,16 @@ function mkyv(str) {
     case "he":
       yvbase = "https://www.bible.com/bible/904/";
       yvbasever = ".WLC";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+    case "en":
+      yvbase = "https://www.bible.com/sv/bible/59/";
+      yvbasever = ".ESV";
+      v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
+      break;
+          case "eni":
+      yvbase = "https://www.bible.com/sv/bible/111/";
+      yvbasever = ".NIV";
       v = "<a target='_blank' href='" + yvbase + v + yvbasever + "' >" + str + "</a>";
       break;
    
