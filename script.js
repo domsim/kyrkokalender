@@ -2112,6 +2112,7 @@ function makeKK(newYear) {
   events.push(pentecoste(thisYear));
   events.push(annnandagpingst(thisYear));
   events.push(michaeli(thisYear));
+  
   events.push(allahelgon(thisYear));
   events.push(augsburska(thisYear));
   events.push(trinitatis(thisYear));
@@ -2141,11 +2142,23 @@ function makeKK(newYear) {
   events.push(trinitatis12(thisYear));
   events.push(trinitatis13(thisYear));
   events.push(trinitatis14(thisYear));
-  events.push(trinitatis15(thisYear));
-  events.push(trinitatis16(thisYear));
-  events.push(trinitatis17(thisYear));
-  events.push(trinitatis18(thisYear));
-  events.push(trinitatis19(thisYear));
+   if (michaeli(thisYear).Date.getTime() !== trinitatis15(thisYear).Date.getTime()) {
+    events.push(trinitatis16(thisYear));
+  }
+  
+  if (michaeli(thisYear).Date.getTime() !== trinitatis16(thisYear).Date.getTime()) {
+    events.push(trinitatis16(thisYear));
+  }
+if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime()) {
+    events.push(trinitatis17(thisYear));
+  }
+  if (michaeli(thisYear).Date.getTime() !== trinitatis18(thisYear).Date.getTime()) {
+    events.push(trinitatis18(thisYear));
+  }
+
+   if (michaeli(thisYear).Date.getTime() !== trinitatis19(thisYear).Date.getTime()) {
+    events.push(trinitatis19(thisYear));
+  }
   events.push(trinitatis20(thisYear));
   events.push(trinitatis21(thisYear));
   events.push(trinitatis22(thisYear));
@@ -2287,11 +2300,22 @@ events.push(trinitatis11(thisYear));
 events.push(trinitatis12(thisYear));
 events.push(trinitatis13(thisYear));
 events.push(trinitatis14(thisYear));
-events.push(trinitatis15(thisYear));
-events.push(trinitatis16(thisYear));
-events.push(trinitatis17(thisYear));
-events.push(trinitatis18(thisYear));
-events.push(trinitatis19(thisYear));
+ if (michaeli(thisYear).Date.getTime() !== trinitatis15(thisYear).Date.getTime()) {
+    events.push(trinitatis15(thisYear));
+  }
+ 
+  if (michaeli(thisYear).Date.getTime() !== trinitatis16(thisYear).Date.getTime()) {
+    events.push(trinitatis16(thisYear));
+  }
+if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime()) {
+    events.push(trinitatis17(thisYear));
+  }
+  if (michaeli(thisYear).Date.getTime() !== trinitatis18(thisYear).Date.getTime()) {
+    events.push(trinitatis18(thisYear));
+  }
+ if (michaeli(thisYear).Date.getTime() !== trinitatis19(thisYear).Date.getTime()) {
+    events.push(trinitatis19(thisYear));
+  }
 events.push(trinitatis20(thisYear));
 events.push(trinitatis21(thisYear));
 events.push(trinitatis22(thisYear));
