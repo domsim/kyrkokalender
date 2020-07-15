@@ -493,7 +493,7 @@ function juldagen(year) {
 function annandagjul(year) {
   return {
     'Date': new Date(year, 11, 26),
-    'Title': 'Annandag Jul',
+    'Title': 'S:t Stefanus dag, Annandag Jul',
     'Color': 'Röd',
     'Theme': 'Trons martyrium',
     'Psalms': 'Psalt 2',
