@@ -2143,7 +2143,7 @@ function makeKK(newYear) {
   events.push(trinitatis13(thisYear));
   events.push(trinitatis14(thisYear));
    if (michaeli(thisYear).Date.getTime() !== trinitatis15(thisYear).Date.getTime()) {
-    events.push(trinitatis16(thisYear));
+    events.push(trinitatis15(thisYear));
   }
   
   if (michaeli(thisYear).Date.getTime() !== trinitatis16(thisYear).Date.getTime()) {
