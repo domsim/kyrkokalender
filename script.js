@@ -33,6 +33,26 @@ function isBlank(str) {
   return (!str || /^\s*$/.test(str));
 }
 
+function download(data, filename, type) {
+        var file = new Blob([data],{
+            type: type
+        });
+        if (window.navigator.msSaveOrOpenBlob)
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else {
+            var a = document.createElement('a');
+            url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+}
+
 var OT = [["1 Mosebok"],[ "2 Mosebok"],[ "3 Mosebok"],[ "4 Mosebok"],[ "5 Mosebok"],[ "Josua"],[ "Domarboken"],[ "Rut"],[ "1 Samuelsboken"],[ "2 Samuelsboken"],[ "1 Kungaboken"],[ "2 Kungaboken"],[ "1 Krönikeboken"],[ "2 Krönikeboken"],[ "Esra"],[ "Nehemja"],[ "Ester"],[ "Job"],[ "Psaltaren"],[ "Ordspråksboken"],[ "Predikaren"],[ "Höga Visan"],[ "Jesaja"],[ "Jeremia"],[ "Klagovisorna"],[ "Hesekiel"],[ "Daniel"],[ "Hosea"],[ "Joel"],[ "Amos"],[ "Obadja"],[ "Jona"],[ "Mika"],[ "Nahum"],[ "Habackuk"],[ "Sefanja"],[ "Haggai"],[ "Sakaria"],[ "Malaki"]];
 
 var NT = [["Matteus"],[ "Markus"],["Lukas"],["Johannes"],["Apostlagärningarna"],["Romarbrevet"],["1 Korinthierbrevet"],["2 Korinthierbrevet"],["Galaterbrevet"],["Efesierbrevet"],["Filipperbrevet"],["Kolosserbrevet"],["1 Thessalonikerbrevet"],["2 Thessalonikerbrevet"],["1 Timotheosbrevet"],["2 Timotheosbrevet"],["Titusbrevet"],["Filemonbrevet"],["Hebreerbrevet"],["Jakobsbrevet"],["1 Petrusbrevet"],["2 Petrusbrevet"],["1 Johannesbrevet"],["2 Johannesbrevet"],["3 Johannesbrevet"],["Judasbrevet"],["Uppenbarelseboken"]];
@@ -170,6 +190,7 @@ var replaceBooks2yv = [
   ["2 Kor", "2CO"],
   ["Gal", "GAL"],
   ["Efes", "EPH"],
+  ["Ef", "EPH"],
   ["Fil", "PHP"],
   ["Kol", "COL"],
   ["1 Tess", "1TH"],
@@ -794,7 +815,42 @@ function skrtorsd(year) {
     'AFT': argng(year) == 2 ? '1 Kor 11:23-29' : argng(year) == 3 ? '1 Kor 10:14-22' : null
   };
 }
-
+function lngfredag(year) {
+  return {
+    'Date': palmsndg(year).Date.addDays(5),
+    'Title': 'Långfredagen',
+    'Color': 'Svart',
+    'Theme': 'Korsfäst, död och begraven.',
+    'Psalms': 'Psalt 22:2–19',
+    'OldT': '',
+    'Letters': 'Jes 52:13–53:12',
+    'Gospel': 'Joh 18–19',
+    'Description': 'fredag före Påsk',
+    'Link': '',
+    'Prio': 1,
+    'Argang': argng(year),
+    'HHM': null,
+    'AFT': null
+  };
+}
+function paskafton(year) {
+  return {
+    'Date': lngfredag(year).Date.addDays(1),
+    'Title': 'Påskafton',
+    'Color': 'Svart',
+    'Theme': '',
+    'Psalms': 'Klag 3',
+    'OldT': '',
+    'Letters': '1 Kor 15:1–11',
+    'Gospel': '',
+    'Description': 'dagen före Påsk',
+    'Link': '',
+    'Prio': 1,
+    'Argang': argng(year),
+    'HHM': null,
+    'AFT': null
+  };
+}
 function annandagpask(year) {
   return {
     'Date': getEaster(year).Date.addDays(1),
@@ -2037,6 +2093,8 @@ function makeKK(newYear) {
   }
   events.push(palmsndg(thisYear));
   events.push(skrtorsd(thisYear));
+  events.push(lngfredag(thisYear));
+  events.push(paskafton(thisYear));
   if(mariabeb(thisYear).Date.getTime() !== reminiscere(thisYear).Date.getTime()){
       events.push(reminiscere(thisYear));
   }
@@ -2181,6 +2239,8 @@ if(mariabeb(thisYear).Date.getTime() !== judica(thisYear).Date.getTime()){
 }
 events.push(palmsndg(thisYear));
 events.push(skrtorsd(thisYear));
+events.push(lngfredag(thisYear));
+events.push(paskafton(thisYear));
 if(mariabeb(thisYear).Date.getTime() !== reminiscere(thisYear).Date.getTime()){
   events.push(reminiscere(thisYear));
 }
