@@ -530,6 +530,9 @@ function printRP(year,m=12,arr){
   var bis = dd === 366 ? true : false;
   
     if ( mese === date.getMonth() ) {
+      
+      txt += months[mese] +'\n';
+      
       var mm = new Date(anno, mese+1, 0).getDate();
           for (let j=0; j < mm; j++){
             let g = new Date(anno, mese, j+1);
@@ -537,41 +540,131 @@ function printRP(year,m=12,arr){
             let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
             console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
             
+            let e = events.find(ev=> ev.daynr == i);
+            txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
+              
               if (bis) {
-                
                   if( i === 60 ) {
+
                     console.log('...\n');
+
+                    txt += '...\n';
+
                   } else if ( i > 60 ) {
-                    rp[i-1].forEach(r => console.log( r + '\n')); 
+
+                    rp[i-2].forEach(r => console.log( r + '\n')); 
+                    txt += 'morgon: ' + rp[i-2][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-2][2] != 'undefined' ? ' ps: ' + rp[i-2][2] : '') + '\n';
+                    if(typeof e != 'undefined') {
+
+                        txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                    }
+
                   } else {
-                    rp[i].forEach(r => console.log( r + '\n')); 
+
+                    rp[i-1].forEach(r => console.log( r + '\n')); 
+                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                    if(typeof e != 'undefined') {
+                      
+                        txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                    }
                   }
               } else {
-                  rp[i].forEach(r => console.log( r + '\n')); 
+              
+                  rp[i-1].forEach(r => console.log( r + '\n')); 
+                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                    if(typeof e != 'undefined') {
+                      
+                        txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                    }
               }
           }
       
-        }else {
-              for (let i=0; i<dd; i++){
-                let g = new Date(anno, 0, i+1);
-                console.log( '['+(i+1)+']'+g.toLocaleDateString() + '\n' );
-                
-                  if (bis) {
+        }
+    else {
+
+        for (let x=0; x<12; x++){
+
+          mese = x;
+          txt += months[mese] +'\n';
+            var mm = new Date(anno, x+1, 0).getDate();
+              for (let j=0; j < mm; j++){
+                    let g = new Date(anno, mese, j+1);
+                    let d = new Date(Date.UTC(g.getFullYear(), g.getMonth(), g.getDate()));
+                    let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+                    console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
                     
-                      if( i === 59 ) {
-                        console.log('...\n');
-                      } else if ( i > 59 ) {
-                        rp[i-1].forEach(r => console.log( r + '\n')); 
+                    let e = events.find(ev=> ev.daynr == i);
+                    txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
+                      
+                      if (bis) {
+                          if( i === 60 ) {
+
+                            console.log('...\n');
+
+                            txt += '...\n';
+
+                          } else if ( i > 60 ) {
+
+                            rp[i-2].forEach(r => console.log( r + '\n')); 
+                            txt += 'morgon: ' + rp[i-2][0] + ' kväll: ' + rp[i-2][1] + ( typeof rp[i-2][2] != 'undefined' ? ' ps: ' + rp[i-2][2] : '') + '\n';
+                            if(typeof e != 'undefined') {
+
+                                txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                            }
+
+                          } else {
+
+                            rp[i-1].forEach(r => console.log( r + '\n')); 
+                            txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                            if(typeof e != 'undefined') {
+                              
+                                txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt  ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                            }
+                          }
                       } else {
-                        rp[i].forEach(r => console.log( r + '\n')); 
+                      
+                          rp[i-1].forEach(r => console.log( r + '\n')); 
+                            txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                            if(typeof e != 'undefined') {
+                              
+                                txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+                            }
                       }
-                  } else {
-                      rp[i].forEach(r => console.log( r + '\n')); 
-                  }
                 }
         }
+        //       for (let i=0; i<dd; i++){
+        //         let g = new Date(anno, 0, i+1);
+        //         console.log( '['+(i+1)+']'+g.toLocaleDateString() + '\n' );
+        //         txt += g.getDate() + ' ' + months[g.getMonth()]+ ' ';
+        //           if (bis) {
+                    
+        //               if( i === 59 ) {
+        //                 console.log('...\n');
 
+        //                 txt += '...\n';
+
+        //               } else if ( i > 59 ) {
+        //                 rp[i-1].forEach(r => console.log( r + '\n')); 
+
+        //                 txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+
+        //               } else {
+        //                 rp[i].forEach(r => console.log( r + '\n')); 
+
+        //                 txt += 'morgon: ' + rp[i][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i][2] != 'undefined' ? ' ps: ' + rp[i][2] : '') + '\n';
+
+        //               }
+        //           } else {
+        //               rp[i].forEach(r => console.log( r + '\n')); 
+
+        //               txt += 'morgon: ' + rp[i][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i][2] != 'undefined' ? ' ps: ' + rp[i][2] : '') + '\n';
+
+        //           }
+        //         }
+        // }
+}
     console.log(bis +' '+ arr + ' '+ mese + ' ' + anno);
+    download(txt,'kalender.txt','text');
 
 }
 
@@ -1582,7 +1675,7 @@ function trinitatis11(year) {
   'Color': 'Grön',
   'Theme':'Sann och falsk rättfärdighet',
   'Psalms': 'Psalt 51:1-15',
-  'OldT': 'Dan 9:15-19	1',
+  'OldT': 'Dan 9:15-19',
   'Letters': ' Kor 15:1-11',
   'Gospel': 'Luk 18:9-14',
   'Description' : '11:e Söndag* efter Trinitatis',
@@ -2562,10 +2655,33 @@ events = events.map(function (obj) {
   }
 
 });
+
+events = events.map(function (obj) {
+  if (typeof obj.Date !== "undefined") {
+    obj.daynr = getDayOfYear(obj.Date)[1]
+    return obj;
+  }
+
+});
+
 sortedEvents = events.sortBy(function (o) {
   return [o.Date];
 });
 
+//obj rad1 = events.find(ev => ev.daynr == 1)
+//    new Date(Date.UTC(2020,0,363))
+//    => 2020-12-28T00:00:00.000Z
+
+// events.filter(o => { return o.OldT.indexOf('2 Mos ') != -1 }).sortBy( o => o.OldT ).forEach(o => console.log( o.OldT + ' ' + o.Title +'\n'));
+
+//events.filter(o => { return o.OldT.includes(' Mos ')}).sortBy( o => o.OldT ).forEach(o => console.log( o.OldT + ' ' + o.Title +'\n')); 
+
+// eller 
+//for (b in OT) { events.filter(o => { return o.OldT.indexOf(b) != -1 }).sortBy( o => o.OldT ).forEach(o => console.log( o.OldT + ' ' + o.Title +'\n'));}
+
+// lpp = [];
+
+//for( let i =0; i< 365; i++) { let d = new Date(Date.UTC(2020,0,(i+1))); let kk = events.find(ev => ev.daynr == i+1); let dag = {day:d.toLocaleDateString(), morgon: readingplan[i][0], kväll: readingplan[i][1], ps:readingplan[i][2], kk};  lpp.push(dag);}
 
 // funktion som ta bort objekt som har samma egenskap (property)
 
