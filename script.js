@@ -482,11 +482,17 @@ function getWeekNumber(d) {
   return [d.getUTCFullYear(), weekNo];
 }
 
-function getDayOfYear(d) {
+function getDayOfYear(date) {
   // Copy date so don't modify original
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  dayNo = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
-  return [d.toLocaleDateString(), dayNo];
+  // d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  // dayNo = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+  // return [d.toLocaleDateString(), dayNo];
+   d = (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+  return [date.toLocaleDateString(), d];
+}
+
+function daysIntoYear(date){
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
 }
 
 function daysInFebruary(year) {
@@ -525,24 +531,29 @@ function printRP(year,m=12,arr){
   if(arr){
     rp = arr;
   }
-  
+
   var dd = anno % 4 === 0 && (anno % 100 !== 0 || anno % 400 === 0) ? 366 : 365;
   var bis = dd === 366 ? true : false;
-  
+  var filename = 'Luthersk_kyrkokalender_';
     if ( mese === date.getMonth() ) {
       
-      txt += months[mese] +'\n';
-      
+      txt += months[mese] + ' ' + anno +'\n';
+      filename += months[mese] + '_' + anno +'.txt';
       var mm = new Date(anno, mese+1, 0).getDate();
           for (let j=0; j < mm; j++){
             let g = new Date(anno, mese, j+1);
             let d = new Date(Date.UTC(g.getFullYear(), g.getMonth(), g.getDate()));
-            let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+          //  let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+      
+            let i =  daysIntoYear(d);
+
             console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
             
             let e = events.find(ev=> ev.daynr == i);
             txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
-              
+            if ( g.getDay() === 1)  {
+              txt += 'v ' + g.getWeek() + ' ';
+            }
               if (bis) {
                   if( i === 60 ) {
 
@@ -570,8 +581,8 @@ function printRP(year,m=12,arr){
                   }
               } else {
               
-                  rp[i-1].forEach(r => console.log( r + '\n')); 
-                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                  rp[i-0].forEach(r => console.log( r + '\n')); 
+                    txt += 'morgon: ' + rp[i-0][0] + ' kväll: ' + rp[i-0][1] + ( typeof rp[i-0][2] != 'undefined' ? ' ps: ' + rp[i-0][2] : '') + '\n';
                     if(typeof e != 'undefined') {
                       
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
@@ -581,21 +592,26 @@ function printRP(year,m=12,arr){
       
         }
     else {
-
+        filename += anno +'.txt';
         for (let x=0; x<12; x++){
-
+          
           mese = x;
-          txt += months[mese] +'\n';
+          txt += months[mese] + ' ' + anno +'\n';
             var mm = new Date(anno, x+1, 0).getDate();
               for (let j=0; j < mm; j++){
                     let g = new Date(anno, mese, j+1);
                     let d = new Date(Date.UTC(g.getFullYear(), g.getMonth(), g.getDate()));
-                    let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+          
+          //  let i  = Math.round((d.setHours(23) - new Date(new Date().getYear()+1900, 0, 1, 0, 0, 0))/1000/60/60/24);
+      
+                    let i =  daysIntoYear(d);
                     console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
                     
                     let e = events.find(ev=> ev.daynr == i);
                     txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
-                      
+                    if ( g.getDay() === 1)  {
+                      txt += 'v ' + g.getWeek() + ' ';
+                    }  
                       if (bis) {
                           if( i === 60 ) {
 
@@ -632,39 +648,11 @@ function printRP(year,m=12,arr){
                       }
                 }
         }
-        //       for (let i=0; i<dd; i++){
-        //         let g = new Date(anno, 0, i+1);
-        //         console.log( '['+(i+1)+']'+g.toLocaleDateString() + '\n' );
-        //         txt += g.getDate() + ' ' + months[g.getMonth()]+ ' ';
-        //           if (bis) {
-                    
-        //               if( i === 59 ) {
-        //                 console.log('...\n');
 
-        //                 txt += '...\n';
-
-        //               } else if ( i > 59 ) {
-        //                 rp[i-1].forEach(r => console.log( r + '\n')); 
-
-        //                 txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
-
-        //               } else {
-        //                 rp[i].forEach(r => console.log( r + '\n')); 
-
-        //                 txt += 'morgon: ' + rp[i][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i][2] != 'undefined' ? ' ps: ' + rp[i][2] : '') + '\n';
-
-        //               }
-        //           } else {
-        //               rp[i].forEach(r => console.log( r + '\n')); 
-
-        //               txt += 'morgon: ' + rp[i][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i][2] != 'undefined' ? ' ps: ' + rp[i][2] : '') + '\n';
-
-        //           }
-        //         }
-        // }
 }
     console.log(bis +' '+ arr + ' '+ mese + ' ' + anno);
-    download(txt,'kalender.txt','text');
+    
+    download(txt,filename,'text');
 
 }
 
