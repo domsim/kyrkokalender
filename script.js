@@ -517,6 +517,7 @@ function daysInYear(year) {
 
 function printRP(year,m=12,arr){
   var txt = '';
+ 
   var date = new Date();
   if(year){
       date.setFullYear(year);
@@ -531,6 +532,7 @@ function printRP(year,m=12,arr){
   if(arr){
     rp = arr;
   }
+  var eventi = makeKK(anno);
 
   var dd = anno % 4 === 0 && (anno % 100 !== 0 || anno % 400 === 0) ? 366 : 365;
   var bis = dd === 366 ? true : false;
@@ -549,7 +551,7 @@ function printRP(year,m=12,arr){
 
             console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
             
-            let e = events.find(ev=> ev.daynr == i);
+            let e = eventi.find(ev=> ev.daynr == i);
             txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
             if ( g.getDay() === 1)  {
               txt += 'v ' + g.getWeek() + ' ';
@@ -581,10 +583,10 @@ function printRP(year,m=12,arr){
                   }
               } else {
               
-                  rp[i-0].forEach(r => console.log( r + '\n')); 
-                    txt += 'morgon: ' + rp[i-0][0] + ' kväll: ' + rp[i-0][1] + ( typeof rp[i-0][2] != 'undefined' ? ' ps: ' + rp[i-0][2] : '') + '\n';
+                  rp[i-1].forEach(r => console.log( r + '\n')); 
+                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
                     if(typeof e != 'undefined') {
-                      
+                       
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
                     }
               }
@@ -607,7 +609,7 @@ function printRP(year,m=12,arr){
                     let i =  daysIntoYear(d);
                     console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
                     
-                    let e = events.find(ev=> ev.daynr == i);
+                    let e = eventi.find(ev=> ev.daynr == i);
                     txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
                     if ( g.getDay() === 1)  {
                       txt += 'v ' + g.getWeek() + ' ';
@@ -651,7 +653,10 @@ function printRP(year,m=12,arr){
 
 }
     console.log(bis +' '+ arr + ' '+ mese + ' ' + anno);
-    
+    var re2 = /årgång 2:/g;
+    var re3 = /årgång 3:/g;
+    txt.replace(re2, 'II');
+    txt.replace(re3,'III');
     download(txt,filename,'text');
 
 }
@@ -2362,7 +2367,9 @@ function makeKK(newYear) {
   if (mariakyrkogang(thisYear).Date.getTime() !== quinquagesima(thisYear).Date.getTime()){
       events.push(quinquagesima(thisYear));
   }
-  if (septuagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && sexagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() && quinquagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime()){
+  if (septuagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() 
+      && sexagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime() 
+      && quinquagesima(thisYear).Date.getTime() !== sjeepifania(thisYear).Date.getTime()){
     events.push(sjeepifania(thisYear));
   }
   events.push(getEaster(thisYear));
@@ -2435,7 +2442,7 @@ function makeKK(newYear) {
   if (michaeli(thisYear).Date.getTime() !== trinitatis16(thisYear).Date.getTime()) {
     events.push(trinitatis16(thisYear));
   }
-if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime()) {
+  if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime()) {
     events.push(trinitatis17(thisYear));
   }
   if (michaeli(thisYear).Date.getTime() !== trinitatis18(thisYear).Date.getTime()) {
@@ -2469,20 +2476,29 @@ if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime())
     events.push(ioannesbaptista(thisYear));
   }
 
-  // lägg till time egensapen till alla högtiderna
+  // lägg till time egensapen till högtiderna
   events = events.map(function (obj) {
     if (typeof obj.Date !== "undefined") {
       obj.time = obj.Date.getTime();
       return obj;
     }
     
-  // lägg till Weel egensapen till alla högtiderna
+  // lägg till Week egensapen till högtiderna
   });
   events = events.map(function (obj) {
     if (typeof obj.Date !== "undefined") {
       obj.Week = obj.Date.getWeek();
       return obj;
     }
+  });
+
+  // lägg till daynr egensapen till alla högtider
+  events = events.map(function (obj) {
+    if (typeof obj.Date !== "undefined") {
+      obj.daynr = getDayOfYear(obj.Date)[1]
+      return obj;
+    }
+
   });
 
   uniqueEvents = removeDuplicates(events, 'time');
@@ -2498,7 +2514,12 @@ if (michaeli(thisYear).Date.getTime() !== trinitatis17(thisYear).Date.getTime())
     $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), i, thisYear));
 
   }
+
+  var unique = uniqueEvents.filter(o => o.Date.getFullYear() === newYear);
+
+  return unique;
 }
+
 events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
 events.push(feepifania(thisYear));
