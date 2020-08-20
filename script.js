@@ -653,11 +653,17 @@ function printRP(year,m=12,arr){
 
 }
     console.log(bis +' '+ arr + ' '+ mese + ' ' + anno);
+    var re1 = /årgång 1: null, null/g;
     var re2 = /årgång 2:/g;
     var re3 = /årgång 3:/g;
-    txt.replace(re2, 'II');
-    txt.replace(re3,'III');
-    download(txt,filename,'text');
+    txt = txt.replace(re2, 'II');
+    txt = txt.replace(re3,'III');
+    txt = txt.replace(re1,'');
+    var BOM = "\uFEFF";
+    txt = txt.replace(/\s{2}/g,' ');
+  
+    download(txt,filename,'text/csv;charset=utf-8');
+    
 
 }
 
@@ -689,21 +695,38 @@ let argang = argng(thisYear);
 
 // Skapar högtider med fast datum
 let events = [];
+
+//
 let RP = "";
 function createRP(year){
   var RP = [];
   readingplan.forEach((d, index) => {
     let obj = {};
-    obj.Dayno = (index + 1);
+    obj.daynr = (index + 1);
+    obj.Date = new Date(year, 0 , obj.daynr);
+    //obj.Date = JSON.stringify(obj.Date);
    // obj.Readings = d.toString();
     d.forEach((r,index) =>{
       
       obj["reading_"+(index*1+1)] = r;
     });
   RP.push(obj);
+
 });
+  var kk = makeKK(year);
+ // kk = kk.map(function(o){o.Date = JSON.stringify(o.Date); return o});
+  kk.forEach((k, index) => {
+    RP.push(k);
+
+  });
+  RP.sortBy(function(o){
+    return [o.daynr, o.Date];
+  });
+    
   return RP;
 }
+
+//
 //rätt
 function nyarsdagen(year) {
   return {
@@ -814,7 +837,7 @@ function johannes(year) {
     'Description': '27 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(year),
+    'Argang': argng(year+1),
     'HHM': null,
     'AFT': null
   }
@@ -833,7 +856,7 @@ function menlosabarn(year) {
     'Description': '28 december',
     'Link': '',
     'Prio': 1,
-    'Argang': argng(year),
+    'Argang': argng(year+1),
     'HHM': null,
     'AFT': null
   };
@@ -2520,6 +2543,18 @@ function makeKK(newYear) {
   return unique;
 }
 
+function dnlKKcsv(newYear) {
+  var data = makeKK(newYear);
+  data = data.map(function(o){o.Date = JSON.stringify(o.Date); return o });
+  var header = '"' + Object.keys(data[0]).join('","') +'"';
+  var values = data.map(o => '"' + Object.values(o).join('","')).join('"\n');
+  var BOM = "\uFEFF";
+  var csv = BOM + header + '\n' + values;
+  csv = csv.replace(/\s{2}/g,' ');
+  var filename = 'kyrkokalender_' + newYear + '.csv';
+  download(csv,filename,'text/csv;charset=utf-8');
+}
+
 events.push(nyarsdagen(thisYear));
 events.push(epifania(thisYear));
 events.push(feepifania(thisYear));
@@ -2697,6 +2732,7 @@ sortedEvents = events.sortBy(function (o) {
 
 
 // skapar ett ny array med unika objekt efter unixtime-egenskap (fält time)
+
 
 let uniqueEvents = removeDuplicates(sortedEvents, 'time');
 

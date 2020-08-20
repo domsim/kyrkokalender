@@ -12,6 +12,45 @@
 </head>
 
 <body>
+  <div class="container card bg-light " id="votd">
+    <script> //src="https://www.biblegateway.com/votd/votd.write.callback.js"
+    
+    (function() {
+
+/* Keep everything in BG variable
+    augment existing variable if it exists.
+*/
+if ( !window.BG || typeof window.BG !== 'object') {
+    window.BG = {};
+}
+var BG = window.BG;
+
+BG.votdWriteCallback = function(json) {
+    var votd = json.votd;
+    var votd_html = '';
+    votd_html += '<div class=""><blockquote class="blockquote card-body"><p class="text-capitalize font-weight-light">' + votd.text;
+    votd_html += '</p><footer class="blockquote-footer tetx-center"><a href="' + votd.permalink +'">' + votd.display_ref + '</a>';
+    if (votd.audiolink) {
+      votd_html += ' <a rel="nofollow" href="' + votd.audiolink + '" title="Listen to chapter"><img alt="Listen to chapter" src="//www.biblegateway.com/assets/images/audio/sound.gif" border=0/></a>';
+    }
+    votd_html += ' <a href="' + votd.copyrightlink + '">' + votd.copyright + '</a>';
+    votd_html += '<footer><p><p class="small">Powered by <a rel="nofollow" href="https://www.biblegateway.com/">BibleGateway.com</a></p></p>';
+    votd_html += '<blockquote></div>';
+    document.write(votd_html);
+};
+
+window.BG = BG;
+
+})();
+    
+    
+    </script>
+<script src="https://www.biblegateway.com/votd/get/?format=json&version=SFB&callback=BG.votdWriteCallback"></script>
+<!-- alternative for no javascript -->
+<noscript>
+<iframe framespacing="0" frameborder="no" src="https://www.biblegateway.com/votd/get/?format=html&version=NIV">View Verse of the Day</iframe>
+</noscript>
+  </div>
 	  <div id="byt" class="container">
      <div class="form-inline form-row align-items-center">
       <div class="col-auto">  
