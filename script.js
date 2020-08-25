@@ -53,8 +53,75 @@ function download(data, filename, type) {
         }
 }
 
+function Export2Doc(element, filename = ''){
+    var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+    var postHtml = "</body></html>";
+    var html = preHtml+document.getElementById(element).innerHTML+postHtml;
 
+    var blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+    });
+    
+    // Specify link url
+    var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+    
+    // Specify file name
+    filename = filename?filename+'.doc':'document.doc';
+    
+    // Create download link element
+    var downloadLink = document.createElement("a");
 
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob ){
+        navigator.msSaveOrOpenBlob(blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = url;
+        
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+    
+    document.body.removeChild(downloadLink);
+}
+function exportTableToExcel(tableID, filename = ''){
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = filename?filename+'.xls':'excel_data.xls';
+    
+    // Create download link element
+    downloadLink = document.createElement("a");
+    
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+}
+function togglediv(id) {
+	var div = document.getElementById(id);
+	div.style.display = div.style.display == "none" ? "block" : "none";
+}
 var OT = [["1 Mosebok"],[ "2 Mosebok"],[ "3 Mosebok"],[ "4 Mosebok"],[ "5 Mosebok"],[ "Josua"],[ "Domarboken"],[ "Rut"],[ "1 Samuelsboken"],[ "2 Samuelsboken"],[ "1 Kungaboken"],[ "2 Kungaboken"],[ "1 Krönikeboken"],[ "2 Krönikeboken"],[ "Esra"],[ "Nehemja"],[ "Ester"],[ "Job"],[ "Psaltaren"],[ "Ordspråksboken"],[ "Predikaren"],[ "Höga Visan"],[ "Jesaja"],[ "Jeremia"],[ "Klagovisorna"],[ "Hesekiel"],[ "Daniel"],[ "Hosea"],[ "Joel"],[ "Amos"],[ "Obadja"],[ "Jona"],[ "Mika"],[ "Nahum"],[ "Habackuk"],[ "Sefanja"],[ "Haggai"],[ "Sakaria"],[ "Malaki"]];
 
 var NT = [["Matteus"],[ "Markus"],["Lukas"],["Johannes"],["Apostlagärningarna"],["Romarbrevet"],["1 Korinthierbrevet"],["2 Korinthierbrevet"],["Galaterbrevet"],["Efesierbrevet"],["Filipperbrevet"],["Kolosserbrevet"],["1 Thessalonikerbrevet"],["2 Thessalonikerbrevet"],["1 Timotheosbrevet"],["2 Timotheosbrevet"],["Titusbrevet"],["Filemonbrevet"],["Hebreerbrevet"],["Jakobsbrevet"],["1 Petrusbrevet"],["2 Petrusbrevet"],["1 Johannesbrevet"],["2 Johannesbrevet"],["3 Johannesbrevet"],["Judasbrevet"],["Uppenbarelseboken"]];
@@ -67,7 +134,14 @@ var tn = '<i>Apg 1:5</i><b>Psalt 132</b> Ords 2';
  tn = tn.replace(new RegExp(replaceTags[i][0], 'g'),replaceTags[i][1]);
 } 
 */
-
+var replaceColor = [
+  ["Vit","white"],
+  ["Vit (Violett)","white"],
+  ["Grön", "green"],
+  ["Violett","purple"],
+  ["Röd","red"],
+  ["Svart","black"]
+];
 var replaceBooks = [
   ["1 Mos", "1 Mosebok"],
   ["2 Mos", "2 Mosebok"],
@@ -281,13 +355,13 @@ var replaceBooks2yv = [
   ["Uppenbarelseboken", "REV"]
 ];
 
-
+bgbn = ["1 Mosebok","2 Mosebok","3 Mosebok","4 Mosebok","5 Mosebok","Josua","Domarboken","Rut","1 Samuelsboken","2 Samuelsboken","1 Kungaboken","2 Kungaboken","1 Krönikeboken","2 Krönikeboken","Esra","Nehemja","Ester","Job","Psaltaren","Ordspråksboken","Predikaren","Höga Visan","Jesaja","Jeremia","Klagovisorna","Hesekiel","Daniel","Hosea","Joel","Amos","Obadja","Jona","Mika","Nahum","Habackuk","Sefanja","Haggai","Sakaria","Malaki","Matteus","Markus","Lukas","Johannes","Apostlagärningarna","Romarbrevet","1 Korinthierbrevet","2 Korinthierbrevet","Galaterbrevet","Efesierbrevet","Filipperbrevet","Kolosserbrevet","1 Thessalonikerbrevet","2 Thessalonikerbrevet","1 Timotheosbrevet","2 Timotheosbrevet","Titusbrevet","Filemonbrevet","Hebreerbrevet","Jakobsbrevet","1 Petrusbrevet","2 Petrusbrevet","1 Johannesbrevet","2 Johannesbrevet","3 Johannesbrevet","Judasbrevet","Uppenbarelseboken"];
 var readingplan = [
-  ["Första Moseboken 1-2","Filipperbrevet 1:1-18","Psaltaren 1"],
-  ["Första Moseboken 3-4","Filipperbrevet 1:19-2:11"],
-  ["Första Moseboken 5-6","Filipperbrevet 2:12-30","Psaltaren 2"],
-  ["Första Moseboken 7-8","Filipperbrevet 3"],
-  ["Första Moseboken 9-10","Filipperbrevet 4","Psaltaren 3"],["Första Moseboken 11-12","Markusevangeliet 1:1-20"],["Första Moseboken 13-14","Markusevangeliet 1:21-45","Psaltaren 4"],["Första Moseboken 15-16","Markusevangeliet 2"],["Första Moseboken 17-18","Markusevangeliet 3:1-21","Psaltaren 5"],["Första Moseboken 19-20","Markusevangeliet 3:22-4:9"],["Första Moseboken 21-22","Markusevangeliet 4:10-41","Ordspråksboken 1"],["Första Moseboken 23-24","Markusevangeliet 5:1-20"],["Första Moseboken 25-26","Markusevangeliet 5:21-43","Psaltaren 6"],["Första Moseboken 27-28","Markusevangeliet 6:1-13"],["Första Moseboken 29-30","Markusevangeliet 6:14-44","Psaltaren 7"],["Första Moseboken 31-32","Markusevangeliet 7:1-13"],["Första Moseboken 33-34","Markusevangeliet7:14-30","Psaltaren 8"],["Första Moseboken 35-36","Markusevangeliet 7:31-8:10"],["Första Moseboken 37-38","Markusevangeliet 8:11-30","Psaltaren 9"],["Första Moseboken 39-40","Markusevangeliet 8:31-9:13"],["Första Moseboken 41-42","Markusevangeliet 9:14-32","Psaltaren 10"],["Första Moseboken 43-44","Markusevangeliet9:33-50"],["Första Moseboken 45-46","Markusevangeliet 10:1-31","Ordspråksboken 2"],["Första Moseboken 47-48","Markusevangeliet 10:32-52"],["Första Moseboken 49-50","Markusevangeliet 11:1-25","Psaltaren 11"],["Andra Moseboken 1-2","Markusevangeliet11:26-12:12"],["Andra Moseboken 3-4","Markusevangeliet 12:13-44","Psaltaren 12"],["Andra Moseboken 5-6","Markusevangeliet 13:1-23"],["Andra Moseboken 7-8","Markusevangeliet 13:24-37","Psaltaren 13"],["Andra Moseboken 9-10","Markusevangeliet 14:12-42"],["Andra Moseboken 11-12","Markusevangeliet 14:43-65","Psaltaren 14"],["Andra Moseboken 13-14","Markusevangeliet 14:66-15:15"],["Andra Moseboken 15-16","Markusevangeliet15:16-47","Psaltaren 15"],["Andra Moseboken 17-18","Markusevangeliet 16"],["Andra Moseboken 19-20","Romarbrevet 1:1-15","Ordspråksboken 3"],["Andra Moseboken 21-22","Romarbrevet 1:16-32"],["Andra Moseboken 23-24","Romarbrevet 2","Psaltaren 16"],["Andra Moseboken 25-26","Romarbrevet 3:1-20"],["Andra Moseboken 27-28","Romarbrevet 3:21-31","Psaltaren 17"],["Andra Moseboken 29-30","Romarbrevet 4"],["Andra Moseboken 31-32","Romarbrevet 5","Psaltaren 18"],["Andra Moseboken 33-34","Romarbrevet 6"],["Andra Moseboken 35-36","Romarbrevet 7","Psaltaren 19"],["Andra Moseboken 37-38","Romarbrevet 8:1-17"],["Andra Moseboken 39-40","Romarbrevet 8:18-39","Psaltaren 20"],["Tredje Moseboken 1-3","Romarbrevet 9:1-29"],["Tredje Moseboken 4-5","Romarbrevet 9:30-10:21","Ordspråksboken 4-5"],["Tredje Moseboken 6-7","Romarbrevet 11:1-24"],["Tredje Moseboken 8-9","Romarbrevet 11:25-12:8","Psaltaren 21"],["Tredje Moseboken 10-11","Romarbrevet 12:9-13:7"],["Tredje Moseboken 12-13","Romarbrevet 13:8-14:12","Psaltaren 22"],["Tredje Moseboken 14-15","Romarbrevet 14:13-15:13"],["Tredje Moseboken 16-17","Romarbrevet 15:14-33","Psaltaren 23"],["Tredje Moseboken 18-19","Romarbrevet 16"],["Tredje Moseboken 20-21","Johannesevangeliet 1:1-18","Psaltaren 24"],["Tredje Moseboken 22-23","Johannesevangeliet 1:19-34"],["Tredje Moseboken 24-25","Johannesevangeliet 1:35-51","Psaltaren 25"],["Tredje Moseboken 26-27","Johannesevangeliet 2"],["Fjärde Moseboken 1-2","Johannesevangeliet 3:1-21","Ordspråksboken 5"],["Fjärde Moseboken 3-4","Johannesevangeliet 3:22-36"],["Fjärde Moseboken 5-6","Johannesevangeliet 4:1-30","Psaltaren 26"],["Fjärde Moseboken 7-8","Johannesevangeliet 4:31-54"],["Fjärde Moseboken 9-10","Johannesevangeliet 5:1-18","Psaltaren 27"],["Fjärde Moseboken 11-12","Johannesevangeliet 5:19-47"],["Fjärde Moseboken 13-14","Johannesevangeliet 6:1-21","Psaltaren 28"],["Fjärde Moseboken 15-16","Johannesevangeliet 6:22-59"],["Fjärde Moseboken 17-18","Johannesevangeliet 6:60-71","Psaltaren 29"],["Fjärde Moseboken 19-20","Johannesevangeliet 7:1-24"],["Fjärde Moseboken 21-22","Johannesevangeliet7:25-53","Psaltaren 30"],["Fjärde Moseboken 23-24","Johannesevangeliet 8:1-11"],["Fjärde Moseboken 25-26","Johannesevangeliet 8:12-38","Ordspråksboken 6"],["Fjärde Moseboken 27-28","Johannesevangeliet 8:39-59"],["Fjärde Moseboken 29-30","Johannesevangeliet 9:1-17","Psaltaren 31"],["Fjärde Moseboken 31-32","Johannesevangeliet 9:18-41"],["Fjärde Moseboken 33-34","Johannesevangeliet 10:1-21","Psaltaren 32"],["Fjärde Moseboken 35-36","Johannesevangeliet 10:22-42"],["Femte Moseboken 1-2","Johannesevangeliet 11:1-16","Psaltaren 33"],["Femte Moseboken 3-4","Johannesevangeliet 11:17-37"],["Femte Moseboken 5-6","Johannesevangeliet 11:38-57","Psaltaren 34"],["Femte Moseboken 7-8","Johannesevangeliet 12:1-26"],["Femte Moseboken 9-10","Johannesevangeliet 12:27-50","Psaltaren 35"],["Femte Moseboken 11-12","Johannesevangeliet 13:1-20"],["Femte Moseboken 13-14","Johannesevangeliet 13:21-38","Ordspråksboken 7"],["Femte Moseboken 15-16","Johannesevangeliet 14:1-14"],["Femte Moseboken 17-18","Johannesevangeliet 14:15-31","Psaltaren 36"],["Femte Moseboken 19-20","Johannesevangeliet 15:1-17"],["Femte Moseboken 21-22","Johannesevangeliet 15:18-16:15","Psaltaren 37"],["Femte Moseboken 23-24","Johannesevangeliet 16:16-33"],["Femte Moseboken 25","Johannesevangeliet 17","Psaltaren 38"],["Femte Moseboken 26-27","Johannesevangeliet 18:1-18"],["Femte Moseboken 28","Johannesevangeliet 18:19-40","Psaltaren 39"],["Femte Moseboken 29-30","Johannesevangeliet 19:1-16"],["Femte Moseboken 31-32","Johannesevangeliet 19:17-37","Psaltaren 40"],["Femte Moseboken 33-34","Johannesevangeliet 19:38-20:10"],["Josua 1-2","Johannesevangeliet 20:11-31","Ordspråksboken 8"],["Josua 3-4","Johannesevangeliet 21"],["Josua 5-6","Apostlagärningarna 1","Psaltaren 41"],["Josua 7-8","Apostlagärningarna 2:1-13"],["Josua 9-10","Apostlagärningarna 2:14-41","Psaltaren 42"],["Josua 11-12","Apostlagärningarna 2:42-3:10"],["Josua 13-14","Apostlagärningarna 3:11-26","Psaltaren 43"],["Josua 15-16","Apostlagärningarna 4:1-31"],["Josua 17-18","Apostlagärningarna 4:32-5:16","Psaltaren 44"],["Josua 19-20","Apostlagärningarna 5:17-42"],["Josua 21-22","Apostlagärningarna 6","Psaltaren 45"],["Josua 23-24","Apostlagärningarna 7:1-32"],["Domarboken 1-2","Apostlagärningarna 7:33-60","Ordspråksboken 9"],["Domarboken 3-4","Apostlagärningarna 8:1-25"],["Domarboken 5-6","Apostlagärningarna8:26-40","Psaltaren 46"],["Domarboken 7-8","Apostlagärningarna 9:1-20"],["Domarboken 9-10","Apostlagärningarna 9:21-43","Psaltaren 47"],["Domarboken 11-12","Apostlagärningarna 10:1-33"],["Domarboken 13-14","Apostlagärningarna 10:34-48","Psaltaren 48"],["Domarboken 15-17","Apostlagärningarna 11"],["Domarboken 18-19","Apostlagärningarna 12","Psaltaren 49"],["Domarboken 20-21","Apostlagärningarna 13:1-12"],["Rut 1-2","Apostlagärningarna 13:13-52","Psaltaren 50"],["Rut 3-4","Apostlagärningarna 14:1-18"],["Första Samuelsboken 1-2","Apostlagärningarna 14:19-28","Ordspråksboken 10"],["Första Samuelsboken 3-4","Apostlagärningarna 15:1-21"],["Första Samuelsboken 5-7","Apostlagärningarna15:22-41","Psaltaren 51"],["Första Samuelsboken 8-9","Apostlagärningarna 16:1-15"],["Första Samuelsboken 10-11","Apostlagärningarna 16:16-40","Psaltaren 52"],["Första Samuelsboken 12-13","Apostlagärningarna 17"],["Första Samuelsboken 14-15","Apostlagärningarna 18","Psaltaren 53"],["Första Samuelsboken 16-17","Apostlagärningarna 19:1-20"],["Första Samuelsboken 18-19","Apostlagärningarna 19:21-40","Psaltaren 54"],["Första Samuelsboken 20-21","Apostlagärningarna 20:1-16"],["Första Samuelsboken 22-23","Apostlagärningarna 20:17-38","Psaltaren 55"],["Första Samuelsboken 24-25","Apostlagärningarna 21:1-26"],["Första Samuelsboken 26-27","Apostlagärningarna 21:27-40","Ordspråksboken 11"],["Första Samuelsboken 28-29","Apostlagärningarna 22:1-21"],["Första Samuelsboken 30-31","Apostlagärningarna 22:22-23:22","Psaltaren 56"],["Första Krönikeboken 1-2","Apostlagärningarna 23:23-35"],["Första Krönikeboken 3-4","Apostlagärningarna 24","Psaltaren 57"],["Första Krönikeboken 5-7","Apostlagärningarna 25"],["Första Krönikeboken 8-10","Apostlagärningarna 26","Psaltaren 58"],["Andra Samuelsboken 1-2","Apostlagärningarna 27:1-26"],["Andra Samuelsboken 3-4","Apostlagärningarna 27:27-44","Psaltaren 59"],["Andra Samuelsboken 5-6","Apostlagärningarna 28:1-31"],["Andra Samuelsboken 7-8","Första Korintierbrevet 1:1-17","Psaltaren 60"],["Andra Samuelsboken 9-10","Första Korintierbrevet 1:18-31"],["Andra Samuelsboken 11-12","Första Korintierbrevet 2","Ordspråksboken 12"],["Andra Samuelsboken 13-14","Första Korintierbrevet 3"],["Andra Samuelsboken 15-16","Första Korintierbrevet 4","Psaltaren 61"],["Andra Samuelsboken 17-18","Första Korintierbrevet 5"],["Andra Samuelsboken 19-20","Första Korintierbrevet 6","Psaltaren 62"],["Andra Samuelsboken 21-22","Första Korintierbrevet 7:1-16"],["Andra Samuelsboken 23-24","Första Korintierbrevet 7:17-40","Psaltaren 63"],["Första Kungaboken 1-2","Första Korintierbrevet 8"],["Första Krönikeboken 11-12","Första Korintierbrevet 9","Psaltaren 64"],["Första Krönikeboken 13-15","Första Korintierbrevet 10:1-22"],["Första Krönikeboken 16-17","Första Korintierbrevet 10:23-11:16","Psaltaren 65"],["Första Krönikeboken 18-19","Första Korintierbrevet 11:17-34"],["Första Krönikeboken 20-22","Första Korintierbrevet 12","Ordspråksboken 13"],["Första Krönikeboken 23-24","Första Korintierbrevet 13"],["Första Krönikeboken 25-26","Första Korintierbrevet 14:1-25","Psaltaren 66"],["Första Krönikeboken 27-29","Första Korintierbrevet 14:26-40"],["Första Kungaboken 3-4","Första Korintierbrevet 15:1-34","Psaltaren 67"],["Höga Visan 1-3","Första Korintierbrevet 15:35-58"],["Höga Visan 4-6","Första Korintierbrevet 16","Psaltaren 68"],["Höga Visan 7-8","Andra Korintierbrevet 1:1-11"],["Första Kungaboken 5-6","Andra Korintierbrevet 1:12-24","Psaltaren 69"],["Första Kungaboken 7-8","Andra Korintierbrevet 2"],["Första Kungaboken 9-10","Andra Korintierbrevet 3","Psaltaren 70"],["Andra Krönikeboken 1-3","Andra Korintierbrevet 4:1-5:10"],["Andra Krönikeboken 4-5","Andra Korintierbrevet 5:11-6:13","Ordspråksboken 14"],["Andra Krönikeboken 6-7","Andra Korintierbrevet 6:14-7:16"],["Predikaren 1-2","Andra Korintierbrevet 8","Psaltaren 71"],["Predikaren 3-5","Andra Korintierbrevet 9"],["Predikaren 6-7","Andra Korintierbrevet 10","Psaltaren 72"],["Predikaren 8-9","Andra Korintierbrevet 11"],["Predikaren 10-12","Andra Korintierbrevet 12-13","Psaltaren 73"],["Andra Krönikeboken 8-9","Matteusevangeliet 1"],["Första Kungaboken 11-12","Matteusevangeliet 2","Psaltaren 74"],["Första Kungaboken 13-14","Matteusevangeliet 3"],["Andra Krönikeboken 10-11","Matteusevangeliet 4","Psaltaren 75"],["Andra Krönikeboken 12-13","Matteusevangeliet 5:1-16"],["Andra Krönikeboken 14-15","Matteusevangeliet 5:17-37","Ordspråksboken 15"],["Andra Krönikeboken 16-17","Matteusevangeliet 5:38-6:15"],["Andra Krönikeboken 18-19","Matteusevangeliet 6:16-34","Psaltaren 76"],["Första Kungaboken 15-16","Matteusevangeliet 7"],["Första Kungaboken 17-18","Matteusevangeliet 8:1-17","Psaltaren 77"],["Första Kungaboken 19-20","Matteusevangeliet 8:18-34"],["Första Kungaboken 21-22","Matteusevangeliet 9:1-17","Psaltaren 78"],["Andra Krönikeboken 20-21","Matteusevangeliet 9:18-38"],["Andra Kungaboken 1-2","Matteusevangeliet 10:1-25","Psaltaren 79"],["Andra Kungaboken 3-4","Matteusevangeliet 10:26-42"],["Andra Kungaboken 5-6","Matteusevangeliet 11","Psaltaren 80"],["Andra Kungaboken 7-8","Matteusevangeliet 12:1-21"],["Obadja 1","Matteusevangeliet 12:22-42","Ordspråksboken 16"],["Andra Krönikeboken 22","Matteusevangeliet 12:43-13:17"],["Joel 1-3","Matteusevangeliet 13:18-35","Psaltaren 81"],["Andra Kungaboken 9-10","Matteusevangeliet 13:36-58"],["Andra Kungaboken 11-12","Matteusevangeliet 14:1-21","Psaltaren 82"],["Andra Kungaboken 13-14","Matteusevangeliet 14:22-15:9"],["Jona 1-4","Matteusevangeliet 15:10-28","Psaltaren 83"],["Amos 1-2","Matteusevangeliet 15:29-16:12"],["Amos 3-5","Matteusevangeliet 16:13-28","Psaltaren 84"],["Amos 6-7","Matteusevangeliet 17"],["Amos 8-9","Matteusevangeliet 18:1-20","Psaltaren 85"],["Andra Krönikeboken 23-24","Matteusevangeliet 18:21-35"],["Andra Krönikeboken 25-26","Matteusevangeliet 19","Ordspråksboken 17"],["Jesaja 1-2","Matteusevangeliet 20:1-19"],["Jesaja 3-4","Matteusevangeliet 20:20-21:11","Psaltaren 86"],["Jesaja 6","Matteusevangeliet 21:12-32"],["Andra Krönikeboken 27-28","Matteusevangeliet 21:33-46","Psaltaren 87"],["Andra Kungaboken 15-16","Matteusevangeliet 22:1-22"],["Jesaja 7-8","Matteusevangeliet 22:23-46","Psaltaren 88"],["Jesaja 9-10","Matteusevangeliet 23"],["Jesaja 11-12","Matteusevangeliet 24:1-14","Psaltaren 89"],["Jesaja 13-14","Matteusevangeliet 24:15-31"],["Jesaja 15-16","Matteusevangeliet 24:32-51","Psaltaren 90"],["Jesaja 17-18","Matteusevangeliet 25:1-30"],["Jesaja 19-20","Matteusevangeliet 25:31-46","Ordspråksboken 18"],["Jesaja 21-22","Matteusevangeliet 26:1-25"],["Jesaja 23-24","Matteusevangeliet 26:26-46","Psaltaren 91"],["Jesaja 25-26","Matteusevangeliet 26:47-68"],["Jesaja 27-28","Matteusevangeliet 26:69-27:10","Psaltaren 92"],["Jesaja 29-30","Matteusevangeliet 27:11-31"],["Jesaja 31-32","Matteusevangeliet 27:32-44","Psaltaren 93"],["Jesaja 33-34","Matteusevangeliet 27:45-66"],["Jesaja 35-36","Matteusevangeliet 28","Psaltaren 94"],["Jesaja 37-38","Hebreerbrevet 1:1-2:4"],["Jesaja 39-40","Hebreerbrevet 2:5-3:6","Psaltaren 95"],["Jesaja 41-42","Hebreerbrevet 3:7-4:16"],["Jesaja 43-44","Hebreerbrevet 5:1-6:12","Ordspråksboken 19"],["Jesaja 45-46","Hebreerbrevet 6:13-7:10"],["Jesaja 47-48","Hebreerbrevet 7:11-8:13","Psaltaren 96"],["Jesaja 49-50","Hebreerbrevet 9"],["Jesaja 51-52","Hebreerbrevet 10:1-18","Psaltaren 97"],["Jesaja 53-54","Hebreerbrevet 10:19-39"],["Jesaja 55-56","Hebreerbrevet 11:1-17","Psaltaren 98"],["Jesaja 57-58","Hebreerbrevet 11:18-40"],["Jesaja 59-60","Hebreerbrevet 12:1-17","Psaltaren 99"],["Jesaja 61-62","Hebreerbrevet 12:18-29"],["Jesaja 63-64","Hebreerbrevet 13","Psaltaren 100"],["Jesaja 65-66","Galaterbrevet 1"],["Andra Kungaboken 17","Galaterbrevet 2:1-14","Ordspråksboken 20"],["Andra Kungaboken 18-19","Galaterbrevet 2:15-3:14"],["Andra Krönikeboken 29-30","Galaterbrevet 3:15-4:7","Psaltaren 101"],["Andra Krönikeboken 31-32","Galaterbrevet 4:8-31"],["Hosea 1-3","Galaterbrevet 5","Psaltaren 102"],["Hosea 4-5","Galaterbrevet 6"],["Hosea 6-7","Efesierbrevet 1","Psaltaren 103"],["Hosea 8-10","Efesierbrevet 2"],["Hosea 11-12","Efesierbrevet 3","Psaltaren 104"],["Hosea 13-14","Efesierbrevet 4:1-16"],["Mika 1-2","Efesierbrevet 4:17-32","Psaltaren 105"],["Mika 3-5","Efesierbrevet 5"],["Mika 6-7","Efesierbrevet 6","Ordspråksboken 21"],["Andra Kungaboken 20-21","Kolosserbrevet 1:1-23"],["Andra Krönikeboken 33-34","Kolosserbrevet 1:24-2:15","Psaltaren 106"],["Sefanja 1-3","Kolosserbrevet 2:16-3:17"],["Nahum 1-3","Kolosserbrevet 3:18-4:18","Psaltaren 107"],["Andra Krönikeboken 35","Judasbrev 1"],["Habackuk 1-3","Brevet till Filemon 1","Psaltaren 108"],["Jeremia 1-2","Första Timoteusbrevet 1"],["Jeremia 3-4","Första Timoteusbrevet 2:1-3:7","Psaltaren 109"],["Jeremia 5-6","Första Timoteusbrevet 3:8-4:16"],["Jeremia 11-12","Första Timoteusbrevet 5","Psaltaren 110"],["Jeremia 26","Första Timoteusbrevet 6"],["Jeremia 7-8","Andra Timoteusbrevet 1","Ordspråksboken 22"],["Jeremia 9-10","Andra Timoteusbrevet 2"],["Jeremia 14-15","Andra Timoteusbrevet 3","Psaltaren 111"],["Jeremia 16-17","Andra Timoteusbrevet 4"],["Jeremia 18-20","Brevet till Titus 1","Psaltaren 112"],["Jeremia 35-36","Brevet till Titus 2-3"],["Jeremia 13, Jeremia 22","Lukasevangeliet 1:1-25","Psaltaren 113"],["Jeremia 23-24","Lukasevangeliet 1:26-38"],["Andra Kungaboken 22-23","Lukasevangeliet 1:39-56","Psaltaren 114"],["Andra Krönikeboken 36:1-8","Lukasevangeliet 1:57-80"],["Daniel 1-2","Lukasevangeliet 2:1-21","Psaltaren 115"],["Daniel 3-4","Lukasevangeliet 2:22-40"],["Daniel 5-6","Lukasevangeliet 2:41-52","Ordspråksboken 23"],["Daniel 7-8","Lukasevangeliet 3"],["Daniel 9-10","Lukasevangeliet 4:1-15","Psaltaren 116"],["Daniel 11-12","Lukasevangeliet 4:16-44"],["Andra Kungaboken 24-25","Lukasevangeliet 5:1-16","Psaltaren 117"],["Andra Krönikeboken 36:9-10, Hesekiel 1","Lukasevangeliet 5:17-39"],["Hesekiel 2-3","Lukasevangeliet 6:1-16","Psaltaren 118"],["Hesekiel 4-6","Lukasevangeliet 6:17-36"],["Hesekiel 7-8","Lukasevangeliet 6:37-7:10","Psaltaren 119:1-40"],["Hesekiel 9-10","Lukasevangeliet 7:11-35"],["Hesekiel 11-12","Lukasevangeliet 7:36-8:8","Psaltaren 119:41-88"],["Hesekiel 13-14","Lukasevangeliet 8:9-25"],["Hesekiel 15-16","Lukasevangeliet 8:26-56","Psaltaren 119:89-136"],["Hesekiel 17-18","Lukasevangeliet 9:1-17"],["Hesekiel 19-20","Lukasevangeliet 9:18-36","Psaltaren 119:137-176"],["Hesekiel 21-22","Lukasevangeliet 9:37-62"],["Hesekiel 23-24","Lukasevangeliet 10:1-20","Psaltaren 120"],["Hesekiel 25-26","Lukasevangeliet 10:21-42"],["Hesekiel 27-28","Lukasevangeliet 11:1-23","Ordspråksboken 24"],["Hesekiel 29-30","Lukasevangeliet 11:24-36"],["Hesekiel 31-32","Lukasevangeliet 11:37-12:7","Psaltaren 121"],["Hesekiel 33-34","Lukasevangeliet 12:8-34"],["Hesekiel 35-36","Lukasevangeliet 12:35-59","Psaltaren 122"],["Hesekiel 37-38","Lukasevangeliet 13:1-17"],["Hesekiel 39-40","Lukasevangeliet 13:18-35","Psaltaren 123"],["Hesekiel 41-42","Lukasevangeliet 14:1-24"],["Hesekiel 43-44","Lukasevangeliet 14:25-15:10","Psaltaren 124"],["Hesekiel 45-46","Lukasevangeliet 15:11-32"],["Hesekiel 47-48","Lukasevangeliet 16:1-17","Psaltaren 125"],["Jesaja 45, Jesaja 25","Lukasevangeliet 16:18-17:6"],["Jeremia 46-47","Lukasevangeliet 17:7-37","Ordspråksboken 25"],["Jeremia 48-49","Lukasevangeliet 18:1-17"],["Andra Krönikeboken 36:11-21, Jeremia 27","Lukasevangeliet 18:18-43","Psaltaren 126"],["Jeremia 28-29","Lukasevangeliet 19:1-27"],["Jeremia 50-51","Lukasevangeliet 19:28-48","Psaltaren 127"],["Jeremia 30-31","Lukasevangeliet 20:1-18"],["Jeremia 32-33","Lukasevangeliet 20:19-47","Psaltaren 128"],["Jeremia 21, Jeremia 34","Lukasevangeliet 21:1-19"],["Jeremia 37-38","Lukasevangeliet 21:20-38","Psaltaren 129"],["Jeremia 39, Jeremia 52","Lukasevangeliet 22:1-23"],["Jeremia 40-42","Lukasevangeliet 22:24-46","Psaltaren 130"],["Jeremia 43-44","Lukasevangeliet 22:47-71"],["Klagovisorna 1-2","Lukasevangeliet 23:1-17","Ordspråksboken 26"],["Klagovisorna 3","Lukasevangeliet 23:18-43"],["Klagovisorna 4-5","Lukasevangeliet 23:44-24:12","Psaltaren 131"],["Andra Krönikeboken 36:22-23","Lukasevangeliet 24:13-35"],["Esra 1-2","Lukasevangeliet 24:36-53","Psaltaren 132"],["Esra 3-4","Jakobs brev 1"],["Haggai 1-2","Jakobs brev 2","Psaltaren 133"],["Sakarja 1-3","Jakobs brev 3-4"],["Sakarja 4-6","Jakobs brev 5","Psaltaren 134"],["Sakarja 7-8","Första Petrusbrevet 1"],["Sakarja 9-10","Första Petrusbrevet 2:1-12","Psaltaren 135"],["Sakarja 11-12","Första Petrusbrevet 2:13-3:7"],["Sakarja 13-14","Första Petrusbrevet 3:8-4:11","Ordspråksboken 27"],["Esra 5-6","Första Petrusbrevet 4:12-5:14"],["Ester 1-2","Andra Petrusbrevet 1","Psaltaren 136"],["Ester 3-4","Andra Petrusbrevet 2"],["Ester 5-6","Andra Petrusbrevet 3","Psaltaren 137"],["Ester 7-8","Första Johannesbrevet 1:1-2:14"],["Ester 9-10","Första Johannesbrevet 2:15-29","Psaltaren 138"],["Esra 7-8","Första Johannesbrevet 3"],["Esra 9-10","Första Johannesbrevet 4","Psaltaren 139"],["Nehemja 1-3","Första Johannesbrevet 5"],["Nehemja 4-5","Andra Johannesbrevet 1","Psaltaren 140"],["Nehemja 6-7","Tredje Johannesbrevet 1"],["Nehemja 8-9","Första Tessalonikerbrevet 1:1-2:16","Ordspråksboken 28"],["Nehemja 10-11","Första Tessalonikerbrevet 2:17-3:13"],["Nehemja 12-13","Första Tessalonikerbrevet 4","Psaltaren 141"],["Malaki 1-2","Första Tessalonikerbrevet 5"],["Malaki 3-4","Andra Tessalonikerbrevet 1","Psaltaren 142"],["Job 1-2","Andra Tessalonikerbrevet 2"],["Job 3-5","Andra Tessalonikerbrevet 3","Psaltaren 143"],["Job 6-7","Uppenbarelseboken 1"],["Job 8-9","Uppenbarelseboken 2","Psaltaren 144"],["Job 10-11","Uppenbarelseboken 3-4"],["Job 12-13","Uppenbarelseboken 5","Psaltaren 145"],["Job 14-15","Uppenbarelseboken 6:1-7:8"],["Job 16-17","Uppenbarelseboken 7:9-8:13","Ordspråksboken 29"],["Job 18-19","Uppenbarelseboken 9"],["Job 20-21","Uppenbarelseboken 10:1-11:14","Psaltaren 146"],["Job 22-24","Uppenbarelseboken 11:15-12:18"],["Job 25-26","Uppenbarelseboken 13","Psaltaren 147"],["Job 27-28","Uppenbarelseboken 14-15"],["Job 29-31","Uppenbarelseboken 16","Psaltaren 148"],["Job 32-33","Uppenbarelseboken 17"],["Job 34-35","Uppenbarelseboken 18","Psaltaren 149"],["Job 36-37","Uppenbarelseboken 19"],["Job 38-39","Uppenbarelseboken 20:1-21:8","Ordspråksboken 30"],["Job 40-41","Uppenbarelseboken 21:9-27","Ordspråksboken 31"],["Job 42","Uppenbarelseboken 22","Psaltaren 150"]];
+  ["1 Mosebok 1-2","Filipperbrevet 1:1-18","Psaltaren 1"],
+  ["1 Mosebok 3-4","Filipperbrevet 1:19-2:11"],
+  ["1 Mosebok 5-6","Filipperbrevet 2:12-30","Psaltaren 2"],
+  ["1 Mosebok 7-8","Filipperbrevet 3"],
+  ["1 Mosebok 9-10","Filipperbrevet 4","Psaltaren 3"],["1 Mosebok 11-12","Markusevangeliet 1:1-20"],["1 Mosebok 13-14","Markusevangeliet 1:21-45","Psaltaren 4"],["1 Mosebok 15-16","Markusevangeliet 2"],["1 Mosebok 17-18","Markusevangeliet 3:1-21","Psaltaren 5"],["1 Mosebok 19-20","Markusevangeliet 3:22-4:9"],["1 Mosebok 21-22","Markusevangeliet 4:10-41","Ordspråksboken 1"],["1 Mosebok 23-24","Markusevangeliet 5:1-20"],["1 Mosebok 25-26","Markusevangeliet 5:21-43","Psaltaren 6"],["1 Mosebok 27-28","Markusevangeliet 6:1-13"],["1 Mosebok 29-30","Markusevangeliet 6:14-44","Psaltaren 7"],["1 Mosebok 31-32","Markusevangeliet 7:1-13"],["1 Mosebok 33-34","Markusevangeliet7:14-30","Psaltaren 8"],["1 Mosebok 35-36","Markusevangeliet 7:31-8:10"],["1 Mosebok 37-38","Markusevangeliet 8:11-30","Psaltaren 9"],["1 Mosebok 39-40","Markusevangeliet 8:31-9:13"],["1 Mosebok 41-42","Markusevangeliet 9:14-32","Psaltaren 10"],["1 Mosebok 43-44","Markusevangeliet9:33-50"],["1 Mosebok 45-46","Markusevangeliet 10:1-31","Ordspråksboken 2"],["1 Mosebok 47-48","Markusevangeliet 10:32-52"],["1 Mosebok 49-50","Markusevangeliet 11:1-25","Psaltaren 11"],["2 Mosebok 1-2","Markusevangeliet11:26-12:12"],["2 Mosebok 3-4","Markusevangeliet 12:13-44","Psaltaren 12"],["2 Mosebok 5-6","Markusevangeliet 13:1-23"],["2 Mosebok 7-8","Markusevangeliet 13:24-37","Psaltaren 13"],["2 Mosebok 9-10","Markusevangeliet 14:12-42"],["2 Mosebok 11-12","Markusevangeliet 14:43-65","Psaltaren 14"],["2 Mosebok 13-14","Markusevangeliet 14:66-15:15"],["2 Mosebok 15-16","Markusevangeliet15:16-47","Psaltaren 15"],["2 Mosebok 17-18","Markusevangeliet 16"],["2 Mosebok 19-20","Romarbrevet 1:1-15","Ordspråksboken 3"],["2 Mosebok 21-22","Romarbrevet 1:16-32"],["2 Mosebok 23-24","Romarbrevet 2","Psaltaren 16"],["2 Mosebok 25-26","Romarbrevet 3:1-20"],["2 Mosebok 27-28","Romarbrevet 3:21-31","Psaltaren 17"],["2 Mosebok 29-30","Romarbrevet 4"],["2 Mosebok 31-32","Romarbrevet 5","Psaltaren 18"],["2 Mosebok 33-34","Romarbrevet 6"],["2 Mosebok 35-36","Romarbrevet 7","Psaltaren 19"],["2 Mosebok 37-38","Romarbrevet 8:1-17"],["2 Mosebok 39-40","Romarbrevet 8:18-39","Psaltaren 20"],["3 Mosebok 1-3","Romarbrevet 9:1-29"],["3 Mosebok 4-5","Romarbrevet 9:30-10:21","Ordspråksboken 4-5"],["3 Mosebok 6-7","Romarbrevet 11:1-24"],["3 Mosebok 8-9","Romarbrevet 11:25-12:8","Psaltaren 21"],["3 Mosebok 10-11","Romarbrevet 12:9-13:7"],["3 Mosebok 12-13","Romarbrevet 13:8-14:12","Psaltaren 22"],["3 Mosebok 14-15","Romarbrevet 14:13-15:13"],["3 Mosebok 16-17","Romarbrevet 15:14-33","Psaltaren 23"],["3 Mosebok 18-19","Romarbrevet 16"],["3 Mosebok 20-21","Johannesevangeliet 1:1-18","Psaltaren 24"],["3 Mosebok 22-23","Johannesevangeliet 1:19-34"],["3 Mosebok 24-25","Johannesevangeliet 1:35-51","Psaltaren 25"],["3 Mosebok 26-27","Johannesevangeliet 2"],["4 Mosebok 1-2","Johannesevangeliet 3:1-21","Ordspråksboken 5"],["4 Mosebok 3-4","Johannesevangeliet 3:22-36"],["4 Mosebok 5-6","Johannesevangeliet 4:1-30","Psaltaren 26"],["4 Mosebok 7-8","Johannesevangeliet 4:31-54"],["4 Mosebok 9-10","Johannesevangeliet 5:1-18","Psaltaren 27"],["4 Mosebok 11-12","Johannesevangeliet 5:19-47"],["4 Mosebok 13-14","Johannesevangeliet 6:1-21","Psaltaren 28"],["4 Mosebok 15-16","Johannesevangeliet 6:22-59"],["4 Mosebok 17-18","Johannesevangeliet 6:60-71","Psaltaren 29"],["4 Mosebok 19-20","Johannesevangeliet 7:1-24"],["4 Mosebok 21-22","Johannesevangeliet7:25-53","Psaltaren 30"],["4 Mosebok 23-24","Johannesevangeliet 8:1-11"],["4 Mosebok 25-26","Johannesevangeliet 8:12-38","Ordspråksboken 6"],["4 Mosebok 27-28","Johannesevangeliet 8:39-59"],["4 Mosebok 29-30","Johannesevangeliet 9:1-17","Psaltaren 31"],["4 Mosebok 31-32","Johannesevangeliet 9:18-41"],["4 Mosebok 33-34","Johannesevangeliet 10:1-21","Psaltaren 32"],["4 Mosebok 35-36","Johannesevangeliet 10:22-42"],["5 Mosebok 1-2","Johannesevangeliet 11:1-16","Psaltaren 33"],["5 Mosebok 3-4","Johannesevangeliet 11:17-37"],["5 Mosebok 5-6","Johannesevangeliet 11:38-57","Psaltaren 34"],["5 Mosebok 7-8","Johannesevangeliet 12:1-26"],["5 Mosebok 9-10","Johannesevangeliet 12:27-50","Psaltaren 35"],["5 Mosebok 11-12","Johannesevangeliet 13:1-20"],["5 Mosebok 13-14","Johannesevangeliet 13:21-38","Ordspråksboken 7"],["5 Mosebok 15-16","Johannesevangeliet 14:1-14"],["5 Mosebok 17-18","Johannesevangeliet 14:15-31","Psaltaren 36"],["5 Mosebok 19-20","Johannesevangeliet 15:1-17"],["5 Mosebok 21-22","Johannesevangeliet 15:18-16:15","Psaltaren 37"],["5 Mosebok 23-24","Johannesevangeliet 16:16-33"],["5 Mosebok 25","Johannesevangeliet 17","Psaltaren 38"],["5 Mosebok 26-27","Johannesevangeliet 18:1-18"],["5 Mosebok 28","Johannesevangeliet 18:19-40","Psaltaren 39"],["5 Mosebok 29-30","Johannesevangeliet 19:1-16"],["5 Mosebok 31-32","Johannesevangeliet 19:17-37","Psaltaren 40"],["5 Mosebok 33-34","Johannesevangeliet 19:38-20:10"],["Josua 1-2","Johannesevangeliet 20:11-31","Ordspråksboken 8"],["Josua 3-4","Johannesevangeliet 21"],["Josua 5-6","Apostlagärningarna 1","Psaltaren 41"],["Josua 7-8","Apostlagärningarna 2:1-13"],["Josua 9-10","Apostlagärningarna 2:14-41","Psaltaren 42"],["Josua 11-12","Apostlagärningarna 2:42-3:10"],["Josua 13-14","Apostlagärningarna 3:11-26","Psaltaren 43"],["Josua 15-16","Apostlagärningarna 4:1-31"],["Josua 17-18","Apostlagärningarna 4:32-5:16","Psaltaren 44"],["Josua 19-20","Apostlagärningarna 5:17-42"],["Josua 21-22","Apostlagärningarna 6","Psaltaren 45"],["Josua 23-24","Apostlagärningarna 7:1-32"],["Domarboken 1-2","Apostlagärningarna 7:33-60","Ordspråksboken 9"],["Domarboken 3-4","Apostlagärningarna 8:1-25"],["Domarboken 5-6","Apostlagärningarna8:26-40","Psaltaren 46"],["Domarboken 7-8","Apostlagärningarna 9:1-20"],["Domarboken 9-10","Apostlagärningarna 9:21-43","Psaltaren 47"],["Domarboken 11-12","Apostlagärningarna 10:1-33"],["Domarboken 13-14","Apostlagärningarna 10:34-48","Psaltaren 48"],["Domarboken 15-17","Apostlagärningarna 11"],["Domarboken 18-19","Apostlagärningarna 12","Psaltaren 49"],["Domarboken 20-21","Apostlagärningarna 13:1-12"],["Rut 1-2","Apostlagärningarna 13:13-52","Psaltaren 50"],["Rut 3-4","Apostlagärningarna 14:1-18"],["1 Samuelsboken 1-2","Apostlagärningarna 14:19-28","Ordspråksboken 10"],["1 Samuelsboken 3-4","Apostlagärningarna 15:1-21"],["1 Samuelsboken 5-7","Apostlagärningarna15:22-41","Psaltaren 51"],["1 Samuelsboken 8-9","Apostlagärningarna 16:1-15"],["1 Samuelsboken 10-11","Apostlagärningarna 16:16-40","Psaltaren 52"],["1 Samuelsboken 12-13","Apostlagärningarna 17"],["1 Samuelsboken 14-15","Apostlagärningarna 18","Psaltaren 53"],["1 Samuelsboken 16-17","Apostlagärningarna 19:1-20"],["1 Samuelsboken 18-19","Apostlagärningarna 19:21-40","Psaltaren 54"],["1 Samuelsboken 20-21","Apostlagärningarna 20:1-16"],["1 Samuelsboken 22-23","Apostlagärningarna 20:17-38","Psaltaren 55"],["1 Samuelsboken 24-25","Apostlagärningarna 21:1-26"],["1 Samuelsboken 26-27","Apostlagärningarna 21:27-40","Ordspråksboken 11"],["1 Samuelsboken 28-29","Apostlagärningarna 22:1-21"],["1 Samuelsboken 30-31","Apostlagärningarna 22:22-23:22","Psaltaren 56"],["1 Krönikeboken 1-2","Apostlagärningarna 23:23-35"],["1 Krönikeboken 3-4","Apostlagärningarna 24","Psaltaren 57"],["1 Krönikeboken 5-7","Apostlagärningarna 25"],["1 Krönikeboken 8-10","Apostlagärningarna 26","Psaltaren 58"],["2 Samuelsboken 1-2","Apostlagärningarna 27:1-26"],["2 Samuelsboken 3-4","Apostlagärningarna 27:27-44","Psaltaren 59"],["2 Samuelsboken 5-6","Apostlagärningarna 28:1-31"],["2 Samuelsboken 7-8","1 Korintierbrevet 1:1-17","Psaltaren 60"],["2 Samuelsboken 9-10","1 Korintierbrevet 1:18-31"],["2 Samuelsboken 11-12","1 Korintierbrevet 2","Ordspråksboken 12"],["2 Samuelsboken 13-14","1 Korintierbrevet 3"],["2 Samuelsboken 15-16","1 Korintierbrevet 4","Psaltaren 61"],["2 Samuelsboken 17-18","1 Korintierbrevet 5"],["2 Samuelsboken 19-20","1 Korintierbrevet 6","Psaltaren 62"],["2 Samuelsboken 21-22","1 Korintierbrevet 7:1-16"],["2 Samuelsboken 23-24","1 Korintierbrevet 7:17-40","Psaltaren 63"],["1 Kungaboken 1-2","1 Korintierbrevet 8"],["1 Krönikeboken 11-12","1 Korintierbrevet 9","Psaltaren 64"],["1 Krönikeboken 13-15","1 Korintierbrevet 10:1-22"],["1 Krönikeboken 16-17","1 Korintierbrevet 10:23-11:16","Psaltaren 65"],["1 Krönikeboken 18-19","1 Korintierbrevet 11:17-34"],["1 Krönikeboken 20-22","1 Korintierbrevet 12","Ordspråksboken 13"],["1 Krönikeboken 23-24","1 Korintierbrevet 13"],["1 Krönikeboken 25-26","1 Korintierbrevet 14:1-25","Psaltaren 66"],["1 Krönikeboken 27-29","1 Korintierbrevet 14:26-40"],["1 Kungaboken 3-4","1 Korintierbrevet 15:1-34","Psaltaren 67"],["Höga Visan 1-3","1 Korintierbrevet 15:35-58"],["Höga Visan 4-6","1 Korintierbrevet 16","Psaltaren 68"],["Höga Visan 7-8","2 Korintierbrevet 1:1-11"],["1 Kungaboken 5-6","2 Korintierbrevet 1:12-24","Psaltaren 69"],["1 Kungaboken 7-8","2 Korintierbrevet 2"],["1 Kungaboken 9-10","2 Korintierbrevet 3","Psaltaren 70"],["2 Krönikeboken 1-3","2 Korintierbrevet 4:1-5:10"],["2 Krönikeboken 4-5","2 Korintierbrevet 5:11-6:13","Ordspråksboken 14"],["2 Krönikeboken 6-7","2 Korintierbrevet 6:14-7:16"],["Predikaren 1-2","2 Korintierbrevet 8","Psaltaren 71"],["Predikaren 3-5","2 Korintierbrevet 9"],["Predikaren 6-7","2 Korintierbrevet 10","Psaltaren 72"],["Predikaren 8-9","2 Korintierbrevet 11"],["Predikaren 10-12","2 Korintierbrevet 12-13","Psaltaren 73"],["2 Krönikeboken 8-9","Matteusevangeliet 1"],["1 Kungaboken 11-12","Matteusevangeliet 2","Psaltaren 74"],["1 Kungaboken 13-14","Matteusevangeliet 3"],["2 Krönikeboken 10-11","Matteusevangeliet 4","Psaltaren 75"],["2 Krönikeboken 12-13","Matteusevangeliet 5:1-16"],["2 Krönikeboken 14-15","Matteusevangeliet 5:17-37","Ordspråksboken 15"],["2 Krönikeboken 16-17","Matteusevangeliet 5:38-6:15"],["2 Krönikeboken 18-19","Matteusevangeliet 6:16-34","Psaltaren 76"],["1 Kungaboken 15-16","Matteusevangeliet 7"],["1 Kungaboken 17-18","Matteusevangeliet 8:1-17","Psaltaren 77"],["1 Kungaboken 19-20","Matteusevangeliet 8:18-34"],["1 Kungaboken 21-22","Matteusevangeliet 9:1-17","Psaltaren 78"],["2 Krönikeboken 20-21","Matteusevangeliet 9:18-38"],["2 Kungaboken 1-2","Matteusevangeliet 10:1-25","Psaltaren 79"],["2 Kungaboken 3-4","Matteusevangeliet 10:26-42"],["2 Kungaboken 5-6","Matteusevangeliet 11","Psaltaren 80"],["2 Kungaboken 7-8","Matteusevangeliet 12:1-21"],["Obadja 1","Matteusevangeliet 12:22-42","Ordspråksboken 16"],["2 Krönikeboken 22","Matteusevangeliet 12:43-13:17"],["Joel 1-3","Matteusevangeliet 13:18-35","Psaltaren 81"],["2 Kungaboken 9-10","Matteusevangeliet 13:36-58"],["2 Kungaboken 11-12","Matteusevangeliet 14:1-21","Psaltaren 82"],["2 Kungaboken 13-14","Matteusevangeliet 14:22-15:9"],["Jona 1-4","Matteusevangeliet 15:10-28","Psaltaren 83"],["Amos 1-2","Matteusevangeliet 15:29-16:12"],["Amos 3-5","Matteusevangeliet 16:13-28","Psaltaren 84"],["Amos 6-7","Matteusevangeliet 17"],["Amos 8-9","Matteusevangeliet 18:1-20","Psaltaren 85"],["2 Krönikeboken 23-24","Matteusevangeliet 18:21-35"],["2 Krönikeboken 25-26","Matteusevangeliet 19","Ordspråksboken 17"],["Jesaja 1-2","Matteusevangeliet 20:1-19"],["Jesaja 3-4","Matteusevangeliet 20:20-21:11","Psaltaren 86"],["Jesaja 6","Matteusevangeliet 21:12-32"],["2 Krönikeboken 27-28","Matteusevangeliet 21:33-46","Psaltaren 87"],["2 Kungaboken 15-16","Matteusevangeliet 22:1-22"],["Jesaja 7-8","Matteusevangeliet 22:23-46","Psaltaren 88"],["Jesaja 9-10","Matteusevangeliet 23"],["Jesaja 11-12","Matteusevangeliet 24:1-14","Psaltaren 89"],["Jesaja 13-14","Matteusevangeliet 24:15-31"],["Jesaja 15-16","Matteusevangeliet 24:32-51","Psaltaren 90"],["Jesaja 17-18","Matteusevangeliet 25:1-30"],["Jesaja 19-20","Matteusevangeliet 25:31-46","Ordspråksboken 18"],["Jesaja 21-22","Matteusevangeliet 26:1-25"],["Jesaja 23-24","Matteusevangeliet 26:26-46","Psaltaren 91"],["Jesaja 25-26","Matteusevangeliet 26:47-68"],["Jesaja 27-28","Matteusevangeliet 26:69-27:10","Psaltaren 92"],["Jesaja 29-30","Matteusevangeliet 27:11-31"],["Jesaja 31-32","Matteusevangeliet 27:32-44","Psaltaren 93"],["Jesaja 33-34","Matteusevangeliet 27:45-66"],["Jesaja 35-36","Matteusevangeliet 28","Psaltaren 94"],["Jesaja 37-38","Hebreerbrevet 1:1-2:4"],["Jesaja 39-40","Hebreerbrevet 2:5-3:6","Psaltaren 95"],["Jesaja 41-42","Hebreerbrevet 3:7-4:16"],["Jesaja 43-44","Hebreerbrevet 5:1-6:12","Ordspråksboken 19"],["Jesaja 45-46","Hebreerbrevet 6:13-7:10"],["Jesaja 47-48","Hebreerbrevet 7:11-8:13","Psaltaren 96"],["Jesaja 49-50","Hebreerbrevet 9"],["Jesaja 51-52","Hebreerbrevet 10:1-18","Psaltaren 97"],["Jesaja 53-54","Hebreerbrevet 10:19-39"],["Jesaja 55-56","Hebreerbrevet 11:1-17","Psaltaren 98"],["Jesaja 57-58","Hebreerbrevet 11:18-40"],["Jesaja 59-60","Hebreerbrevet 12:1-17","Psaltaren 99"],["Jesaja 61-62","Hebreerbrevet 12:18-29"],["Jesaja 63-64","Hebreerbrevet 13","Psaltaren 100"],["Jesaja 65-66","Galaterbrevet 1"],["2 Kungaboken 17","Galaterbrevet 2:1-14","Ordspråksboken 20"],["2 Kungaboken 18-19","Galaterbrevet 2:15-3:14"],["2 Krönikeboken 29-30","Galaterbrevet 3:15-4:7","Psaltaren 101"],["2 Krönikeboken 31-32","Galaterbrevet 4:8-31"],["Hosea 1-3","Galaterbrevet 5","Psaltaren 102"],["Hosea 4-5","Galaterbrevet 6"],["Hosea 6-7","Efesierbrevet 1","Psaltaren 103"],["Hosea 8-10","Efesierbrevet 2"],["Hosea 11-12","Efesierbrevet 3","Psaltaren 104"],["Hosea 13-14","Efesierbrevet 4:1-16"],["Mika 1-2","Efesierbrevet 4:17-32","Psaltaren 105"],["Mika 3-5","Efesierbrevet 5"],["Mika 6-7","Efesierbrevet 6","Ordspråksboken 21"],["2 Kungaboken 20-21","Kolosserbrevet 1:1-23"],["2 Krönikeboken 33-34","Kolosserbrevet 1:24-2:15","Psaltaren 106"],["Sefanja 1-3","Kolosserbrevet 2:16-3:17"],["Nahum 1-3","Kolosserbrevet 3:18-4:18","Psaltaren 107"],["2 Krönikeboken 35","Judasbrev 1"],["Habackuk 1-3","Brevet till Filemon 1","Psaltaren 108"],["Jeremia 1-2","1 Timoteusbrevet 1"],["Jeremia 3-4","1 Timoteusbrevet 2:1-3:7","Psaltaren 109"],["Jeremia 5-6","1 Timoteusbrevet 3:8-4:16"],["Jeremia 11-12","1 Timoteusbrevet 5","Psaltaren 110"],["Jeremia 26","1 Timoteusbrevet 6"],["Jeremia 7-8","2 Timoteusbrevet 1","Ordspråksboken 22"],["Jeremia 9-10","2 Timoteusbrevet 2"],["Jeremia 14-15","2 Timoteusbrevet 3","Psaltaren 111"],["Jeremia 16-17","2 Timoteusbrevet 4"],["Jeremia 18-20","Brevet till Titus 1","Psaltaren 112"],["Jeremia 35-36","Brevet till Titus 2-3"],["Jeremia 13, Jeremia 22","Lukasevangeliet 1:1-25","Psaltaren 113"],["Jeremia 23-24","Lukasevangeliet 1:26-38"],["2 Kungaboken 22-23","Lukasevangeliet 1:39-56","Psaltaren 114"],["2 Krönikeboken 36:1-8","Lukasevangeliet 1:57-80"],["Daniel 1-2","Lukasevangeliet 2:1-21","Psaltaren 115"],["Daniel 3-4","Lukasevangeliet 2:22-40"],["Daniel 5-6","Lukasevangeliet 2:41-52","Ordspråksboken 23"],["Daniel 7-8","Lukasevangeliet 3"],["Daniel 9-10","Lukasevangeliet 4:1-15","Psaltaren 116"],["Daniel 11-12","Lukasevangeliet 4:16-44"],["2 Kungaboken 24-25","Lukasevangeliet 5:1-16","Psaltaren 117"],["2 Krönikeboken 36:9-10, Hesekiel 1","Lukasevangeliet 5:17-39"],["Hesekiel 2-3","Lukasevangeliet 6:1-16","Psaltaren 118"],["Hesekiel 4-6","Lukasevangeliet 6:17-36"],["Hesekiel 7-8","Lukasevangeliet 6:37-7:10","Psaltaren 119:1-40"],["Hesekiel 9-10","Lukasevangeliet 7:11-35"],["Hesekiel 11-12","Lukasevangeliet 7:36-8:8","Psaltaren 119:41-88"],["Hesekiel 13-14","Lukasevangeliet 8:9-25"],["Hesekiel 15-16","Lukasevangeliet 8:26-56","Psaltaren 119:89-136"],["Hesekiel 17-18","Lukasevangeliet 9:1-17"],["Hesekiel 19-20","Lukasevangeliet 9:18-36","Psaltaren 119:137-176"],["Hesekiel 21-22","Lukasevangeliet 9:37-62"],["Hesekiel 23-24","Lukasevangeliet 10:1-20","Psaltaren 120"],["Hesekiel 25-26","Lukasevangeliet 10:21-42"],["Hesekiel 27-28","Lukasevangeliet 11:1-23","Ordspråksboken 24"],["Hesekiel 29-30","Lukasevangeliet 11:24-36"],["Hesekiel 31-32","Lukasevangeliet 11:37-12:7","Psaltaren 121"],["Hesekiel 33-34","Lukasevangeliet 12:8-34"],["Hesekiel 35-36","Lukasevangeliet 12:35-59","Psaltaren 122"],["Hesekiel 37-38","Lukasevangeliet 13:1-17"],["Hesekiel 39-40","Lukasevangeliet 13:18-35","Psaltaren 123"],["Hesekiel 41-42","Lukasevangeliet 14:1-24"],["Hesekiel 43-44","Lukasevangeliet 14:25-15:10","Psaltaren 124"],["Hesekiel 45-46","Lukasevangeliet 15:11-32"],["Hesekiel 47-48","Lukasevangeliet 16:1-17","Psaltaren 125"],["Jesaja 45, Jesaja 25","Lukasevangeliet 16:18-17:6"],["Jeremia 46-47","Lukasevangeliet 17:7-37","Ordspråksboken 25"],["Jeremia 48-49","Lukasevangeliet 18:1-17"],["2 Krönikeboken 36:11-21, Jeremia 27","Lukasevangeliet 18:18-43","Psaltaren 126"],["Jeremia 28-29","Lukasevangeliet 19:1-27"],["Jeremia 50-51","Lukasevangeliet 19:28-48","Psaltaren 127"],["Jeremia 30-31","Lukasevangeliet 20:1-18"],["Jeremia 32-33","Lukasevangeliet 20:19-47","Psaltaren 128"],["Jeremia 21, Jeremia 34","Lukasevangeliet 21:1-19"],["Jeremia 37-38","Lukasevangeliet 21:20-38","Psaltaren 129"],["Jeremia 39, Jeremia 52","Lukasevangeliet 22:1-23"],["Jeremia 40-42","Lukasevangeliet 22:24-46","Psaltaren 130"],["Jeremia 43-44","Lukasevangeliet 22:47-71"],["Klagovisorna 1-2","Lukasevangeliet 23:1-17","Ordspråksboken 26"],["Klagovisorna 3","Lukasevangeliet 23:18-43"],["Klagovisorna 4-5","Lukasevangeliet 23:44-24:12","Psaltaren 131"],["2 Krönikeboken 36:22-23","Lukasevangeliet 24:13-35"],["Esra 1-2","Lukasevangeliet 24:36-53","Psaltaren 132"],["Esra 3-4","Jakobs brev 1"],["Haggai 1-2","Jakobs brev 2","Psaltaren 133"],["Sakarja 1-3","Jakobs brev 3-4"],["Sakarja 4-6","Jakobs brev 5","Psaltaren 134"],["Sakarja 7-8","1 Petrusbrevet 1"],["Sakarja 9-10","1 Petrusbrevet 2:1-12","Psaltaren 135"],["Sakarja 11-12","1 Petrusbrevet 2:13-3:7"],["Sakarja 13-14","1 Petrusbrevet 3:8-4:11","Ordspråksboken 27"],["Esra 5-6","1 Petrusbrevet 4:12-5:14"],["Ester 1-2","2 Petrusbrevet 1","Psaltaren 136"],["Ester 3-4","2 Petrusbrevet 2"],["Ester 5-6","2 Petrusbrevet 3","Psaltaren 137"],["Ester 7-8","1 Johannesbrevet 1:1-2:14"],["Ester 9-10","1 Johannesbrevet 2:15-29","Psaltaren 138"],["Esra 7-8","1 Johannesbrevet 3"],["Esra 9-10","1 Johannesbrevet 4","Psaltaren 139"],["Nehemja 1-3","1 Johannesbrevet 5"],["Nehemja 4-5","2 Johannesbrevet 1","Psaltaren 140"],["Nehemja 6-7","3 Johannesbrevet 1"],["Nehemja 8-9","1 Tessalonikerbrevet 1:1-2:16","Ordspråksboken 28"],["Nehemja 10-11","1 Tessalonikerbrevet 2:17-3:13"],["Nehemja 12-13","1 Tessalonikerbrevet 4","Psaltaren 141"],["Malaki 1-2","1 Tessalonikerbrevet 5"],["Malaki 3-4","2 Tessalonikerbrevet 1","Psaltaren 142"],["Job 1-2","2 Tessalonikerbrevet 2"],["Job 3-5","2 Tessalonikerbrevet 3","Psaltaren 143"],["Job 6-7","Uppenbarelseboken 1"],["Job 8-9","Uppenbarelseboken 2","Psaltaren 144"],["Job 10-11","Uppenbarelseboken 3-4"],["Job 12-13","Uppenbarelseboken 5","Psaltaren 145"],["Job 14-15","Uppenbarelseboken 6:1-7:8"],["Job 16-17","Uppenbarelseboken 7:9-8:13","Ordspråksboken 29"],["Job 18-19","Uppenbarelseboken 9"],["Job 20-21","Uppenbarelseboken 10:1-11:14","Psaltaren 146"],["Job 22-24","Uppenbarelseboken 11:15-12:18"],["Job 25-26","Uppenbarelseboken 13","Psaltaren 147"],["Job 27-28","Uppenbarelseboken 14-15"],["Job 29-31","Uppenbarelseboken 16","Psaltaren 148"],["Job 32-33","Uppenbarelseboken 17"],["Job 34-35","Uppenbarelseboken 18","Psaltaren 149"],["Job 36-37","Uppenbarelseboken 19"],["Job 38-39","Uppenbarelseboken 20:1-21:8","Ordspråksboken 30"],["Job 40-41","Uppenbarelseboken 21:9-27","Ordspråksboken 31"],["Job 42","Uppenbarelseboken 22","Psaltaren 150"]];
 
 
 var chrono = {"data2":[
@@ -322,6 +396,16 @@ ver.addEventListener("change", function(){
   let yvbase = lang === "se" ? "https://www.bible.com/sv/bible/160/" : "https://www.bible.com/no/bible/29/";
   let yvbasever = lang === "se"?".SFB98":".N11BM";
 });
+
+//translate css class
+function mktrcl(str){
+  v = str;
+  for (let i = 0; i < replaceColor.length; i++) {
+    v = v.replace(new RegExp(replaceColor[i][0], 'g'), replaceColor[i][1]);
+  }
+   return v;
+}
+
 //create hyperlinks to youversion
 function mkyv(str) {
   v = str;
@@ -517,7 +601,7 @@ function daysInYear(year) {
 
 function printRP(year,m=12,arr){
   var txt = '';
- 
+  var html = '';
   var date = new Date();
   if(year){
       date.setFullYear(year);
@@ -537,9 +621,11 @@ function printRP(year,m=12,arr){
   var dd = anno % 4 === 0 && (anno % 100 !== 0 || anno % 400 === 0) ? 366 : 365;
   var bis = dd === 366 ? true : false;
   var filename = 'Luthersk_kyrkokalender_';
+
     if ( mese === date.getMonth() ) {
       
       txt += months[mese] + ' ' + anno +'\n';
+      html += `<div class="container"><h1>${months[mese]} ${anno}</h1><table class="table table-borderless table-hover">`;
       filename += months[mese] + '_' + anno +'.txt';
       var mm = new Date(anno, mese+1, 0).getDate();
           for (let j=0; j < mm; j++){
@@ -552,53 +638,85 @@ function printRP(year,m=12,arr){
             console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
             
             let e = eventi.find(ev=> ev.daynr == i);
-            txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
+            var annata ='</tr>';
+            if(typeof e != 'undefined'){
+              if (e.HHM !== null){
+                if(e.Argang === 2) {
+                  annata = `<td><b>II </b>${e.HHM}, ${e.AFT}</td></tr>`;
+                  }
+                if (e.Argang === 3){
+                  annata = `<td><b>III </b>${e.HHM}, ${e.AFT}</td></tr>`;
+                  }
+              }
+            }
+
+            txt += g.getDate() + ' ' + daysb[g.getDay()]+ ' ';
+            html += `<tr><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
             if ( g.getDay() === 1)  {
               txt += 'v ' + g.getWeek() + ' ';
+              html += `v ${g.getWeek()}`;
             }
+            html += `</td>`;
               if (bis) {
                   if( i === 60 ) {
 
                     console.log('...\n');
 
                     txt += '...\n';
-
+                    html += '<td>...</td><td></td><td></td><td></td></tr>';
                   } else if ( i > 60 ) {
 
                     rp[i-2].forEach(r => console.log( r + '\n')); 
-                    txt += 'morgon: ' + rp[i-2][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-2][2] != 'undefined' ? ' ps: ' + rp[i-2][2] : '') + '\n';
+                    rp[i-2].forEach(r => html += '<td></td><td>'+r+'</td>');
+                    html += '</tr>';
+                    txt += '\t' + rp[i-2][0] + '\t' + rp[i-1][1] + ( typeof rp[i-2][2] != 'undefined' ? '\t' + rp[i-2][2] : '') + '\n';
                     if(typeof e != 'undefined') {
-
+                        
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                        html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+                          
                     }
 
                   } else {
 
-                    rp[i-1].forEach(r => console.log( r + '\n')); 
-                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                    rp[i-1].forEach(r => console.log( r + '\n'));
+                    rp[i-1].forEach(r => html += '<td></td><td>'+r+'</td>');
+                    html += '</tr>'; 
+                    txt += '\t' + rp[i-1][0] + '\t' + rp[i][1] + ( typeof rp[i-1][2] != 'undefined' ? '\t' + rp[i-1][2] : '') + '\n';
                     if(typeof e != 'undefined') {
                       
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                        html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
                     }
                   }
               } else {
               
-                  rp[i-1].forEach(r => console.log( r + '\n')); 
-                    txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                  rp[i-1].forEach(r => console.log( r + '\n'));
+                  rp[i-1].forEach(r => html += '<td></td><td>'+r+'</td>');
+                    html += '</tr>'; 
+
+                    txt += '\t' + rp[i-1][0] + '\t' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? '\t' + rp[i-1][2] : '') + '\n';
                     if(typeof e != 'undefined') {
                        
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                        html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+
                     }
               }
           }
-      
+          html += '</table></div>';
         }
     else {
         filename += anno +'.txt';
+        html += `<div class="container">`;
         for (let x=0; x<12; x++){
           
           mese = x;
           txt += months[mese] + ' ' + anno +'\n';
+          html+= `<h1>${months[mese]} ${anno}</h1><table class="table table-borderless table-hover">`;
             var mm = new Date(anno, x+1, 0).getDate();
               for (let j=0; j < mm; j++){
                     let g = new Date(anno, mese, j+1);
@@ -610,49 +728,83 @@ function printRP(year,m=12,arr){
                     console.log( '['+i+']'+g.toLocaleDateString() + '\n' );
                     
                     let e = eventi.find(ev=> ev.daynr == i);
-                    txt += g.getDate() + ' ' + days[g.getDay()]+ ' ';
+                    var annata ='</tr>';
+                    if(typeof e != 'undefined'){
+                      if (e.HHM !== null){
+                        if(e.Argang === 2) {
+                          annata = `<td><b>II </b>${e.HHM}, ${e.AFT}</td></tr>`;
+                          }
+                        if (e.Argang === 3){
+                          annata = `<td><b>III </b>${e.HHM}, ${e.AFT}</td></tr>`;
+                          }
+                      }
+                    }
+
+                    txt += g.getDate() + ' ' + daysb[g.getDay()]+ ' ';
+                    html += `<tr><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
                     if ( g.getDay() === 1)  {
                       txt += 'v ' + g.getWeek() + ' ';
+                      html += `v ${g.getWeek()}`;
                     }  
+                     html += `</td>`; 
                       if (bis) {
                           if( i === 60 ) {
 
                             console.log('...\n');
 
                             txt += '...\n';
-
+                            html += '<td>...</td><td></td><td></td><td></td></tr>';
                           } else if ( i > 60 ) {
 
                             rp[i-2].forEach(r => console.log( r + '\n')); 
-                            txt += 'morgon: ' + rp[i-2][0] + ' kväll: ' + rp[i-2][1] + ( typeof rp[i-2][2] != 'undefined' ? ' ps: ' + rp[i-2][2] : '') + '\n';
+                            rp[i-2].forEach(r => html += '<td></td><td>'+r+'</td>');
+                            html += '</tr>';
+
+                            txt += '\t' + rp[i-2][0] + '\t' + rp[i-2][1] + ( typeof rp[i-2][2] != 'undefined' ? '\t' + rp[i-2][2] : '') + '\n';
+                            
                             if(typeof e != 'undefined') {
 
                                 txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                                html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
                             }
 
                           } else {
 
                             rp[i-1].forEach(r => console.log( r + '\n')); 
-                            txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                            rp[i-1].forEach(r => html += '<td></td><td>'+r+'</td>');
+                            html += '</tr>'; 
+                            txt += '\t' + rp[i-1][0] + '\t' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? '\t' + rp[i-1][2] : '') + '\n';
                             if(typeof e != 'undefined') {
                               
                                 txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt  ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                                 html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
                             }
                           }
                       } else {
                       
                           rp[i-1].forEach(r => console.log( r + '\n')); 
-                            txt += 'morgon: ' + rp[i-1][0] + ' kväll: ' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? ' ps: ' + rp[i-1][2] : '') + '\n';
+                          rp[i-1].forEach(r => html += '<td></td><td>'+r+'</td>');
+                          html += '</tr>'; 
+                            txt += '\t' + rp[i-1][0] + '\t' + rp[i-1][1] + ( typeof rp[i-1][2] != 'undefined' ? '\t' + rp[i-1][2] : '') + '\n';
+                            
                             if(typeof e != 'undefined') {
                               
                                 txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+
+                                html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
                             }
                       }
-                }
-        }
+                }html += '</table>';
+        } html += '</div>';
 
 }
     console.log(bis +' '+ arr + ' '+ mese + ' ' + anno);
+
+     $('#kal').html(html);
+     $('#kal-container').show();
+     $('#bibelcalender').hide();
     var re1 = /årgång 1: null, null/g;
     var re2 = /årgång 2:/g;
     var re3 = /årgång 3:/g;
@@ -660,9 +812,13 @@ function printRP(year,m=12,arr){
     txt = txt.replace(re3,'III');
     txt = txt.replace(re1,'');
     var BOM = "\uFEFF";
-    txt = txt.replace(/\s{2}/g,' ');
-  
+   // txt = txt.replace(/\s{2}/g,' ');
+  var laddaner = confirm('vill du ladda ner kalender ?') ;
+  if(laddaner){
     download(txt,filename,'text/csv;charset=utf-8');
+
+  }
+
     
 
 }
@@ -2545,12 +2701,12 @@ function makeKK(newYear) {
 
 function dnlKKcsv(newYear) {
   var data = makeKK(newYear);
-  data = data.map(function(o){o.Date = JSON.stringify(o.Date); return o });
-  var header = '"' + Object.keys(data[0]).join('","') +'"';
-  var values = data.map(o => '"' + Object.values(o).join('","')).join('"\n');
+  data = data.map(function(o){o.Date = o.Date.toLocaleString(); return o });
+  var header = '"' + Object.keys(data[0]).join('";"') +'"';
+  var values = data.map(o => '"' + Object.values(o).join('";"')).join('"\n');
   var BOM = "\uFEFF";
   var csv = BOM + header + '\n' + values;
-  csv = csv.replace(/\s{2}/g,' ');
+  //csv = csv.replace(/\s{2}/g,' ');
   var filename = 'kyrkokalender_' + newYear + '.csv';
   download(csv,filename,'text/csv;charset=utf-8');
 }
@@ -2740,6 +2896,7 @@ let uniqueEvents = removeDuplicates(sortedEvents, 'time');
 console.log(events.length - uniqueEvents.length);
 var months = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
 var days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"];
+var daysb = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"];
 let settings = {};
 let element = document.getElementById('bibelcalender');
 caleandar(element, uniqueEvents, settings);
@@ -2878,7 +3035,7 @@ btn.addEventListener('click', function () {
     }
   } else {
     
-    makeKK(nyar.value);
+    makeKK(nyar.value,nymanad.value);
 
     $('p#test').html('');
     if (nymanad.value == '12') {
@@ -2887,6 +3044,7 @@ btn.addEventListener('click', function () {
       }
 
     } else {
+      
       $('p#test').append(showMonthYear(uniqueEvents.sortBy(o => [o.time]), nymanad.value, nyar.value));
     }
   }
@@ -2895,6 +3053,15 @@ btn.addEventListener('click', function () {
 
 });
 
+let bk = document.getElementById('btnk');
+bk.addEventListener('click',function(){
+  $('p#kal').html('');
+  $('#bibelcalender').hide();
+  printRP(nyar.value*1,nymanad.value*1);
+  $('p#test').hide();
+  BGLinks.version = "SFB";
+  BGLinks.linkVerses();
+});
 $('#togglecal').on('click', function () {
   $('#bibelcalender').toggle();
 });

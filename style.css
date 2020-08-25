@@ -1,3 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+*{
+    font-family: 'EB Garamond',serif;
+    font-stretch: semi-condensed;
+
+}
+table{
+    font-family: 'EB Garamond',serif;
+    font-stretch: semi-condensed;
+    text-align: left;
+    vertical-align: text-top;
+}
+.red{
+    background-color: red;
+    opacity: 0.69;
+    font-stretch: semi-condensed;
+    color: antiquewhite;
+    font-family: 'EB Garamond', serif;
+}
+a.red{
+  
+}
+.white{
+    background-color: white;
+    opacity: 0.69;
+    font-stretch: semi-condensed;
+    color: rgb(20, 20, 19);
+    font-family: 'EB Garamond', serif;
+}
+.purple{
+    background-color: purple;
+    opacity: 0.69;
+    font-stretch: semi-condensed;
+    color: antiquewhite;
+    font-family: 'EB Garamond', serif;
+}
+.green{
+    background-color: green;
+    opacity: 0.69;
+    font-stretch: semi-condensed;
+    color: antiquewhite;
+    font-family: 'EB Garamond', serif;
+}
+.black{
+    background-color: black;
+    opacity: 0.69;
+    font-stretch: semi-condensed;
+    color: antiquewhite;
+    font-family: 'EB Garamond', serif;
+}
 .cld-main{
   width: 100%;
   height: 100%;

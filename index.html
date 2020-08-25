@@ -6,14 +6,24 @@
 	<meta name="viewport" content="width=device-width">
 	<title>Kyrkoårets bibeltexter</title>
 	<link href="style.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	 crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+
 	</script>
 </head>
 
 <body>
-  <div class="container card bg-light " id="votd">
-    <script> //src="https://www.biblegateway.com/votd/votd.write.callback.js"
+	<div class="container card bg-light " id="biblegateway" style="
+    border-bottom-width: 1px;
+    margin-bottom: 5px;
+    padding-bottom: 20px;
+    margin-top: 5px;
+    top: 5px;
+    bottom: 5px;
+">
+		<script>
+			//src="https://www.biblegateway.com/votd/votd.write.callback.js"
     
     (function() {
 
@@ -28,33 +38,39 @@ var BG = window.BG;
 BG.votdWriteCallback = function(json) {
     var votd = json.votd;
     var votd_html = '';
-    votd_html += '<div class=""><blockquote class="blockquote card-body"><p class="text-capitalize font-weight-light">' + votd.text;
+    votd_html += '<div class=""><blockquote class="blockquote card-body" style="padding-bottom:0px;"><p class="text-justify font-weight-light">' + votd.text;
     votd_html += '</p><footer class="blockquote-footer tetx-center"><a href="' + votd.permalink +'">' + votd.display_ref + '</a>';
     if (votd.audiolink) {
       votd_html += ' <a rel="nofollow" href="' + votd.audiolink + '" title="Listen to chapter"><img alt="Listen to chapter" src="//www.biblegateway.com/assets/images/audio/sound.gif" border=0/></a>';
     }
     votd_html += ' <a href="' + votd.copyrightlink + '">' + votd.copyright + '</a>';
-    votd_html += '<footer><p><p class="small">Powered by <a rel="nofollow" href="https://www.biblegateway.com/">BibleGateway.com</a></p></p>';
-    votd_html += '<blockquote></div>';
+    votd_html += '<footer><br><p class="small">Powered by <a href="https://www.biblegateway.com/" title="The Bible in multiple languages, versions, and formats" rel="nofollow"><img src="https://www.biblegateway.com/assets/images/logos/bglogo_sm.gif?103106" height="32" alt="BibleGateway.com" border="0"></a></p>';
+    votd_html += '</blockquote></div>';
+    votd_html += '<form action="https://www.biblegateway.com/quicksearch/" target="_blank"><div class="form-row"><div class="col-auto"><input type="text" name="quicksearch"  class="form-control"></div><input type="hidden" name="version" value="SFB"  class="form-control">  <div class="col-auto"><input type="submit" value="Sök på BibleGateway.com"  class="form-control"></div></div></form>'
     document.write(votd_html);
 };
 
 window.BG = BG;
 
 })();
-    
-    
-    </script>
-<script src="https://www.biblegateway.com/votd/get/?format=json&version=SFB&callback=BG.votdWriteCallback"></script>
-<!-- alternative for no javascript -->
-<noscript>
-<iframe framespacing="0" frameborder="no" src="https://www.biblegateway.com/votd/get/?format=html&version=NIV">View Verse of the Day</iframe>
-</noscript>
-  </div>
-	  <div id="byt" class="container">
-     <div class="form-inline form-row align-items-center">
-      <div class="col-auto">  
-        <label class="sr-only" for="nyar">Ange år</label>
+		</script>
+		<script src="https://www.biblegateway.com/votd/get/?format=json&version=SFB&callback=BG.votdWriteCallback">
+
+		</script>
+		<!-- alternative for no javascript -->
+		<noscript>
+			<iframe framespacing="0" frameborder="no" src="https://www.biblegateway.com/votd/get/?format=html&version=NIV">View Verse
+				of the Day</iframe>
+		</noscript>
+
+	</div>
+
+
+	</div>
+	<div id="byt" class="container">
+		<div class="form-inline form-row align-items-center">
+			<div class="col-auto">
+				<label class="sr-only" for="nyar">Ange år</label>
         <input id="nyar" type="text" name="nyar" class="form-control" title="ange år">
       </div>
     
@@ -92,11 +108,14 @@ window.BG = BG;
       </div>
 
       <div class="col-auto">
-          <button id="btn" class=" btn btn-outline-primary form-control"> hämta texter</button>
+          <button id="btn" class=" btn btn-outline-primary form-control" oncontextmenu="togglediv('test')"> hämta texter</button>
+      </div>
+      <div class="col-auto">
+          <button id="btnk" class=" btn btn-outline-warning form-control" oncontextmenu="togglediv('kal')"> hämta texter med daglig läsning</button>
       </div>
       
       <div class="col-auto">  
-          <input type="button" id="togglecal" class=" btn btn-outline-info" value="kalender" >
+          <input type="button" id="togglecal" class="btn btn-outline-info" value="kalender" >
       </div>
 
       <div class="col-auto">
@@ -107,7 +126,7 @@ window.BG = BG;
       </div>
      </div>
     </div>
-    <div id="biblegateway" style="display:none">
+    <div  style="display:none">
           <form action="https://www.biblegateway.com/quicksearch/" target="_blank">
           <table border="1" cellspacing="0" cellpadding="2" style="border-color: #600; margin: 0 auto;">
           <tr><th style="background-color: #600; color:#fff; text-align: center; padding: 0 10px;">Sök på ett ord eller vers i Bibeln</th></tr>
@@ -134,7 +153,12 @@ window.BG = BG;
     <div>
       <p id="test" style="text-align:center"></p>
     </div>
+    <div class="container" id="kal-container" style="display:none">
+      <button class="btn btn-outline-primary" onclick="Export2Doc('kal')"></button>
+      <div id="kal">
 
+      </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
