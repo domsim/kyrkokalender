@@ -625,7 +625,7 @@ function printRP(year,m=12,arr){
     if ( mese === date.getMonth() ) {
       
       txt += months[mese] + ' ' + anno +'\n';
-      html += `<div class="container"><h1>${months[mese]} ${anno}</h1><table class="table table-borderless table-hover">`;
+      html += `<div class="container"><h1>${months[mese]} ${anno}</h1> <span><a onClick="showRP()">visa läsplan</a></span> <span><a onClick="hideRP()">dölj läsplan</a></span><table class="table table-borderless table-hover">`;
       filename += months[mese] + '_' + anno +'.txt';
       var mm = new Date(anno, mese+1, 0).getDate();
           for (let j=0; j < mm; j++){
@@ -651,7 +651,7 @@ function printRP(year,m=12,arr){
             }
 
             txt += g.getDate() + ' ' + daysb[g.getDay()]+ ' ';
-            html += `<tr><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
+            html += `<tr title="${g.toLocaleDateString()}" ><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
             if ( g.getDay() === 1)  {
               txt += 'v ' + g.getWeek() + ' ';
               html += `v ${g.getWeek()}`;
@@ -674,7 +674,7 @@ function printRP(year,m=12,arr){
                         
                         txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-                        html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+                        html += `<tr title="${g.toLocaleDateString()}" data-day="${g.getDate()}" data-daynr="${i}" class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
                           
                     }
 
@@ -2214,8 +2214,8 @@ function domsndg(year) {
     'Link': '',
     'Prio': 1,
     'Argang': argng(year),
-    'HHM': argng(year) == 2 ? 'Joh 5:22-29' : argng(year) == 3 ? 'Matt 1:18-25' : null,
-    'AFT': argng(year) == 2 ? '1 Kor 15:22-34' : argng(year) == 3 ? 'Tit 2:11-15' : null
+    'HHM': argng(year) == 2 ? 'Joh 5:22-29' : argng(year) == 3 ? 'Matt 13:47-52' : null,
+    'AFT': argng(year) == 2 ? '1 Kor 15:22-34' : argng(year) == 3 ? 'Upp 20:11-15' : null
   };
 }
 // från 1 advent ändras årgång varför 'year + 1'
@@ -3052,6 +3052,12 @@ btn.addEventListener('click', function () {
   BGLinks.linkVerses();
 
 });
+
+const hideRP = () =>
+  document.querySelectorAll('tr:not(.green):not(.white):not(.red):not(.black):not(.purple)').forEach((t)=>t.style.display="none");
+
+const showRP = () =>
+  document.querySelectorAll('tr:not(.green):not(.white):not(.red):not(.black):not(.purple)').forEach((t)=>t.style.display="block");
 
 let bk = document.getElementById('btnk');
 bk.addEventListener('click',function(){
