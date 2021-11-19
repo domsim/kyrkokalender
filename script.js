@@ -53,6 +53,47 @@ function download(data, filename, type) {
   }
 }
 
+function Export2Rtf(element, filename = '') {
+  var pre = `{\\rtf1\\ansi\\ansicpg1252\\cocoartf2513
+\\cocoatextscaling0\\cocoaplatform0{\\fonttbl\\f0\\froman\\fcharset0 Garamond-Bold;\\f1\\froman\\fcharset0 Garamond;\\f2\\froman\\fcharset0 Garamond-Italic;
+}
+{\\colortbl;\\red255\\green255\\blue255;\\red251\\green2\\blue7;\\red251\\green2\\blue7;}
+{\\*\\expandedcolortbl;;\\cssrgb\c100000\\c14913\\c0;\\cssrgb\\c100000\\c14913\\c0;}
+\\paperw11900\\paperh16840\\margl1440\\margr1440\\vieww12720\\viewh7660\\viewkind0
+\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0`;
+  var post = "}";
+  var rtf = pre + element + post;
+
+  var blob = new Blob(['\ufeff', rtf], {
+    type: 'application/rtf'
+  });
+
+  // Specify link url
+  var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+  // Specify file name
+  filename = filename ? filename + '.rtf' : 'document.rtf';
+
+  // Create download link element
+  var downloadLink = document.createElement("a");
+
+  document.body.appendChild(downloadLink);
+
+  if (navigator.msSaveOrOpenBlob) {
+    navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    // Create a link to the file
+    downloadLink.href = url;
+
+    // Setting the file name
+    downloadLink.download = filename;
+
+    //triggering the function
+    downloadLink.click();
+  }
+
+  document.body.removeChild(downloadLink);
+}
 function Export2Doc(element, filename = '') {
   var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
   var postHtml = "</body></html>";
@@ -623,6 +664,7 @@ function daysInYear(year) {
 function printRP(year, m = 12, arr) {
   var txt = '';
   var html = '';
+  var rtf = '';
   var date = new Date();
   if (year) {
     date.setFullYear(year);
@@ -645,9 +687,12 @@ function printRP(year, m = 12, arr) {
 
   if (mese === date.getMonth()) {
 
+    rtf += `\\f0\\b\\fs44 ${months[mese]} ${anno}\\f1\\b0\\fs28\\line`;
+    
     txt += months[mese] + ' ' + anno + '\n';
     html += `<div class="container"><h1>${months[mese]} ${anno}</h1> <span><a onClick="showRP()">visa läsplan</a></span> <span><a onClick="hideRP()">dölj läsplan</a></span><table class="table table-borderless table-hover">`;
     filename += months[mese] + '_' + anno + '.txt';
+    
     var mm = new Date(anno, mese + 1, 0).getDate();
     for (let j = 0; j < mm; j++) {
       let g = new Date(anno, mese, j + 1);
@@ -663,17 +708,19 @@ function printRP(year, m = 12, arr) {
       if (typeof e != 'undefined') {
         if (e.HHM !== null) {
           if (e.Argang === 2) {
-            annata = `<td><b>II </b>${e.HHM}, ${e.AFT}</td></tr>`;
+            annata = ` <b>II </b>${e.HHM}, ${e.AFT} </tr>`;
           }
           if (e.Argang === 3) {
-            annata = `<td><b>III </b>${e.HHM}, ${e.AFT}</td></tr>`;
+            annata = ` <b>III </b>${e.HHM}, ${e.AFT} </tr>`;
           }
         }
       }
 
+      rtf +=  g.getDate() + '\\tab' + daysb[g.getDay()] + '\\tab';
       txt += g.getDate() + '\t' + daysb[g.getDay()] + '\t';
-      html += `<tr title="${g.toLocaleDateString()}" ><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
+      html += `<tr title="${g.toLocaleDateString()}" ><td>${g.getDate()}</td><td> ${daysb[g.getDay()]}</td><td>`;
       if (g.getDay() === 1) {
+        rtf += '\\bv \\b0 ' + g.getWeek() + '\\tab';
         txt += 'v ' + g.getWeek() + '\t';
         html += `v ${g.getWeek()}`;
       }
@@ -682,48 +729,56 @@ function printRP(year, m = 12, arr) {
         if (i === 60) {
 
           console.log('...\n');
-
+          rtf += '...\\line'
           txt += '...\n';
           html += '<td>...</td><td></td><td></td><td></td></tr>';
         } else if (i > 60) {
 
           rp[i - 2].forEach(r => console.log(r + '\n'));
-          rp[i - 2].forEach(r => html += '<td></td><td>' + r + '</td>');
+          rp[i - 2].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          txt += '\t' + rp[i - 2][0] + '\t' + rp[i - 1][1] + (typeof rp[i - 2][2] != 'undefined' ? '\t' + rp[i - 2][2] : '') + '\n';
+          rft += '\\tab' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\\tab' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\line';
+
+          txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
           if (typeof e != 'undefined') {
+            rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0";
+
+            rtf += '\\f0\\b' +e.Title + '\\f1\\b0  ' + e.Color + '\\f2\\i' + e.Theme + '\\f1\\i0 ' + e.Psalms + '\\f0\\bGt\\f1\\b0 ' + e.OldT + '\\f0\\bEp\\f1\\b0 ' + e.Letters + '\\f0\\bEv\\f1\\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\line';
+
+            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0";
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
+            
 
-            html += `<tr title="${g.toLocaleDateString()}" data-day="${g.getDate()}" data-daynr="${i}" class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+            html += `<tr title="${g.toLocaleDateString()}" data-day="${g.getDate()}" data-daynr="${i}" class="${mktrcl(e.Color)}"><td colspan="8"><b>${e.Title}</b>  ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel} ${annata}`;
 
           }
 
         } else {
 
           rp[i - 1].forEach(r => console.log(r + '\n'));
-          rp[i - 1].forEach(r => html += '<td></td><td>' + r + '</td>');
+          rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          txt += '\t' + rp[i - 1][0] + '\t' + rp[i][1] + (typeof rp[i - 1][2] != 'undefined' ? '\t' + rp[i - 1][2] : '') + '\n';
+          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i][1])) + (typeof fixmissm(mkabbr(rp[i - 1][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
           if (typeof e != 'undefined') {
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-            html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+            html += `<tr class="${mktrcl(e.Color)}"><td colspan="8"><b>${e.Title}</b>  ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel} ${annata}`;
           }
         }
       } else {
 
         rp[i - 1].forEach(r => console.log(r + '\n'));
-        rp[i - 1].forEach(r => html += '<td></td><td>' + r + '</td>');
+        rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
         html += '</tr>';
 
-        txt += '\t' + rp[i - 1][0] + '\t' + rp[i - 1][1] + (typeof rp[i - 1][2] != 'undefined' ? '\t' + rp[i - 1][2] : '') + '\n';
+        txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 1][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
         if (typeof e != 'undefined') {
 
           txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-          html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+          html += `<tr class="${mktrcl(e.Color)}"><td colspan="8"><b>${e.Title}</b> ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel} ${annata}`;
 
         }
       }
@@ -753,16 +808,16 @@ function printRP(year, m = 12, arr) {
         if (typeof e != 'undefined') {
           if (e.HHM !== null) {
             if (e.Argang === 2) {
-              annata = `<td><b>II </b>${e.HHM}, ${e.AFT}</td></tr>`;
+              annata = `<b>II </b>${e.HHM}, ${e.AFT}</tr>`;
             }
             if (e.Argang === 3) {
-              annata = `<td><b>III </b>${e.HHM}, ${e.AFT}</td></tr>`;
+              annata = `<b>III </b>${e.HHM}, ${e.AFT}</tr>`;
             }
           }
         }
 
-        txt += g.getDate() + ' ' + daysb[g.getDay()] + ' ';
-        html += `<tr><td>${g.getDate()}  ${daysb[g.getDay()]}</td><td>`;
+        txt += g.getDate() + '\t' + daysb[g.getDay()] + '\t ';
+        html += `<tr><td>${g.getDate()}</td><td>${daysb[g.getDay()]}</td><td>`;
         if (g.getDay() === 1) {
           txt += 'v ' + g.getWeek() + ' ';
           html += `v ${g.getWeek()}`;
@@ -778,43 +833,43 @@ function printRP(year, m = 12, arr) {
           } else if (i > 60) {
 
             rp[i - 2].forEach(r => console.log(r + '\n'));
-            rp[i - 2].forEach(r => html += '<td></td><td>' + r + '</td>');
+            rp[i - 2].forEach(r => html += '<td>' + r + '</td>');
             html += '</tr>';
 
-            txt += '\t' + rp[i - 2][0] + '\t' + rp[i - 2][1] + (typeof rp[i - 2][2] != 'undefined' ? '\t' + rp[i - 2][2] : '') + '\n';
+            txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 2][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
 
             if (typeof e != 'undefined') {
 
               txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-              html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+              html += `<tr class="${mktrcl(e.Color)}"><td colspan"8"><b>${e.Title}</b> ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel} ${annata}`;
             }
 
           } else {
 
             rp[i - 1].forEach(r => console.log(r + '\n'));
-            rp[i - 1].forEach(r => html += '<td></td><td>' + r + '</td>');
+            rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
             html += '</tr>';
-            txt += '\t' + rp[i - 1][0] + '\t' + rp[i - 1][1] + (typeof rp[i - 1][2] != 'undefined' ? '\t' + rp[i - 1][2] : '') + '\n';
+            txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof rp[i - 1][2] != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
             if (typeof e != 'undefined') {
 
               txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt  ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-              html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+              html += `<tr class="${mktrcl(e.Color)}"><td colspan="8"><b>${e.Title}</b>  ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel}  ${annata}`;
             }
           }
         } else {
 
           rp[i - 1].forEach(r => console.log(r + '\n'));
-          rp[i - 1].forEach(r => html += '<td></td><td>' + r + '</td>');
+          rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          txt += '\t' + rp[i - 1][0] + '\t' + rp[i - 1][1] + (typeof rp[i - 1][2] != 'undefined' ? '\t' + rp[i - 1][2] : '') + '\n';
+          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof rp[i - 1][2] != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
 
           if (typeof e != 'undefined') {
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
-            html += `<tr class="${mktrcl(e.Color)}"><td><b>${e.Title}<b></td><td> ${e.Color}</td><td><i>${e.Theme}</i></td><td>${e.Psalms}</td><td><b>Gt </b>${e.OldT}</td><td><b>Ep </b>${e.Letters}</td><td><b>Ev </b>${e.Gospel}</td>${annata}`;
+            html += `<tr class="${mktrcl(e.Color)}"><td colspan="8"><b>${e.Title}</b>  ${e.Color} <i>${e.Theme}</i> ${e.Psalms} <b>Gt </b>${e.OldT} <b>Ep </b>${e.Letters} <b>Ev </b>${e.Gospel} ${annata}`;
           }
         }
       } html += '</table>';
@@ -828,19 +883,29 @@ function printRP(year, m = 12, arr) {
 
  
 console.log(readpl);
-html = mkabbr(html);
-html = fixmissm(html);
+//html = mkabbr(html);
+//html = fixmissm(html);
   $('#kal').html(html);
   $('#kal-container').show();
   $('#bibelcalender').hide();
-  var re1 = /årgång 1: null, null/g;
+  var re1 = /årgång \d: null, null/g;
   var re2 = /årgång 2:/g;
   var re3 = /årgång 3:/g;
   txt = txt.replace(re2, 'II');
   txt = txt.replace(re3, 'III');
   txt = txt.replace(re1, '');
-  txt = mkabbr(txt);
-  txt =fixmissm(txt);
+  txt = txt.replace(/Gt\s\sEp/g,"Ep");
+  txt = txt.replace(/Ep\s\sEv/g,"Ev");
+  txt = txt.replace(/[I]{2,3} null, null/g,"");
+  txt = rtf.replace(re2, '\\f0\\bII\\f1\\b0');
+  txt = rtf.replace(re3, '\\f0\\bIII\\f1\\b0');
+  txt = rtf.replace(re1, '');
+  txt = rtf.replace(/\\f0\\bGt\\f1\\b0\s\s\\f0\\bEp\\f1\\b0/g,"\\f0\\bEp\\f1\\b0");
+  txt = rtf.replace(/\\f0\\bEp\\f1\\b0\s\s\\f0\\bEv\\f1\\b0/g,"\\f0\\bEv\\f1\\b0");
+  txt = rtf.replace(/\\f0\\b[I]{2,3}\\f1\\b0 null, null/g,"");
+  console.log(rtf);
+  //txt = mkabbr(txt);
+  //txt =fixmissm(txt);
   var BOM = "\uFEFF";
   // txt = txt.replace(/\s{2}/g,' ');
   var laddaner = confirm('vill du ladda ner kalender ?');
