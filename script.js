@@ -62,14 +62,14 @@ function Export2Rtf(element, filename = '') {
 \\paperw11900\\paperh16840\\margl1440\\margr1440\\vieww12720\\viewh7660\\viewkind0
 \\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0`;
   var post = "}";
-  var rtf = pre + element + post;
+  var rtf = pre + $("#"+element).attr('data-rtf') + post;
 
   var blob = new Blob(['\ufeff', rtf], {
     type: 'application/rtf'
   });
 
   // Specify link url
-  var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+  var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent($("#"+element).attr('data-rtf'));
 
   // Specify file name
   filename = filename ? filename + '.rtf' : 'document.rtf';
@@ -448,24 +448,40 @@ ver.addEventListener("change", function () {
 //translate css class
 function mktrcl(str) {
   v = str;
+  if(v !== 'undefined' && v !== null){
+
   for (let i = 0; i < replaceColor.length; i++) {
     v = v.replace(new RegExp(replaceColor[i][0], 'g'), replaceColor[i][1]);
   }
   return v;
+  }
+  else {
+    return null
+  }
 }
 function mkabbr(str) {
   v = str;
-  for (let i = 0; i < replaceBooks.length; i++) {
+  if(v !== 'undefined' && v !== null) {
+    for (let i = 0; i < replaceBooks.length; i++) {
     v = v.replace(new RegExp(replaceBooks[i][1], 'g'), replaceBooks[i][0]);
   }
   return v;
+  }  else {
+    return null
+  }
+
 }
 function fixmissm(str) {
   v = str;
+  if(v !== 'undefined' && v !== null) {
+
   for (let i = 0; i < replacemissmatch.length; i++) {
     v = v.replace(new RegExp(replacemissmatch[i][1], 'g'), replacemissmatch[i][0]);
   }
   return v;
+  } else {
+    return null
+  }
 }
 
 //create hyperlinks to youversion
@@ -665,6 +681,14 @@ function printRP(year, m = 12, arr) {
   var txt = '';
   var html = '';
   var rtf = '';
+  var pre = `{\\rtf1\\ansi\\ansicpg1252\\cocoartf2513
+\\cocoatextscaling0\\cocoaplatform0{\\fonttbl\\f0\\froman\\fcharset0 Garamond-Bold;\\f1\\froman\\fcharset0 Garamond;\\f2\\froman\\fcharset0 Garamond-Italic;
+}
+{\\colortbl;\\red255\\green255\\blue255;\\red251\\green2\\blue7;\\red251\\green2\\blue7;}
+{\\*\\expandedcolortbl;;\\cssrgb\c100000\\c14913\\c0;\\cssrgb\\c100000\\c14913\\c0;}
+\\paperw11900\\paperh16840\\margl1440\\margr1440\\vieww12720\\viewh7660\\viewkind0
+\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0`;
+  var post = "}";
   var date = new Date();
   if (year) {
     date.setFullYear(year);
@@ -691,6 +715,7 @@ function printRP(year, m = 12, arr) {
     
     txt += months[mese] + ' ' + anno + '\n';
     html += `<div class="container"><h1>${months[mese]} ${anno}</h1> <span><a onClick="showRP()">visa läsplan</a></span> <span><a onClick="hideRP()">dölj läsplan</a></span><table class="table table-borderless table-hover">`;
+    filenrtf = filename + months[mese] + '_' + anno + '.rtf';
     filename += months[mese] + '_' + anno + '.txt';
     
     var mm = new Date(anno, mese + 1, 0).getDate();
@@ -729,7 +754,7 @@ function printRP(year, m = 12, arr) {
         if (i === 60) {
 
           console.log('...\n');
-          rtf += '...\\line'
+          rtf += '...\\line';
           txt += '...\n';
           html += '<td>...</td><td></td><td></td><td></td></tr>';
         } else if (i > 60) {
@@ -737,9 +762,9 @@ function printRP(year, m = 12, arr) {
           rp[i - 2].forEach(r => console.log(r + '\n'));
           rp[i - 2].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          rft += '\\tab' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\\tab' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\line';
+         // rft += '\\tab' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\\tab' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\line';
 
-          txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
+          txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 2].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
           if (typeof e != 'undefined') {
             rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0";
 
@@ -786,6 +811,7 @@ function printRP(year, m = 12, arr) {
     html += '</table></div>';
   }
   else {
+    filenrtf = filename + anno + '.txt';
     filename += anno + '.txt';
     html += `<div class="container">`;
     for (let x = 0; x < 12; x++) {
@@ -888,6 +914,8 @@ console.log(readpl);
   $('#kal').html(html);
   $('#kal-container').show();
   $('#bibelcalender').hide();
+  $("#kal").data('rtf', rtf);
+  var rtfdata = $("#kal").attr('rtf-data');
   var re1 = /årgång \d: null, null/g;
   var re2 = /årgång 2:/g;
   var re3 = /årgång 3:/g;
@@ -897,12 +925,12 @@ console.log(readpl);
   txt = txt.replace(/Gt\s\sEp/g,"Ep");
   txt = txt.replace(/Ep\s\sEv/g,"Ev");
   txt = txt.replace(/[I]{2,3} null, null/g,"");
-  txt = rtf.replace(re2, '\\f0\\bII\\f1\\b0');
-  txt = rtf.replace(re3, '\\f0\\bIII\\f1\\b0');
-  txt = rtf.replace(re1, '');
-  txt = rtf.replace(/\\f0\\bGt\\f1\\b0\s\s\\f0\\bEp\\f1\\b0/g,"\\f0\\bEp\\f1\\b0");
-  txt = rtf.replace(/\\f0\\bEp\\f1\\b0\s\s\\f0\\bEv\\f1\\b0/g,"\\f0\\bEv\\f1\\b0");
-  txt = rtf.replace(/\\f0\\b[I]{2,3}\\f1\\b0 null, null/g,"");
+  rtf = rtf.replace(re2, '\\f0\\bII\\f1\\b0');
+  rtf = rtf.replace(re3, '\\f0\\bIII\\f1\\b0');
+  rtf = rtf.replace(re1, '');
+  rtf = rtf.replace(/\\f0\\bGt\\f1\\b0\s\s\\f0\\bEp\\f1\\b0/g,"\\f0\\bEp\\f1\\b0");
+  rtf = rtf.replace(/\\f0\\bEp\\f1\\b0\s\s\\f0\\bEv\\f1\\b0/g,"\\f0\\bEv\\f1\\b0");
+  rtf = rtf.replace(/\\f0\\b[I]{2,3}\\f1\\b0 null, null/g,"");
   console.log(rtf);
   //txt = mkabbr(txt);
   //txt =fixmissm(txt);
@@ -911,6 +939,7 @@ console.log(readpl);
   var laddaner = confirm('vill du ladda ner kalender ?');
   if (laddaner) {
     download(txt, filename, 'text/csv;charset=utf-8');
+   // download(rtf, filenrtf, 'application/rtf;charset=utf-8');
 
   }
 

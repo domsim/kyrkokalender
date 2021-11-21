@@ -144,7 +144,7 @@ window.BG = BG;
 
     </div>
     
-    <div id="container" class="container-fluid">
+    <div id="container" class="container">
       <div id="bibelcalender">
       </div> 
     </div>
@@ -155,7 +155,8 @@ window.BG = BG;
     </div>
     <div class="container" id="kal-container" style="display:none">
       <button class="btn btn-outline-primary" onclick="Export2Doc('kal')">Export to Word</button>
-      <div id="kal">
+      <button class="btn btn-outline-primary" onclick="Export2Rtf('kal')">Export to Rtf</button>
+      <div id="kal" data-rtf="">
 
       </div>
     </div>
@@ -164,6 +165,7 @@ window.BG = BG;
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="bglinks.js" type="text/javascript"></script>
     <script src="bcalender.js"></script>
+
     <script src="script.js"></script>
   </body>
 </html>
