@@ -483,7 +483,34 @@ function fixmissm(str) {
     return null
   }
 }
+  //https://www.oreilly.com/library/view/rtf-pocket-guide/9781449302047/ch04.html#rtf_language_codes
+  var encrtf = [["Ä","\\'c4"],["Å","\\'c5"],["Ö","\\'d6"],["ä","\\'e4"],["å","\\'e5"],["ö","\\'f6"]];
+function mkencrtf(str) {
+  v = str;
+  if(v !== 'undefined' && v !== null){
 
+  for (let i = 0; i < replaceColor.length; i++) {
+    v = v.replace(new RegExp(encrtf[i][0], 'g'), encrtf[i][1]);
+  }
+  return v;
+  }
+  else {
+    return null
+  }
+}
+function fixhyphen(str){
+  v = str;
+  if(v !== 'undefined' && v !== null){
+
+  for (let i = 0; i < replaceColor.length; i++) {
+    v = v.replace(new RegExp("-", 'g'), '\\_');
+  }
+  return v;
+  }
+  else {
+    return null
+  }
+}
 //create hyperlinks to youversion
 function mkyv(str) {
   v = str;
@@ -678,6 +705,7 @@ function daysInYear(year) {
 }
 
 function printRP(year, m = 12, arr) {
+
   var txt = '';
   var html = '';
   var rtf = '';
@@ -687,7 +715,8 @@ function printRP(year, m = 12, arr) {
 {\\colortbl;\\red255\\green255\\blue255;\\red251\\green2\\blue7;\\red251\\green2\\blue7;}
 {\\*\\expandedcolortbl;;\\cssrgb\c100000\\c14913\\c0;\\cssrgb\\c100000\\c14913\\c0;}
 \\paperw11900\\paperh16840\\margl1440\\margr1440\\vieww12720\\viewh7660\\viewkind0
-\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0`;
+\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0
+\n`;
   var post = "}";
   var date = new Date();
   if (year) {
@@ -711,7 +740,9 @@ function printRP(year, m = 12, arr) {
 
   if (mese === date.getMonth()) {
 
-    rtf += `\\f0\\b\\fs44 ${months[mese]} ${anno}\\f1\\b0\\fs28\\line`;
+    rtf += `
+    \\f0 \\b \\fs44 ${months[mese]} ${anno}\\f1 \\b0 \\fs28 \\
+    `;
     
     txt += months[mese] + ' ' + anno + '\n';
     html += `<div class="container"><h1>${months[mese]} ${anno}</h1> <span><a onClick="showRP()">visa läsplan</a></span> <span><a onClick="hideRP()">dölj läsplan</a></span><table class="table table-borderless table-hover">`;
@@ -741,11 +772,11 @@ function printRP(year, m = 12, arr) {
         }
       }
 
-      rtf +=  g.getDate() + '\\tab' + daysb[g.getDay()] + '\\tab';
+      rtf +=  g.getDate() + '\\tab ' + mkencrtf(daysb[g.getDay()]) + ' \\tab ';
       txt += g.getDate() + '\t' + daysb[g.getDay()] + '\t';
       html += `<tr title="${g.toLocaleDateString()}" ><td>${g.getDate()}</td><td> ${daysb[g.getDay()]}</td><td>`;
       if (g.getDay() === 1) {
-        rtf += '\\bv \\b0 ' + g.getWeek() + '\\tab';
+        rtf += '\\bv \\b0 ' + g.getWeek() + ' \\tab';
         txt += 'v ' + g.getWeek() + '\t';
         html += `v ${g.getWeek()}`;
       }
@@ -754,7 +785,7 @@ function printRP(year, m = 12, arr) {
         if (i === 60) {
 
           console.log('...\n');
-          rtf += '...\\line';
+          rtf += '... \\';
           txt += '...\n';
           html += '<td>...</td><td></td><td></td><td></td></tr>';
         } else if (i > 60) {
@@ -762,15 +793,17 @@ function printRP(year, m = 12, arr) {
           rp[i - 2].forEach(r => console.log(r + '\n'));
           rp[i - 2].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-         // rft += '\\tab' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\\tab' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\line';
+         // rft += '\\tab' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\\tab' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\';
+
+          rtf += '\\tab ' + fixmissm(mkabbr(rp[i - 2][0])) + '\\tab ' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 2].length == 3 ? '\\tab ' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\\\n';
 
           txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 2].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
           if (typeof e != 'undefined') {
-            rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0";
+            rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0\n";
 
-            rtf += '\\f0\\b' +e.Title + '\\f1\\b0  ' + e.Color + '\\f2\\i' + e.Theme + '\\f1\\i0 ' + e.Psalms + '\\f0\\bGt\\f1\\b0 ' + e.OldT + '\\f0\\bEp\\f1\\b0 ' + e.Letters + '\\f0\\bEv\\f1\\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\line';
+            rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\par ';
 
-            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0";
+            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0\n";
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
             
@@ -784,8 +817,17 @@ function printRP(year, m = 12, arr) {
           rp[i - 1].forEach(r => console.log(r + '\n'));
           rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i][1])) + (typeof fixmissm(mkabbr(rp[i - 1][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+          rtf += ' \\tab' + fixmissm(mkabbr(rp[i - 1][0])) + ' \\tab' + fixmissm(mkabbr(rp[i][1])) + (rp[i - 1].length == 3 ? ' \\tab' + fixmissm(mkabbr(rp[i - 1][2])) : '') + ' \\';
+
+          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i][1])) + (rp[i - 1].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+          
           if (typeof e != 'undefined') {
+
+            rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0";
+
+             rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\par ';
+
+            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0";
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
@@ -798,8 +840,16 @@ function printRP(year, m = 12, arr) {
         rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
         html += '</tr>';
 
-        txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof fixmissm(mkabbr(rp[i - 1][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+        rtf += '\\tab' + fixmissm(mkabbr(rp[i - 1][0])) + '\\tab' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? '\\tab '+ fixmissm(mkabbr(rp[i - 1][2])) : '') + '\\';
+
+        txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
         if (typeof e != 'undefined') {
+
+          rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0";
+
+            rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\par ';
+
+            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0";
 
           txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
@@ -811,13 +861,14 @@ function printRP(year, m = 12, arr) {
     html += '</table></div>';
   }
   else {
-    filenrtf = filename + anno + '.txt';
+    filenrtf = filename + anno + '.rtf';
     filename += anno + '.txt';
     html += `<div class="container">`;
     for (let x = 0; x < 12; x++) {
 
       mese = x;
       txt += months[mese] + ' ' + anno + '\n';
+      rtf += `${months[mese] !=="Januari" ? " \\page " : ""}\\f0 \\b \\fs44 ${months[mese]} ${anno} \\f1 \\b0 \\fs28 \\par `;
       html += `<h1>${months[mese]} ${anno}</h1><table class="table table-borderless table-hover">`;
       var mm = new Date(anno, x + 1, 0).getDate();
       for (let j = 0; j < mm; j++) {
@@ -841,10 +892,12 @@ function printRP(year, m = 12, arr) {
             }
           }
         }
-
+        rtf += `${g.getDate()} \\tab ${mkencrtf(daysb[g.getDay()])} \\tab `;
         txt += g.getDate() + '\t' + daysb[g.getDay()] + '\t ';
         html += `<tr><td>${g.getDate()}</td><td>${daysb[g.getDay()]}</td><td>`;
         if (g.getDay() === 1) {
+          
+          rtf += '\\b v \\b0 ' + g.getWeek() + ' ';
           txt += 'v ' + g.getWeek() + ' ';
           html += `v ${g.getWeek()}`;
         }
@@ -853,7 +906,7 @@ function printRP(year, m = 12, arr) {
           if (i === 60) {
 
             console.log('...\n');
-
+            rtf += '... \\par ';
             txt += '...\n';
             html += '<td>...</td><td></td><td></td><td></td></tr>';
           } else if (i > 60) {
@@ -862,9 +915,17 @@ function printRP(year, m = 12, arr) {
             rp[i - 2].forEach(r => html += '<td>' + r + '</td>');
             html += '</tr>';
 
-            txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 2][1])) + (typeof fixmissm(mkabbr(rp[i - 2][2])) != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
+            rtf += '\\tab ' + fixmissm(mkabbr(rp[i - 2][0])) + ' \\tab ' + fixmissm(mkabbr(rp[i - 2][1])) + (rp[i - 2].length == 3 ? ' \\tab ' + fixmissm(mkabbr(rp[i - 2][2])) : '') + ' \\par ';
+
+            txt += '\t' + fixmissm(mkabbr(rp[i - 2][0])) + '\t' + fixmissm(mkabbr(rp[i - 2][1])) + (rp[i - 2].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 2][2])) : '') + '\n';
 
             if (typeof e != 'undefined') {
+
+              rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0\n";
+
+              rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\par ';
+
+              rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0\n";
 
               txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
@@ -876,8 +937,17 @@ function printRP(year, m = 12, arr) {
             rp[i - 1].forEach(r => console.log(r + '\n'));
             rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
             html += '</tr>';
-            txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof rp[i - 1][2] != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+
+            rtf += ' \\tab ' + fixmissm(mkabbr(rp[i - 1][0])) +  ' \\tab ' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? ' \\tab ' + fixmissm(mkabbr(rp[i - 1][2])) : '') + ' \\\n';
+
+            txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+
             if (typeof e != 'undefined') {
+                rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0\n";
+
+                 rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\\par ';
+
+                rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0\n";
 
               txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt  ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
@@ -889,9 +959,17 @@ function printRP(year, m = 12, arr) {
           rp[i - 1].forEach(r => console.log(r + '\n'));
           rp[i - 1].forEach(r => html += '<td>' + r + '</td>');
           html += '</tr>';
-          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (typeof rp[i - 1][2] != 'undefined' ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
+
+          rtf += ' \\tab ' + fixmissm(mkabbr(rp[i - 1][0])) + ' \\tab ' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? ' \\tab ' + fixmissm(mkabbr(rp[i - 1][2])) : '') + ' \\\n';
+
+          txt += '\t' + fixmissm(mkabbr(rp[i - 1][0])) + '\t' + fixmissm(mkabbr(rp[i - 1][1])) + (rp[i - 1].length == 3 ? '\t' + fixmissm(mkabbr(rp[i - 1][2])) : '') + '\n';
 
           if (typeof e != 'undefined') {
+            rtf += "\\pard\\tx566\\x1844\\x2822\\tx2834\\tx5220\\tx7391\\li588\\fi17\\pardirnatural\\partightenfactor0\n";
+
+             rtf += '\\f0 \\b ' + mkencrtf(e.Title) + ' \\f1 \\b0  ' + mkencrtf(e.Color) + ' \\f2 \\i ' + fixhyphen( mkencrtf(e.Theme) ) + ' \\f1 \\i0 ' + e.Psalms + ' \\f0 \\b Gt \\f1 \\b0 ' + e.OldT + ' \\f0 \\b Ep \\f1 \\b0 ' + e.Letters + ' \\f0 \\b Ev \\f1 \\b0 ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + ' \\par ';
+
+            rtf += "\\pard\\tx566\\tx1844\\tx2822\\tx2834\\tx5220\\tx7391\\pardirnatural\\partightenfactor0\n";
 
             txt += e.Title + ' ' + e.Color + ' ' + e.Theme + ' ' + e.Psalms + ' Gt ' + e.OldT + ' Ep ' + e.Letters + ' Ev ' + e.Gospel + ' årgång ' + e.Argang + ': ' + e.HHM + ', ' + e.AFT + '\n';
 
@@ -925,12 +1003,14 @@ console.log(readpl);
   txt = txt.replace(/Gt\s\sEp/g,"Ep");
   txt = txt.replace(/Ep\s\sEv/g,"Ev");
   txt = txt.replace(/[I]{2,3} null, null/g,"");
-  rtf = rtf.replace(re2, '\\f0\\bII\\f1\\b0');
-  rtf = rtf.replace(re3, '\\f0\\bIII\\f1\\b0');
+  rtf = rtf.replace(re2, '\\f0 \\b II \\f1 \\b0 ');
+  rtf = rtf.replace(re3, '\\f0 \\b III \\f1 \\b0 ');
   rtf = rtf.replace(re1, '');
-  rtf = rtf.replace(/\\f0\\bGt\\f1\\b0\s\s\\f0\\bEp\\f1\\b0/g,"\\f0\\bEp\\f1\\b0");
-  rtf = rtf.replace(/\\f0\\bEp\\f1\\b0\s\s\\f0\\bEv\\f1\\b0/g,"\\f0\\bEv\\f1\\b0");
-  rtf = rtf.replace(/\\f0\\b[I]{2,3}\\f1\\b0 null, null/g,"");
+  rtf = rtf.replace(/\\f0 \\b Gt \\f1 \\b0 \s\s \\f0 \\b Ep \\f1 \\b0/g,"\\f0 \\b Ep\\f1\\b0 ");
+  rtf = rtf.replace(/\\f0 \\b Ep \\f1 \\b0 \s\s \\f0 \\b Ev \\f1 \\b0/g,"\\f0 \\b Ev\\f1\\b0 ");
+  rtf = rtf.replace(/\\f0 \\b [I]{2,3} \\f1 \\b0  null, null/g,"");
+  rtf = rtf.replace(/-/g,"\\_");
+  rtf = pre + rtf + post;
   console.log(rtf);
   //txt = mkabbr(txt);
   //txt =fixmissm(txt);
@@ -939,7 +1019,7 @@ console.log(readpl);
   var laddaner = confirm('vill du ladda ner kalender ?');
   if (laddaner) {
     download(txt, filename, 'text/csv;charset=utf-8');
-   // download(rtf, filenrtf, 'application/rtf;charset=utf-8');
+    download(rtf, filenrtf, 'application/rtf;charset=utf-8');
 
   }
 
@@ -1013,7 +1093,7 @@ function nyarsdagen(year) {
     'Date': new Date(year, 0, 1),
     'Title': 'Nyårsdagen',
     'Color': 'Vit',
-    'Theme': 'Kristi omskärelse – Namnet Jesus',
+    'Theme': 'Kristi omskärelse - Namnet Jesus',
     'Psalms': 'Psalt 40:2-9',
     'OldT': '1 Mos 17:1-14',
     'Letters': 'Tit 3:4-7',
@@ -1113,7 +1193,7 @@ function johannes(year) {
     'Psalms': '',
     'OldT': '',
     'Letters': '1 Joh 1:9-2:6',
-    'Gospel': 'Joh 21:19-14',
+    'Gospel': 'Joh 21:19-24',
     'Description': '27 december',
     'Link': '',
     'Prio': 1,
@@ -1264,7 +1344,7 @@ function invocavit(year) {
     'Psalms': 'Psalt 35:1-18',
     'OldT': '1 Mos 22:1-14',
     'Letters': '2 Kor 6:1-10',
-    'Gospel': 'Matt 4:1–11',
+    'Gospel': 'Matt 4:1-11',
     'Description': 'Söndag* 42 dagar före påsk',
     'Link': '',
     'Prio': 2,
@@ -1415,10 +1495,10 @@ function lngfredag(year) {
     'Title': 'Långfredagen',
     'Color': 'Svart',
     'Theme': 'Korsfäst, död och begraven.',
-    'Psalms': 'Psalt 22:2–19',
+    'Psalms': 'Psalt 22:2-19',
     'OldT': '',
-    'Letters': 'Jes 52:13–53:12',
-    'Gospel': 'Joh 18–19',
+    'Letters': 'Jes 52:13-53:12',
+    'Gospel': 'Joh 18-19',
     'Description': 'fredag före Påsk',
     'Link': '',
     'Prio': 1,
@@ -1435,7 +1515,7 @@ function paskafton(year) {
     'Theme': '',
     'Psalms': 'Klag 3',
     'OldT': '',
-    'Letters': '1 Kor 15:1–11',
+    'Letters': '1 Kor 15:1-11',
     'Gospel': '',
     'Description': 'dagen före Påsk',
     'Link': '',
@@ -1597,7 +1677,7 @@ function ascensione(year) {
   };
 }
 /* sjepask 
- 6 e Påsk. (Exaudi)	42	6 e Påsk. (Exaudi)	Vit	Hjälparen, den Helige Ande.	Psalt 19	Jes 32:9-20	1 Petr 4:7-11	Joh 15:26–16:4	Joh 15:18-27	Kol 3:1-11	Luk 12:4-12	1 Petr 3:15-22	Söndag  42 dagar efter Påsk
+ 6 e Påsk. (Exaudi)	42	6 e Påsk. (Exaudi)	Vit	Hjälparen, den Helige Ande.	Psalt 19	Jes 32:9-20	1 Petr 4:7-11	Joh 15:26-16:4	Joh 15:18-27	Kol 3:1-11	Luk 12:4-12	1 Petr 3:15-22	Söndag  42 dagar efter Påsk
 */
 function sjepask(year) {
   return {
@@ -1608,7 +1688,7 @@ function sjepask(year) {
     'Psalms': 'Psalt 19',
     'OldT': 'Jes 32:9-20',
     'Letters': '1 Petr 4:7-11',
-    'Gospel': 'Joh 15:26–16:4',
+    'Gospel': 'Joh 15:26-16:4',
     'Description': 'Söndag  42 dagar efter Påsk',
     'Link': '',
     'Prio': 1,
@@ -1684,8 +1764,8 @@ function allahelgon(year) {
     'Theme': 'Saligprisningarna',
     'Psalms': 'Psalt 1',
     'OldT': '5 Mos 33:1-3',
-    'Letters': 'Upp 7:2–17',
-    'Gospel': 'Matt 5:1–12',
+    'Letters': 'Upp 7:2-17',
+    'Gospel': 'Matt 5:1-12',
     'Description': 'Lördag 31 oktober-6 november',
     'Link': '',
     'Prio': 1,
@@ -2179,7 +2259,7 @@ function trinitatis20(year) {
     'OldT': 'Ords 2:1-11',
     'Letters': 'Efes 5:15-21',
     'Gospel': 'Matt 22:1-14',
-    'Description': '20:e Söndag* efter Trefaldighet (1 –7 november)?',
+    'Description': '20:e Söndag* efter Trefaldighet (1 -7 november)?',
     'Link': '',
     'Prio': 2,
     'Argang': argng(year),
@@ -2303,7 +2383,7 @@ function trinitatis25(year) {
   };
 }
 /*
-	Söndagen f domssöndagen	76	Söndagen f domssöndagen	Grön	Visa och fåvitska jungfrur	Psalt 73	Jes 35:1-10	2 Petr 3:1–13	Matt 25:1-13	Luk 13:22-30	Upp 21:9-22:5	Matt 25:14-30	 Upp 22:10-21	Söndag 13-19 november
+	Söndagen f domssöndagen	76	Söndagen f domssöndagen	Grön	Visa och fåvitska jungfrur	Psalt 73	Jes 35:1-10	2 Petr 3:1-13	Matt 25:1-13	Luk 13:22-30	Upp 21:9-22:5	Matt 25:14-30	 Upp 22:10-21	Söndag 13-19 november
 */
 
 function sfdomsndg(year) {
@@ -2314,7 +2394,7 @@ function sfdomsndg(year) {
     'Theme': 'Visa och fåvitska jungfrur',
     'Psalms': 'Psalt 73',
     'OldT': 'Jes 35:1-10',
-    'Letters': '2 Petr 3:1–13',
+    'Letters': '2 Petr 3:1-13',
     'Gospel': 'Matt 25:1-13',
     'Description': 'Söndag 13-19 november',
     'Link': '',
