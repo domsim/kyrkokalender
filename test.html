@@ -9,18 +9,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link href="style.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <style>
-        /* Lite anpassad CSS för att säkerställa att kalendertabellen från din JS ser bra ut */
-        #bibelcalender table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white; /* Tvingar tabellen att vara vit */
+        .cld-main {
+            background-color: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0; /* Tailwind slate-200 */
+            overflow: hidden; /* Nyckeln till att fixa den gråa bakgrunden! */
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-        #bibelcalender th, #bibelcalender td {
-            padding: 8px;
-            border-bottom: 1px solid #e2e8f0; /* tailwind slate-200 */
+        .cld-days, .cld-labels {
+            display: flow-root; /* Modern clearfix */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .cld-day, .cld-label {
+            float: left;
+            width: 14.28%; /* Delar upp veckans 7 dagar perfekt */
+        }
+        .cld-datetime {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
         }
     </style>
 </head>
@@ -28,21 +44,34 @@
 <body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
 
     <div id="biblegateway" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm mb-6 p-6">
-        
         <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Dagens Bibelord</h2>
         
-        <div class="w-full h-auto min-h-[150px]">
-            <iframe 
-                src="https://www.biblegateway.com/votd/get/?format=html&version=SFB" 
-                width="100%" 
-                height="150" 
-                frameborder="0" 
-                scrolling="no"
-                title="Dagens Bibelord från BibleGateway">
-            </iframe>
+        <div id="votd-container" class="min-h-[100px] flex items-center justify-center text-slate-400">
+            <p class="animate-pulse">Hämtar dagens bibelord från BibleGateway...</p>
         </div>
 
-        <form action="https://www.biblegateway.com/quicksearch/" target="_blank" class="mt-4 pt-4 border-t border-slate-100">
+        <script>
+            // Superenkel och stabil callback för BibleGateway JSONP
+            function bgVotdCallback(json) {
+                if (!json || !json.votd) return;
+                var votd = json.votd;
+                
+                var html = '<div class="w-full">';
+                html += '<blockquote class="border-l-4 border-indigo-500 pl-5 py-2 mb-3 text-lg md:text-xl italic text-slate-700 bg-slate-50/50 rounded-r-lg">' + votd.text + '</blockquote>';
+                html += '<div class="flex items-center gap-3 text-sm font-medium text-slate-600">';
+                html += '<a href="' + votd.permalink + '" target="_blank" class="text-indigo-600 hover:text-indigo-800 hover:underline transition">' + votd.display_ref + '</a>';
+                html += '<span class="text-slate-300">|</span>';
+                html += '<span class="text-xs text-slate-500">' + votd.copyright + '</span>';
+                html += '</div></div>';
+                
+                // Ersätt laddningsanimationen med den faktiska HTML-koden
+                document.getElementById('votd-container').className = "w-full"; 
+                document.getElementById('votd-container').innerHTML = html;
+            }
+        </script>
+        <script src="https://www.biblegateway.com/votd/get/?format=json&version=SFB&callback=bgVotdCallback"></script>
+
+        <form action="https://www.biblegateway.com/quicksearch/" target="_blank" class="mt-6 pt-5 border-t border-slate-100">
             <div class="flex flex-wrap gap-3 items-center">
                 <input type="text" name="quicksearch" placeholder="Sök i Bibeln..." class="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-auto flex-1 max-w-xs transition" required>
                 <input type="hidden" name="version" value="SFB">
@@ -58,12 +87,12 @@
             
             <div class="flex-none">
                 <label class="sr-only" for="nyar">Ange år</label>
-                <input id="nyar" type="text" name="nyar" class="border border-slate-300 rounded-lg px-4 py-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="År" title="ange år">
+                <input id="nyar" type="text" name="nyar" class="border border-slate-300 rounded-lg px-4 py-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="År" title="ange år">
             </div>
 
             <div class="flex-none">
                 <label class="sr-only" for="nymanad">och månad</label>
-                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"> 
+                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
                     <option value="12">Hela Året</option>
                     <option value="0">Januari</option>
                     <option value="1">Februari</option>
@@ -82,7 +111,7 @@
 
             <div class="flex-none">
                 <label class="sr-only" for="ver">Bibel</label>
-                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"> 
+                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
                     <option value="se">SFB98</option>
                     <option value="se15">SFB15</option>
                     <option value="no">N11BM</option>
@@ -94,19 +123,18 @@
                 </select>
             </div>
 
-            <div class="w-px h-8 bg-slate-200 hidden md:block"></div> <div class="flex flex-wrap gap-2">
+            <div class="w-px h-8 bg-slate-200 hidden md:block"></div>
+
+            <div class="flex flex-wrap gap-2">
                 <button id="btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('test')">Hämta texter</button>
-                
                 <button id="btnk" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('kal')">Inkl. daglig läsning</button>
-                
                 <input type="button" id="togglecal" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200 cursor-pointer" value="Kalender">
-                
             </div>
         </div>
     </div>
     
-    <div id="container" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm min-h-[500px] overflow-hidden">
-        <div id="bibelcalender" class="w-full bg-white p-6 overflow-x-auto"></div> 
+    <div id="container" class="max-w-6xl mx-auto min-h-[400px]">
+        <div id="bibelcalender" class="w-full"></div> 
     </div>
 
     <div>
