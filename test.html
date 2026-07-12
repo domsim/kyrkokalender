@@ -6,15 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kyrkoårets bibeltexter</title>
     
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link href="style.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
-<body class="bg-gray-100 p-4 font-sans text-gray-800">
+<body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
 
-    <div id="biblegateway" class="max-w-6xl mx-auto bg-white border-b border-gray-200 rounded-lg shadow-sm mb-4 p-6">
+    <!-- BibleGateway Sektion (Dagens vers) -->
+    <div id="biblegateway" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm mb-6 p-6">
+        <!-- Det är här Dagens vers kommer att laddas in -->
+        <div id="votd-container" class="animate-pulse text-slate-400">
+            Laddar dagens bibelord...
+        </div>
+
         <script>
             (function() {
                 if ( !window.BG || typeof window.BG !== 'object') {
@@ -22,24 +29,46 @@
                 }
                 var BG = window.BG;
 
+                // Fixad funktion som använder innerHTML istället för document.write
                 BG.votdWriteCallback = function(json) {
                     var votd = json.votd;
-                    var votd_html = '';
-                    /* Notera: Detta genererar fortfarande Bootstrap-klasser. Vi kan styla dessa via style.css senare om det behövs */
-                    votd_html += '<div class=""><blockquote class="blockquote card-body" style="padding-bottom:0px;"><p class="text-justify font-weight-light">' + votd.text;
-                    votd_html += '</p><footer class="blockquote-footer tetx-center"><a href="' + votd.permalink +'">' + votd.display_ref + '</a>';
+                    var votd_html = '<div class="prose max-w-none">';
+                    
+                    // Själva bibelordet med modern styling
+                    votd_html += '<blockquote class="border-l-4 border-indigo-500 pl-4 py-1 mb-3 text-lg italic text-slate-700">' + votd.text + '</blockquote>';
+                    
+                    // Referens och länkar
+                    votd_html += '<div class="text-sm text-slate-600 font-medium flex items-center gap-2">';
+                    votd_html += '<a href="' + votd.permalink +'" class="hover:text-indigo-600 hover:underline transition">' + votd.display_ref + '</a>';
+                    
                     if (votd.audiolink) {
-                      votd_html += ' <a rel="nofollow" href="' + votd.audiolink + '" title="Listen to chapter"><img alt="Listen to chapter" src="//www.biblegateway.com/assets/images/audio/sound.gif" border=0/></a>';
+                      votd_html += '<a rel="nofollow" href="' + votd.audiolink + '" title="Lyssna på kapitlet"><img alt="Lyssna" src="https://www.biblegateway.com/assets/images/audio/sound.gif" class="inline w-4 h-4"/></a>';
                     }
-                    votd_html += ' <a href="' + votd.copyrightlink + '">' + votd.copyright + '</a>';
-                    votd_html += '<footer><br><p class="text-xs text-gray-500">Powered by <a href="https://www.biblegateway.com/" title="The Bible in multiple languages, versions, and formats" rel="nofollow"><img src="https://www.biblegateway.com/assets/images/logos/bglogo_sm.gif?103106" height="32" alt="BibleGateway.com" border="0"></a></p>';
-                    votd_html += '</blockquote></div>';
-                    votd_html += '<form action="https://www.biblegateway.com/quicksearch/" target="_blank"><div class="flex flex-wrap gap-2 items-center mt-4"><div><input type="text" name="quicksearch" class="border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"></div><input type="hidden" name="version" value="SFB"><div><input type="submit" value="Sök på BibleGateway.com" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1.5 rounded cursor-pointer transition"></div></div></form>'
-                    document.write(votd_html);
+                    
+                    votd_html += '<span class="text-slate-300">|</span> <a href="' + votd.copyrightlink + '" class="hover:text-indigo-600 hover:underline transition">' + votd.copyright + '</a>';
+                    votd_html += '</div>';
+                    votd_html += '</div>';
+
+                    // Moderniserat sökformulär
+                    votd_html += '<form action="https://www.biblegateway.com/quicksearch/" target="_blank" class="mt-5 pt-5 border-t border-slate-100">';
+                    votd_html += '<div class="flex flex-wrap gap-3 items-center">';
+                    votd_html += '<input type="text" name="quicksearch" placeholder="Sök i Bibeln..." class="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-auto flex-1 max-w-xs transition">';
+                    votd_html += '<input type="hidden" name="version" value="SFB">';
+                    votd_html += '<button type="submit" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer shadow-sm">Sök på BibleGateway</button>';
+                    votd_html += '</div></form>';
+
+                    // Injicera HTML i vår container istället för att skriva över dokumentet
+                    var container = document.getElementById('votd-container');
+                    if (container) {
+                        // Ta bort pulse-animationen när det är laddat
+                        container.classList.remove('animate-pulse', 'text-slate-400');
+                        container.innerHTML = votd_html;
+                    }
                 };
                 window.BG = BG;
             })();
         </script>
+        <!-- Hämtar datan som JSONP och anropar callback-funktionen ovan -->
         <script src="https://www.biblegateway.com/votd/get/?format=json&version=SFB&callback=BG.votdWriteCallback"></script>
         
         <noscript>
@@ -47,17 +76,20 @@
         </noscript>
     </div>
 
-    <div id="byt" class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm p-4 mb-6">
-        <div class="flex flex-wrap items-center gap-3">
+    <!-- Verktygsfält (Inställningar och knappar) -->
+    <div id="byt" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm p-5 mb-6">
+        <div class="flex flex-wrap items-center gap-4">
             
-            <div>
+            <!-- År -->
+            <div class="flex-none">
                 <label class="sr-only" for="nyar">Ange år</label>
-                <input id="nyar" type="text" name="nyar" class="border border-gray-300 rounded px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="År" title="ange år">
+                <input id="nyar" type="text" name="nyar" class="border border-slate-300 rounded-lg px-4 py-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="År" title="ange år">
             </div>
 
-            <div>
+            <!-- Månad -->
+            <div class="flex-none">
                 <label class="sr-only" for="nymanad">och månad</label>
-                <select name="nymanad" id="nymanad" class="border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"> 
+                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"> 
                     <option value="12">Hela Året</option>
                     <option value="0">Januari</option>
                     <option value="1">Februari</option>
@@ -74,9 +106,10 @@
                 </select>
             </div>
 
-            <div>
+            <!-- Bibelversion -->
+            <div class="flex-none">
                 <label class="sr-only" for="ver">Bibel</label>
-                <select name="ver" id="ver" class="border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"> 
+                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"> 
                     <option value="se">SFB98</option>
                     <option value="se15">SFB15</option>
                     <option value="no">N11BM</option>
@@ -88,58 +121,56 @@
                 </select>
             </div>
 
-            <div>
-                <button id="btn" class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition-colors duration-200" oncontextmenu="togglediv('test')">Hämta texter</button>
-            </div>
-            
-            <div>
-                <button id="btnk" class="border border-yellow-500 text-yellow-600 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded transition-colors duration-200" oncontextmenu="togglediv('kal')">Hämta texter med daglig läsning</button>
-            </div>
-            
-            <div>  
-                <input type="button" id="togglecal" class="border border-teal-500 text-teal-600 hover:bg-teal-500 hover:text-white px-4 py-2 rounded transition-colors duration-200 cursor-pointer" value="Kalender">
-            </div>
+            <div class="w-px h-8 bg-slate-200 hidden md:block"></div> <!-- Avdelare -->
 
-            <div>
-                <input type="button" id="BibleGateway" class="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded transition-colors duration-200 cursor-pointer" value="BibleGateway">
+            <!-- Knappar -->
+            <div class="flex flex-wrap gap-2">
+                <button id="btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('test')">Hämta texter</button>
+                
+                <button id="btnk" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('kal')">Inkl. daglig läsning</button>
+                
+                <input type="button" id="togglecal" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200 cursor-pointer" value="Kalender">
+                
+                <input type="button" id="BibleGateway" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200 cursor-pointer" value="BibleGateway">
             </div>
         </div>
     </div>
 
+    <!-- Dold sökform (Originalet) -->
     <div style="display:none">
         <form action="https://www.biblegateway.com/quicksearch/" target="_blank">
-            <table class="border border-red-800 mx-auto w-full max-w-sm text-center">
-                <tr><th class="bg-red-800 text-white p-2">Sök på ett ord eller vers i Bibeln</th></tr>
-                <tr><td class="bg-white p-2">
-                    <div class="mb-2">
-                        <input class="border rounded px-2 py-1 m-1" type="text" name="quicksearch" />
-                        <input type="hidden" name="version" value="SFB"/>
-                        <input class="bg-gray-200 rounded px-2 py-1 m-1 cursor-pointer" type="submit" value="Sök på BibleGateway.com" />
+            <table border="1" cellspacing="0" cellpadding="2" style="border-color: #600; margin: 0 auto;">
+                <tr><th style="background-color: #600; color:#fff; text-align: center; padding: 0 10px;">Sök på ett ord eller vers i Bibeln</th></tr>
+                <tr><td style="background-color: #fff; text-align: center; padding: 0 10px;">
+                    <div style="margin-bottom: 0;">
+                        <input style="margin:2px" type="text" name="quicksearch" /><br />
+                        <input style="margin:2px" type="hidden" name="version" value="SFB"/><br />
+                        <input style="margin:2px" type="submit" value="Sök på BibleGateway.com" /><br />
                     </div>
-                    <a href="https://www.biblegateway.com/" title="The Bible in multiple languages, versions, and formats">
-                        <img src="https://www.biblegateway.com/assets/images/logos/bglogo_sm.gif?103106" width="146" height="44" alt="BibleGateway.com" class="mx-auto" />
-                    </a>
                 </td></tr>
             </table>
         </form>
     </div>
     
-    <div id="container" class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-sm">
+    <!-- Huvudkontainer för genererat innehåll -->
+    <div id="container" class="max-w-6xl mx-auto bg-white border border-slate-200 p-6 rounded-xl shadow-sm min-h-[200px]">
         <div id="bibelcalender"></div> 
     </div>
 
     <div>
-        <p id="test" class="text-center mt-4"></p>
+        <p id="test" class="text-center mt-6 text-slate-500"></p>
     </div>
 
-    <div id="kal-container" style="display:none" class="max-w-6xl mx-auto mt-6 bg-white p-6 rounded-lg shadow-sm">
-        <div class="flex gap-2 mb-4">
-            <button class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition-colors duration-200" onclick="Export2Doc('kal')">Export to Word</button>
-            <button class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition-colors duration-200" onclick="Export2Rtf('kal')">Export to Rtf</button>
+    <!-- Kalender och export-knappar -->
+    <div id="kal-container" style="display:none" class="max-w-6xl mx-auto mt-6 bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
+        <div class="flex gap-3 mb-6 pb-4 border-b border-slate-100">
+            <button class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm" onclick="Export2Doc('kal')">Exportera till Word</button>
+            <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm" onclick="Export2Rtf('kal')">Exportera till RTF</button>
         </div>
-        <div id="kal" data-rtf=""></div>
+        <div id="kal" data-rtf="" class="prose max-w-none text-slate-800"></div>
     </div>
 
+    <!-- Egna skript -->
     <script src="bglinks.js" type="text/javascript"></script>
     <script src="bcalender.js"></script>
     <script src="script.js"></script>
