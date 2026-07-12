@@ -52,7 +52,7 @@
 
         <script>
             // BYPASS-LÖSNING: Hämtar från BibleGateway via AllOrigins proxy för att kringgå deras nya blockeringar
-            fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.biblegateway.com/votd/get/?format=json&version=SFB'))
+            fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.biblegateway.com/votd/get/?format=json&version=SFB15'))
                 .then(response => response.ok ? response.json() : Promise.reject('Nätverksfel'))
                 .then(data => {
                     var json = JSON.parse(data.contents);
