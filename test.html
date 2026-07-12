@@ -16,6 +16,149 @@
         .cld-main {
             background-color: white;
             border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden; 
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .cld-days, .cld-labels {
+            display: flow-root;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .cld-day, .cld-label {
+            float: left;
+            width: 14.28%; 
+        }
+        .cld-datetime {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
+
+    <div id="biblegateway" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm mb-6 p-6">
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Dagens Bibelord</h2>
+        
+        <div class="w-full bg-slate-50 rounded-lg p-2 border border-slate-100 overflow-hidden">
+            <iframe 
+                src="https://www.biblegateway.com/votd/get/?format=html&version=SFB" 
+                width="100%" 
+                height="150" 
+                frameborder="0" 
+                scrolling="no"
+                title="Dagens Bibelord">
+            </iframe>
+        </div>
+
+        <form action="https://www.biblegateway.com/quicksearch/" target="_blank" class="mt-6 pt-5 border-t border-slate-100">
+            <div class="flex flex-wrap gap-3 items-center">
+                <input type="text" name="quicksearch" placeholder="Sök i Bibeln..." class="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-auto flex-1 max-w-xs transition" required>
+                <input type="hidden" name="version" value="SFB">
+                <button type="submit" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer shadow-sm">
+                    Sök på BibleGateway
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div id="byt" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm p-5 mb-6">
+        <div class="flex flex-wrap items-center gap-4">
+            
+            <div class="flex-none">
+                <label class="sr-only" for="nyar">Ange år</label>
+                <input id="nyar" type="text" name="nyar" class="border border-slate-300 rounded-lg px-4 py-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="År" title="ange år">
+            </div>
+
+            <div class="flex-none">
+                <label class="sr-only" for="nymanad">och månad</label>
+                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
+                    <option value="12">Hela Året</option>
+                    <option value="0">Januari</option>
+                    <option value="1">Februari</option>
+                    <option value="2">Mars</option>
+                    <option value="3">April</option>
+                    <option value="4">Maj</option>
+                    <option value="5">Juni</option>
+                    <option value="6">Juli</option>
+                    <option value="7">Augusti</option>
+                    <option value="8">September</option>
+                    <option value="9">Oktober</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+
+            <div class="flex-none">
+                <label class="sr-only" for="ver">Bibel</label>
+                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
+                    <option value="se">SFB98</option>
+                    <option value="se15">SFB15</option>
+                    <option value="no">N11BM</option>
+                    <option value="en">ESV</option>
+                    <option value="eni">NIV</option>
+                    <option value="it">NR06</option>
+                    <option value="el">TR1894</option>
+                    <option value="he">WLC</option>
+                </select>
+            </div>
+
+            <div class="w-px h-8 bg-slate-200 hidden md:block"></div>
+
+            <div class="flex flex-wrap gap-2">
+                <button id="btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('test')">Hämta texter</button>
+                <button id="btnk" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" oncontextmenu="togglediv('kal')">Inkl. daglig läsning</button>
+                <input type="button" id="togglecal" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200 cursor-pointer" value="Kalender">
+                <input type="button" id="BibleGateway" class="bg-white border border-slate-300 hover:bg-slate-50 text-red-600 hover:text-red-700 font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200 cursor-pointer" value="BibleGateway">
+            </div>
+        </div>
+    </div>
+    
+    <div id="container" class="max-w-6xl mx-auto min-h-[400px]">
+        <div id="bibelcalender" class="w-full"></div> 
+    </div>
+
+    <div class="max-w-6xl mx-auto mt-6">
+        <div id="test" class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 md:p-8 text-left whitespace-pre-wrap text-lg leading-relaxed text-slate-800" style="display: none;"></div>
+    </div>
+
+    <div id="kal-container" style="display:none" class="max-w-6xl mx-auto mt-6 bg-white border border-slate-200 p-6 md:p-8 rounded-xl shadow-sm">
+        <div class="flex gap-3 mb-6 pb-4 border-b border-slate-100">
+            <button class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm" onclick="Export2Doc('kal')">Exportera till Word</button>
+            <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm" onclick="Export2Rtf('kal')">Exportera till RTF</button>
+        </div>
+        <div id="kal" data-rtf="" class="whitespace-pre-wrap text-lg leading-relaxed text-slate-800 bg-white"></div>
+    </div>
+
+    <script src="bglinks.js" type="text/javascript"></script>
+    <script src="bcalender.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html><!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyrkoårets bibeltexter</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+        .cld-main {
+            background-color: white;
+            border-radius: 0.75rem;
             border: 1px solid #e2e8f0; /* Tailwind slate-200 */
             overflow: hidden; /* Nyckeln till att fixa den gråa bakgrunden! */
             padding: 1.5rem;
