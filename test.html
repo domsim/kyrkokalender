@@ -4,14 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyrkoårets bibeltexter enligt EB42</title>
+    <title>Kyrkoårets bibeltexter</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Din befintliga CSS -->
     <link href="style.css" rel="stylesheet" type="text/css" />
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    <!-- CSS för kalender och utskrift (Print) -->
     <style>
         .cld-main {
             background-color: white;
@@ -21,28 +24,25 @@
             padding: 1.5rem;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-        .cld-days, .cld-labels {
-            display: flow-root;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-        .cld-day, .cld-label {
-            float: left;
-            width: 14.28%; 
-        }
-        .cld-datetime {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            text-align: center;
+        .cld-days, .cld-labels { display: flow-root; list-style: none; padding: 0; margin: 0; width: 100%; }
+        .cld-day, .cld-label { float: left; width: 14.28%; }
+        .cld-datetime { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; text-align: center; }
+
+        /* Magisk CSS som bara gäller när användaren skriver ut sidan (Ctrl+P) */
+        @media print {
+            header, #biblegateway, #byt, #togglecal, #kal-container, #backToTop {
+                display: none !important;
+            }
+            body { background-color: white !important; padding: 0 !important; }
+            .max-w-6xl { max-width: 100% !important; margin: 0 !important; }
+            #test { border: none !important; box-shadow: none !important; padding: 0 !important; }
         }
     </style>
 </head>
 
-<body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
+<body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800 relative">
 
+    <!-- Sidhuvud och Instruktioner -->
     <header class="max-w-6xl mx-auto mb-8">
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 text-center md:text-left tracking-tight">Kyrkoårets Bibeltexter</h1>
         
@@ -67,6 +67,8 @@
             </div>
         </div>
     </header>
+
+    <!-- BibleGateway Dagens Vers med Smart Caching -->
     <div id="biblegateway" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm mb-6 p-6">
         <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Dagens Bibelord</h2>
         
@@ -75,29 +77,45 @@
         </div>
 
         <script>
-            // BYPASS-LÖSNING: Hämtar från BibleGateway via AllOrigins proxy för att kringgå deras nya blockeringar
-            fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.biblegateway.com/votd/get/?format=json&version=SFB15'))
-                .then(response => response.ok ? response.json() : Promise.reject('Nätverksfel'))
-                .then(data => {
-                    var json = JSON.parse(data.contents);
-                    if (json && json.votd) {
-                        var votd = json.votd;
-                        var html = '<div class="w-full">';
-                        html += '<blockquote class="border-l-4 border-indigo-500 pl-5 py-2 mb-3 text-lg md:text-xl italic text-slate-700 bg-slate-50/50 rounded-r-lg">' + votd.text + '</blockquote>';
-                        html += '<div class="flex items-center gap-3 text-sm font-medium text-slate-600">';
-                        html += '<a href="' + votd.permalink + '" target="_blank" class="text-indigo-600 hover:text-indigo-800 hover:underline transition">' + votd.display_ref + '</a>';
-                        html += '<span class="text-slate-300">|</span>';
-                        html += '<span class="text-xs text-slate-500">' + votd.copyright + '</span>';
-                        html += '</div></div>';
-                        document.getElementById('votd-container').innerHTML = html;
-                        document.getElementById('votd-container').classList.remove('animate-pulse', 'justify-center');
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('votd-container').innerHTML = '<p class="text-red-500 text-sm">Kunde inte ansluta till Bible Gateway just nu.</p>';
-                });
+            // SMART LÖSNING: Spara dagens vers i minnet (localStorage) så sidan laddar blixtsnabbt!
+            const today = new Date().toISOString().split('T')[0];
+            const cachedVotd = localStorage.getItem('votd_data');
+            const cachedDate = localStorage.getItem('votd_date');
+
+            function renderVotd(votd) {
+                var html = '<div class="w-full">';
+                html += '<blockquote class="border-l-4 border-indigo-500 pl-5 py-2 mb-3 text-lg md:text-xl italic text-slate-700 bg-slate-50/50 rounded-r-lg">' + votd.text + '</blockquote>';
+                html += '<div class="flex items-center gap-3 text-sm font-medium text-slate-600">';
+                html += '<a href="' + votd.permalink + '" target="_blank" class="text-indigo-600 hover:text-indigo-800 hover:underline transition">' + votd.display_ref + '</a>';
+                html += '<span class="text-slate-300">|</span>';
+                html += '<span class="text-xs text-slate-500">' + votd.copyright + '</span>';
+                html += '</div></div>';
+                document.getElementById('votd-container').innerHTML = html;
+                document.getElementById('votd-container').classList.remove('animate-pulse', 'justify-center');
+            }
+
+            if (cachedVotd && cachedDate === today) {
+                // Om vi redan hämtat versen idag, visa den direkt från minnet
+                renderVotd(JSON.parse(cachedVotd));
+            } else {
+                // Annars, hämta via proxy och spara den för resten av dagen
+                fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.biblegateway.com/votd/get/?format=json&version=SFB'))
+                    .then(response => response.ok ? response.json() : Promise.reject('Nätverksfel'))
+                    .then(data => {
+                        var json = JSON.parse(data.contents);
+                        if (json && json.votd) {
+                            localStorage.setItem('votd_data', JSON.stringify(json.votd));
+                            localStorage.setItem('votd_date', today);
+                            renderVotd(json.votd);
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('votd-container').innerHTML = '<p class="text-red-500 text-sm">Kunde inte ansluta till Bible Gateway just nu.</p>';
+                    });
+            }
         </script>
 
+        <!-- Sökformulär -->
         <form action="https://www.biblegateway.com/quicksearch/" target="_blank" class="mt-6 pt-5 border-t border-slate-100">
             <div class="flex flex-wrap gap-3 items-center">
                 <input type="text" name="quicksearch" placeholder="Sök i Bibeln..." class="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-auto flex-1 max-w-xs transition" required>
@@ -109,17 +127,20 @@
         </form>
     </div>
 
-    <div id="byt" class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-sm p-5 mb-6">
+    <!-- STICKY Verktygsfält: Följer med när man skrollar -->
+    <div id="byt" class="sticky top-4 z-50 max-w-6xl mx-auto bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-sm p-5 mb-6">
         <div class="flex flex-wrap items-center gap-4">
             
+            <!-- År -->
             <div class="flex-none">
                 <label class="sr-only" for="nyar">Ange år</label>
                 <input id="nyar" type="text" name="nyar" class="border border-slate-300 rounded-lg px-4 py-2 w-24 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="År" title="ange år">
             </div>
 
+            <!-- Månad -->
             <div class="flex-none">
                 <label class="sr-only" for="nymanad">och månad</label>
-                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
+                <select name="nymanad" id="nymanad" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition cursor-pointer"> 
                     <option value="12">Hela Året</option>
                     <option value="0">Januari</option>
                     <option value="1">Februari</option>
@@ -136,22 +157,24 @@
                 </select>
             </div>
 
+            <!-- Tydligare bibelversioner -->
             <div class="flex-none">
                 <label class="sr-only" for="ver">Bibel</label>
-                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"> 
-                    <option value="se">SFB98</option>
-                    <option value="se15">SFB15</option>
-                    <option value="no">N11BM</option>
-                    <option value="en">ESV</option>
-                    <option value="eni">NIV</option>
-                    <option value="it">NR06</option>
-                    <option value="el">TR1894</option>
-                    <option value="he">WLC</option>
+                <select name="ver" id="ver" class="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition cursor-pointer"> 
+                    <option value="se">SFB98 - Sv. Folkbibeln 98</option>
+                    <option value="se15">SFB15 - Sv. Folkbibeln 15</option>
+                    <option value="no">N11BM - Norsk Bibel</option>
+                    <option value="en">ESV - English Standard</option>
+                    <option value="eni">NIV - New International</option>
+                    <option value="it">NR06 - Nuova Riveduta</option>
+                    <option value="el">TR1894 - Textus Receptus</option>
+                    <option value="he">WLC - Westminster LC</option>
                 </select>
             </div>
 
             <div class="w-px h-8 bg-slate-200 hidden md:block"></div>
 
+            <!-- Knappar -->
             <div class="flex flex-wrap gap-2">
                 <button id="btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow-sm transition-colors duration-200" onclick="document.getElementById('test').innerHTML='';" oncontextmenu="togglediv('test')">Hämta texter</button>
                 
@@ -164,14 +187,17 @@
         </div>
     </div>
     
+    <!-- Huvudkontainer för kalendern -->
     <div id="container" class="max-w-6xl mx-auto">
         <div id="bibelcalender" class="w-full"></div> 
     </div>
 
+    <!-- Den vita bakgrunden för dina texter -->
     <div class="max-w-6xl mx-auto mt-6 bg-white border border-slate-200 rounded-xl shadow-sm p-6 md:p-8 min-h-[50px]">
-        <p id="test" class="text-center whitespace-pre-wrap text-lg leading-relaxed text-slate-800 m-0 w-full"></p>
+        <p id="test" class="text-left whitespace-pre-wrap text-lg leading-relaxed text-slate-800 m-0 w-full"></p>
     </div>
 
+    <!-- Kalender och export-knappar -->
     <div id="kal-container" style="display:none" class="max-w-6xl mx-auto mt-6 bg-white border border-slate-200 p-6 md:p-8 rounded-xl shadow-sm">
         <div class="flex gap-3 mb-6 pb-4 border-b border-slate-100">
             <button class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm" onclick="Export2Doc('kal')">Exportera till Word</button>
@@ -180,6 +206,25 @@
         <div id="kal" data-rtf="" class="whitespace-pre-wrap text-lg leading-relaxed text-slate-800 w-full"></div>
     </div>
 
+    <!-- GÅ TILL TOPPEN-KNAPP -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-indigo-600 text-white p-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-indigo-700 hover:shadow-xl focus:outline-none z-50" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Gå till toppen">
+        <!-- Pil upp-ikon -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
+    </button>
+
+    <!-- Skript för Till-toppen-knappen -->
+    <script>
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+    </script>
+
+    <!-- Dina externa skript -->
     <script src="bglinks.js" type="text/javascript"></script>
     <script src="bcalender.js"></script>
     <script src="script.js"></script>
